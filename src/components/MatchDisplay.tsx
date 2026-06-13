@@ -486,32 +486,48 @@ export default function MatchDisplay({
                 const dateDisplay = `${month}月${dateVal}日`;
 
                 return (
-                  <div 
+                  <div
                     key={m.id}
-                    className="flex flex-col md:flex-row items-center justify-between p-3.5 bg-white border border-slate-200/80 rounded-xl hover:bg-slate-50/50 transition-colors gap-4"
+                    className="flex flex-col p-3.5 bg-white border border-slate-200/80 rounded-xl hover:bg-slate-50/50 transition-colors gap-3"
                   >
-                    {/* Left side: Date & Teams */}
-                    <div className="flex items-center gap-3.5 w-full md:w-[280px] shrink-0">
-                      <div className="text-center font-mono w-14 border-r border-slate-150 pr-3">
-                        <span className="text-xs text-slate-500 font-bold block leading-none">{dateDisplay}</span>
-                        <span className="text-[9px] text-slate-400 mt-1 block font-mono">{m.dateTime.split(" ")[1]}</span>
+                    {/* Top row: Date, Teams and Status Banner */}
+                    <div className="flex items-center justify-between w-full">
+                      {/* Left side: Date & Teams */}
+                      <div className="flex items-center gap-3.5 shrink-0">
+                        <div className="text-center font-mono w-14 border-r border-slate-150 pr-3">
+                          <span className="text-xs text-slate-500 font-bold block leading-none">{dateDisplay}</span>
+                          <span className="text-[9px] text-slate-400 mt-1 block font-mono">{m.dateTime.split(" ")[1]}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-slate-800 font-bold">
+                          <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
+                          <span className="truncate max-w-[85px]">{h.name}</span>
+                          <span className="text-xs px-2.5 py-1 rounded bg-slate-100 text-slate-800 font-mono font-black border border-slate-200">
+                            {m.actualScore!.home} : {m.actualScore!.away}
+                          </span>
+                          <TeamFlag teamId={a.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
+                          <span className="truncate max-w-[85px]">{a.name}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-800 font-bold">
-                        <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
-                        <span className="truncate max-w-[85px]">{h.name}</span>
-                        <span className="text-xs px-2.5 py-1 rounded bg-slate-100 text-slate-800 font-mono font-black border border-slate-200">
-                          {m.actualScore!.home} : {m.actualScore!.away}
-                        </span>
-                        <TeamFlag teamId={a.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
-                        <span className="truncate max-w-[85px]">{a.name}</span>
+
+                      {/* Right side check status banner */}
+                      <div className="shrink-0 pl-2">
+                        <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-bold border ${
+                          isDirectionCorrect 
+                            ? "bg-yellow-100 text-slate-950 border-yellow-300" 
+                            : "bg-slate-50 text-slate-550 border-slate-200"
+                        }`}>
+                          {isDirectionCorrect ? "方向完全契合" : "战力偏移偏差"}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Middle: Predictions & Odds */}
-                    <div className="flex flex-col md:flex-row flex-1 w-full text-center md:text-left md:ml-8 text-xs gap-3 md:gap-6 justify-between">
+                    <div className="w-full h-px bg-slate-100"></div>
+
+                    {/* Bottom row: Predictions & Odds */}
+                    <div className="flex flex-row w-full text-left text-xs gap-3 md:gap-6 justify-between items-center pl-2">
                       <div className="flex-1 shrink-0">
                         <span className="text-[10px] text-slate-500 block font-bold">方向判断</span>
-                        <div className="flex items-center justify-center md:justify-start gap-1.5 font-semibold mt-0.5">
+                        <div className="flex items-center gap-1.5 font-semibold mt-0.5">
                           {isDirectionCorrect ? (
                             <>
                               <CheckCircle2 className="w-4 h-4 text-slate-900 shrink-0" />
@@ -528,7 +544,7 @@ export default function MatchDisplay({
 
                       <div className="flex-1 shrink-0">
                         <span className="text-[10px] text-slate-500 block font-bold">主推比分</span>
-                        <div className="flex items-center justify-center md:justify-start gap-1.5 mt-0.5">
+                        <div className="flex items-center gap-1.5 mt-0.5">
                           <span className="font-mono font-bold text-slate-900 bg-white border border-slate-900 px-1.5 py-0.5 rounded leading-none shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">
                             {pred.recommendedScores.primary}
                           </span>
@@ -544,22 +560,11 @@ export default function MatchDisplay({
 
                       <div className="flex-1 shrink-0">
                         <span className="text-[10px] text-slate-500 block font-bold">策略支持集</span>
-                        <div className="flex items-center justify-center md:justify-start gap-1 mt-0.5 font-mono text-[9.5px] text-slate-500 whitespace-nowrap">
+                        <div className="flex items-center gap-1 mt-0.5 font-mono text-[9.5px] text-slate-500 whitespace-nowrap">
                           <span className="bg-slate-50 border border-slate-200 px-1 rounded text-slate-700 font-semibold">稳:{pred.recommendedScores.stable}</span>
                           <span>•</span>
                           <span className="bg-slate-50 border border-slate-200 px-1 rounded text-slate-700 font-semibold">博:{pred.recommendedScores.aggressive}</span>
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Right side check status banner */}
-                    <div className="flex items-center justify-end w-full md:w-auto shrink-0 pl-1">
-                      <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-bold border ${
-                        isDirectionCorrect 
-                          ? "bg-yellow-100 text-slate-950 border-yellow-300" 
-                          : "bg-slate-50 text-slate-550 border-slate-200"
-                      }`}>
-                        {isDirectionCorrect ? "方向完全契合" : "战力偏移偏差"}
                       </div>
                     </div>
                   </div>
