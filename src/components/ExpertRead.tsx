@@ -44,6 +44,7 @@ export default function ExpertRead({
   const [savedModel, setSavedModel] = useState<string>("");
 
   const [showKeyInput, setShowKeyInput] = useState<boolean>(false);
+  const configRef = React.useRef<HTMLDivElement>(null);
 
   // 2. AGI Analysis States
   const [agiReview, setAgiReview] = useState<ExpertReview | null>(null);
@@ -332,7 +333,10 @@ export default function ExpertRead({
   return (
     <div className="space-y-6">
       {/* 1. API Key Control Bar */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div 
+        ref={configRef}
+        className="bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+      >
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
             <Key className="w-4 h-4" />
@@ -651,7 +655,12 @@ export default function ExpertRead({
                 </p>
               </div>
               <button
-                onClick={() => setShowKeyInput(true)}
+                onClick={() => {
+                  setShowKeyInput(true);
+                  setTimeout(() => {
+                    configRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 100);
+                }}
                 className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10.5px] font-bold transition-colors cursor-pointer"
               >
                 立即配置 API Key
