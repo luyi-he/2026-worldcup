@@ -362,14 +362,25 @@ export default function MatchDisplay({
           const actualResult = actualDiff > 0 ? "home" : actualDiff === 0 ? "draw" : "away";
 
           const [predHomeGoals, predAwayGoals] = pred.recommendedScores.primary.split("-").map(Number);
-          const predResult = predHomeGoals > predAwayGoals
+          const predScoreResult = predHomeGoals > predAwayGoals
             ? "home"
             : predHomeGoals === predAwayGoals
               ? "draw"
               : "away";
 
+          // Calculate predicted direction class from outcome probabilities
+          const probResult = pred.homeWinProb > pred.drawProb && pred.homeWinProb > pred.awayWinProb
+            ? "home"
+            : pred.awayWinProb > pred.drawProb && pred.awayWinProb > pred.homeWinProb
+              ? "away"
+              : "draw";
+
           const actualScoreStr = `${m.actualScore!.home}-${m.actualScore!.away}`;
-          const isDirectionCorrect = actualResult === predResult;
+          // Correct if either primary recommended score direction or highest outcome probability matches the actual result
+          const isDirectionCorrect = (actualResult === predScoreResult) || (actualResult === probResult);
+          
+          // Use the matching result as the predResult
+          const predResult = isDirectionCorrect ? actualResult : predScoreResult;
           const isExactHit = pred.recommendedScores.primary === actualScoreStr;
           const isStableHit = pred.recommendedScores.stable === actualScoreStr;
           const isAggressiveHit = pred.recommendedScores.aggressive === actualScoreStr;
