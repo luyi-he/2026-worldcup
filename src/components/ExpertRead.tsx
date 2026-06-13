@@ -614,113 +614,129 @@ export default function ExpertRead({
       </AnimatePresence>
 
       {/* 4. AGI Chat Window Panel */}
-      {savedApiKey && (
-        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden flex flex-col mt-6">
-          {/* Chat Header */}
-          <div className="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
-                <Bot className="w-4 h-4" />
+      <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden flex flex-col mt-6">
+        {/* Chat Header */}
+        <div className="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
+              <Bot className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-extrabold text-slate-800">AI 战术大师实时对谈</h4>
+              <p className="text-[9px] text-slate-400 mt-0.5">针对本场赛事，与 AI 解说大师进行深度战术讨论</p>
+            </div>
+          </div>
+          {savedApiKey && chatMessages.length > 0 && (
+            <button
+              onClick={() => setChatMessages([])}
+              className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors cursor-pointer"
+              title="清空聊天记录"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Chat Messages Body */}
+        <div className="p-4 min-h-[160px] max-h-[320px] overflow-y-auto space-y-3.5 bg-slate-50/40">
+          {!savedApiKey ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                <Key className="w-5 h-5" />
               </div>
+              <div className="space-y-1">
+                <p className="text-xs text-slate-700 font-bold">AI 战术大师未激活</p>
+                <p className="text-[10px] text-slate-400 max-w-[340px] leading-relaxed">
+                  请先在页面顶部配置您的 **Gemini API Key** 或 **自定义大模型 API Key (如 DeepSeek、通义等)**。激活后，即可在此处向 AI 提问任何有关 2026 世界杯的分析、规则或战术探讨。
+                </p>
+              </div>
+              <button
+                onClick={() => setShowKeyInput(true)}
+                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10.5px] font-bold transition-colors cursor-pointer"
+              >
+                立即配置 API Key
+              </button>
+            </div>
+          ) : chatMessages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center space-y-2.5">
+              <HelpCircle className="w-7 h-7 text-slate-300" />
               <div>
-                <h4 className="text-xs font-extrabold text-slate-800">AI 战术大师实时对谈</h4>
-                <p className="text-[9px] text-slate-400 mt-0.5">针对本场赛事，与 AI 解说大师进行深度战术讨论</p>
+                <p className="text-xs text-slate-600 font-bold">开始关于本赛事的战术探讨</p>
+                <p className="text-[10px] text-slate-400 mt-1 max-w-[280px]">
+                  您可以提问任何世界杯相关问题，例如：“下雨对哪方更有利？”、“${home.name}如何防守${away.name}的${away.tacticsName}打法？”等。
+                </p>
               </div>
             </div>
-            {chatMessages.length > 0 && (
-              <button
-                onClick={() => setChatMessages([])}
-                className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors cursor-pointer"
-                title="清空聊天记录"
+          ) : (
+            chatMessages.map((msg, index) => (
+              <div
+                key={index}
+                className={`flex gap-2.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-
-          {/* Chat Messages Body */}
-          <div className="p-4 min-h-[160px] max-h-[320px] overflow-y-auto space-y-3.5 bg-slate-50/40">
-            {chatMessages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-8 text-center space-y-2.5">
-                <HelpCircle className="w-7 h-7 text-slate-300" />
-                <div>
-                  <p className="text-xs text-slate-600 font-bold">开始关于本赛事的战术探讨</p>
-                  <p className="text-[10px] text-slate-400 mt-1 max-w-[280px]">
-                    您可以提问类似：“下雨对哪方更有利？”、“${home.name}如何防守${away.name}的${away.tacticsName}打法？”等深度细节。
-                  </p>
-                </div>
-              </div>
-            ) : (
-              chatMessages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex gap-2.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  {msg.role === "model" && (
-                    <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 mt-0.5">
-                      <Bot className="w-3.5 h-3.5" />
-                    </div>
-                  )}
-                  <div
-                    className={`p-3 rounded-2xl max-w-[85%] text-[12.5px] leading-relaxed shadow-sm font-sans ${
-                      msg.role === "user"
-                        ? "bg-emerald-600 text-white rounded-tr-none"
-                        : "bg-white text-slate-800 border border-slate-200/50 rounded-tl-none"
-                    }`}
-                  >
-                    {msg.text}
+                {msg.role === "model" && (
+                  <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 mt-0.5">
+                    <Bot className="w-3.5 h-3.5" />
                   </div>
-                  {msg.role === "user" && (
-                    <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-0.5 font-bold text-[10px]">
-                      U
-                    </div>
-                  )}
+                )}
+                <div
+                  className={`p-3 rounded-2xl max-w-[85%] text-[12.5px] leading-relaxed shadow-sm font-sans ${
+                    msg.role === "user"
+                      ? "bg-emerald-600 text-white rounded-tr-none"
+                      : "bg-white text-slate-800 border border-slate-200/50 rounded-tl-none"
+                  }`}
+                >
+                  {msg.text}
                 </div>
-              ))
-            )}
-
-            {chatLoading && (
-              <div className="flex gap-2.5 justify-start animate-pulse">
-                <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 mt-0.5">
-                  <Bot className="w-3.5 h-3.5" />
-                </div>
-                <div className="p-3 bg-white text-slate-500 border border-slate-200/50 rounded-2xl rounded-tl-none text-xs flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce delay-75"></span>
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce delay-150"></span>
-                  <span>AI 战术大师正在思考中...</span>
-                </div>
+                {msg.role === "user" && (
+                  <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-0.5 font-bold text-[10px]">
+                    U
+                  </div>
+                )}
               </div>
-            )}
+            ))
+          )}
 
-            {chatError && (
-              <div className="p-2 text-center text-[10px] text-rose-700 bg-rose-50 border border-rose-100 rounded-lg">
-                {chatError}
+          {chatLoading && (
+            <div className="flex gap-2.5 justify-start animate-pulse">
+              <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 mt-0.5">
+                <Bot className="w-3.5 h-3.5" />
               </div>
-            )}
-          </div>
+              <div className="p-3 bg-white text-slate-500 border border-slate-200/50 rounded-2xl rounded-tl-none text-xs flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce delay-75"></span>
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce delay-150"></span>
+                <span>AI 战术大师正在思考中...</span>
+              </div>
+            </div>
+          )}
 
-          {/* Chat Footer Input */}
-          <div className="p-3 bg-white border-t border-slate-100 flex gap-2">
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendChatMessage()}
-              placeholder={`向战术大师提问关于本场对阵的技战术细节...`}
-              disabled={chatLoading}
-              className="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
-            />
-            <button
-              onClick={handleSendChatMessage}
-              disabled={chatLoading || !chatInput.trim()}
-              className="p-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl transition-all cursor-pointer shadow-sm shadow-emerald-500/10 flex items-center justify-center"
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </div>
+          {chatError && (
+            <div className="p-2 text-center text-[10px] text-rose-700 bg-rose-50 border border-rose-100 rounded-lg">
+              {chatError}
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Chat Footer Input */}
+        <div className="p-3 bg-white border-t border-slate-100 flex gap-2">
+          <input
+            type="text"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSendChatMessage()}
+            placeholder={savedApiKey ? `向战术大师提问关于本场对战的技战术细节...` : "请先配置 API Key 以开启对话..."}
+            disabled={chatLoading || !savedApiKey}
+            className="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 disabled:opacity-50"
+          />
+          <button
+            onClick={handleSendChatMessage}
+            disabled={chatLoading || !chatInput.trim() || !savedApiKey}
+            className="p-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl transition-all cursor-pointer shadow-sm shadow-emerald-500/10 flex items-center justify-center"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
