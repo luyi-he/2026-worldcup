@@ -399,16 +399,6 @@ export default function App() {
                     因子数据置信率
                   </div>
                 </div>
-
-                {/* Simulated odds bar */}
-                <div className="glass-panel p-4 rounded-xl text-center shadow-sm">
-                  <div className="text-[10px] text-slate-550 font-semibold uppercase">数据更新时间</div>
-                  <div className="text-lg font-bold text-slate-800 mt-1 font-mono">{lastRefreshed}</div>
-                  <div className="text-[9px] text-emerald-600 font-semibold mt-1 flex items-center justify-center gap-1">
-                    <Clock className="w-3 h-3 animate-pulse" id="icon-clock-mini" />
-                    每4h自动刷新
-                  </div>
-                </div>
               </div>
 
               {/* Middle probabilities Top 5 list */}
