@@ -74,7 +74,7 @@ export default function MatchList({
           <span>小组赛赛程与比分精测</span>
         </div>
 
-        <div className="space-y-2 max-h-[580px] lg:max-h-[660px] overflow-y-auto pr-1.5 scroll-smooth">
+        <div className="space-y-2 max-h-[720px] lg:max-h-[850px] overflow-y-auto pr-1.5 scroll-smooth">
           {sortedMatches.map((m) => {
             const home = teams[m.homeTeamId];
             const away = teams[m.awayTeamId];
