@@ -391,12 +391,40 @@ export default function App() {
               
               {/* Left quick summary cards */}
               <div className="col-span-12 sm:col-span-3 space-y-3.5">
-                {/* Simulated time bar */}
+                {/* Card 1: 平均置信度 */}
                 <div className="glass-panel p-4 rounded-xl text-center shadow-sm">
                   <div className="text-[10px] text-slate-505 font-semibold uppercase">平均置信度</div>
                   <div className="text-xl font-bold text-slate-800 mt-1">{activePrediction.totalConfidence}%</div>
                   <div className="text-[9px] text-slate-400 font-medium mt-1">
                     因子数据置信率
+                  </div>
+                </div>
+
+                {/* Card 2: 首选结果方向 */}
+                <div className="glass-panel p-4 rounded-xl text-center shadow-sm">
+                  <div className="text-[10px] text-slate-505 font-semibold uppercase">首选结果方向</div>
+                  <div className="text-sm font-bold text-emerald-800 mt-1.5 truncate">
+                    {activePrediction.homeWinProb > activePrediction.drawProb && activePrediction.homeWinProb > activePrediction.awayWinProb ? (
+                      `主胜 (${Math.round(activePrediction.homeWinProb * 100)}%)`
+                    ) : activePrediction.awayWinProb > activePrediction.drawProb && activePrediction.awayWinProb > activePrediction.homeWinProb ? (
+                      `客胜 (${Math.round(activePrediction.awayWinProb * 100)}%)`
+                    ) : (
+                      `平局 (${Math.round(activePrediction.drawProb * 100)}%)`
+                    )}
+                  </div>
+                  <div className="text-[9px] text-slate-400 font-medium mt-1">
+                    胜 {Math.round(activePrediction.homeWinProb * 100)}% | 平 {Math.round(activePrediction.drawProb * 100)}% | 负 {Math.round(activePrediction.awayWinProb * 100)}%
+                  </div>
+                </div>
+
+                {/* Card 3: 预期总进球数 */}
+                <div className="glass-panel p-4 rounded-xl text-center shadow-sm">
+                  <div className="text-[10px] text-slate-505 font-semibold uppercase">预期总进球数</div>
+                  <div className="text-xl font-mono font-bold text-indigo-700 mt-1">
+                    {(activePrediction.homeExpectedGoals + activePrediction.awayExpectedGoals).toFixed(2)} 球
+                  </div>
+                  <div className="text-[9px] text-slate-400 font-medium mt-1">
+                    主 {activePrediction.homeExpectedGoals.toFixed(2)} / 客 {activePrediction.awayExpectedGoals.toFixed(2)}
                   </div>
                 </div>
               </div>
