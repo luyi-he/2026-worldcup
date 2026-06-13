@@ -32,9 +32,17 @@ export default function ExpertRead({
   onRefreshReview,
   isCustomized
 }: ExpertReadProps) {
-  // 1. API Key State
+  // 1. API Configuration States
+  const [apiProvider, setApiProvider] = useState<"gemini" | "openai_compatible">("gemini");
   const [apiKeyInput, setApiKeyInput] = useState<string>("");
+  const [apiBaseUrl, setApiBaseUrl] = useState<string>("");
+  const [apiModel, setApiModel] = useState<string>("");
+
+  const [savedProvider, setSavedProvider] = useState<"gemini" | "openai_compatible">("gemini");
   const [savedApiKey, setSavedApiKey] = useState<string>("");
+  const [savedBaseUrl, setSavedBaseUrl] = useState<string>("");
+  const [savedModel, setSavedModel] = useState<string>("");
+
   const [showKeyInput, setShowKeyInput] = useState<boolean>(false);
 
   // 2. AGI Analysis States
@@ -48,13 +56,21 @@ export default function ExpertRead({
   const [chatLoading, setChatLoading] = useState<boolean>(false);
   const [chatError, setChatError] = useState<string>("");
 
-  // Load API Key from localStorage
+  // Load API Configuration from localStorage
   useEffect(() => {
-    const key = localStorage.getItem("gemini_api_key") || "";
+    const provider = (localStorage.getItem("agi_provider") as "gemini" | "openai_compatible") || "gemini";
+    const key = localStorage.getItem("agi_api_key") || "";
+    const url = localStorage.getItem("agi_base_url") || "";
+    const model = localStorage.getItem("agi_model") || "";
+
+    setApiProvider(provider);
+    setSavedProvider(provider);
     setSavedApiKey(key);
-    if (key) {
-      setApiKeyInput(key);
-    }
+    setApiKeyInput(key);
+    setApiBaseUrl(url);
+    setSavedBaseUrl(url);
+    setApiModel(model);
+    setSavedModel(model);
   }, []);
 
   // Reset local AGI states when the active match, tuner weights, or team strengths change
@@ -65,30 +81,50 @@ export default function ExpertRead({
     setAgiError("");
   }, [match.id, JSON.stringify(factors), home.marketValue, away.marketValue, home.elo, away.elo]);
 
-  // Handle saving API key
-  const handleSaveApiKey = () => {
-    const trimmed = apiKeyInput.trim();
-    localStorage.setItem("gemini_api_key", trimmed);
-    setSavedApiKey(trimmed);
+  // Handle saving API configuration
+  const handleSaveSettings = () => {
+    const trimmedKey = apiKeyInput.trim();
+    const trimmedUrl = apiBaseUrl.trim();
+    const trimmedModel = apiModel.trim();
+
+    localStorage.setItem("agi_provider", apiProvider);
+    localStorage.setItem("agi_api_key", trimmedKey);
+    localStorage.setItem("agi_base_url", trimmedUrl);
+    localStorage.setItem("agi_model", trimmedModel);
+
+    setSavedProvider(apiProvider);
+    setSavedApiKey(trimmedKey);
+    setSavedBaseUrl(trimmedUrl);
+    setSavedModel(trimmedModel);
     setShowKeyInput(false);
   };
 
-  // Handle clearing API key
-  const handleClearApiKey = () => {
-    localStorage.removeItem("gemini_api_key");
+  // Handle clearing API configuration
+  const handleClearSettings = () => {
+    localStorage.removeItem("agi_provider");
+    localStorage.removeItem("agi_api_key");
+    localStorage.removeItem("agi_base_url");
+    localStorage.removeItem("agi_model");
+
+    setSavedProvider("gemini");
+    setApiProvider("gemini");
     setSavedApiKey("");
     setApiKeyInput("");
+    setApiBaseUrl("");
+    setSavedBaseUrl("");
+    setApiModel("");
+    setSavedModel("");
     setAgiReview(null);
     setChatMessages([]);
   };
 
-  // Generate AGI Tactical Report via client-side Gemini API
+  // Generate AGI Tactical Report via selected API Provider
   const generateAgiReport = async () => {
     if (!savedApiKey) return;
     setAgiLoading(true);
     setAgiError("");
 
-    const systemPrompt = `你是一位世界顶级的足球战术解说大师和量化分析专家。
+    const reportPrompt = `你是一位世界顶级的足球战术解说大师和量化分析专家。
 请为本场2026年世界杯小组赛撰写一份深度专业战术预测报告：
 主队：${home.name} (身价: €${home.marketValue}m, FIFA排名: ${home.fifaRank}, ELO评分: ${home.elo}, 战术打法: ${home.tacticsName} - ${home.tacticsDescription})
 客队：${away.name} (身价: €${away.marketValue}m, FIFA排名: ${away.fifaRank}, ELO评分: ${away.elo}, 战术打法: ${away.tacticsName} - ${away.tacticsDescription})
@@ -107,35 +143,73 @@ export default function ExpertRead({
 `;
 
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`,
-        {
+      let responseText = "";
+
+      if (savedProvider === "gemini") {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [{ text: reportPrompt }]
+                }
+              ],
+              generationConfig: {
+                responseMimeType: "application/json"
+              }
+            })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Gemini API 失败: 状态码 ${response.status}`);
+        }
+
+        const resData = await response.json();
+        responseText = resData.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      } else {
+        // OpenAI Compatible Endpoint (e.g. DeepSeek)
+        const baseUrl = savedBaseUrl || "https://api.deepseek.com/v1";
+        const modelName = savedModel || "deepseek-chat";
+        const url = `${baseUrl}/chat/completions`;
+
+        const response = await fetch(url, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${savedApiKey}`
           },
           body: JSON.stringify({
-            contents: [
+            model: modelName,
+            messages: [
               {
-                parts: [{ text: systemPrompt }]
+                role: "system",
+                content: "你是一个专业的足球分析助手。请只返回符合要求的 JSON 数据，不要包含任何 markdown 包裹符号或前导后导文字。"
+              },
+              {
+                role: "user",
+                content: reportPrompt
               }
             ],
-            generationConfig: {
-              responseMimeType: "application/json"
-            }
+            response_format: { type: "json_object" }
           })
-        }
-      );
+        });
 
-      if (!response.ok) {
-        throw new Error(`API 请求失败，状态码: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Chat Completion API 失败: 状态码 ${response.status}`);
+        }
+
+        const resData = await response.json();
+        responseText = resData.choices?.[0]?.message?.content || "";
       }
 
-      const resData = await response.json();
-      const text = resData.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      
       // Clean up markdown block if model outputted it despite instructions
-      let jsonText = text.trim();
+      let jsonText = responseText.trim();
       if (jsonText.startsWith("```json")) {
         jsonText = jsonText.substring(7);
       }
@@ -147,8 +221,8 @@ export default function ExpertRead({
       const parsed: ExpertReview = JSON.parse(jsonText);
       setAgiReview(parsed);
     } catch (err: any) {
-      console.error("Gemini API Error:", err);
-      setAgiError(err.message || "请求 Gemini 接口时发生错误，请检查网络或您的 API Key。");
+      console.error("AGI API Error:", err);
+      setAgiError(err.message || "请求 AI 接口时发生错误，请检查网络、Base URL 或您的 API Key。");
     } finally {
       setAgiLoading(false);
     }
@@ -179,45 +253,79 @@ export default function ExpertRead({
 请保持口吻专业、透彻且风趣，就像解说界的大师。字数尽量控制在 200 字以内，直击要害。`;
 
     try {
-      // Build history contents alternating roles
-      const contents = updatedMessages.map(msg => ({
-        role: msg.role === "user" ? "user" : "model",
-        parts: [{ text: msg.text }]
-      }));
+      let responseText = "";
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`,
-        {
+      if (savedProvider === "gemini") {
+        const contents = updatedMessages.map(msg => ({
+          role: msg.role === "user" ? "user" : "model",
+          parts: [{ text: msg.text }]
+        }));
+
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              systemInstruction: {
+                parts: [{ text: systemInstruction }]
+              },
+              contents: contents
+            })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`发送失败，状态码: ${response.status}`);
+        }
+
+        const resData = await response.json();
+        responseText = resData.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，我无法生成回答。";
+      } else {
+        // OpenAI Compatible format
+        const baseUrl = savedBaseUrl || "https://api.deepseek.com/v1";
+        const modelName = savedModel || "deepseek-chat";
+        const url = `${baseUrl}/chat/completions`;
+
+        const messages = [
+          { role: "system", content: systemInstruction },
+          ...updatedMessages.map(msg => ({
+            role: msg.role === "user" ? "user" : "assistant",
+            content: msg.text
+          }))
+        ];
+
+        const response = await fetch(url, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${savedApiKey}`
           },
           body: JSON.stringify({
-            systemInstruction: {
-              parts: [{ text: systemInstruction }]
-            },
-            contents: contents
+            model: modelName,
+            messages: messages
           })
+        });
+
+        if (!response.ok) {
+          throw new Error(`发送失败，状态码: ${response.status}`);
         }
-      );
 
-      if (!response.ok) {
-        throw new Error(`发送失败，状态码: ${response.status}`);
+        const resData = await response.json();
+        responseText = resData.choices?.[0]?.message?.content || "抱歉，我无法生成回答。";
       }
-
-      const resData = await response.json();
-      const responseText = resData.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，我无法生成回答。";
       
       setChatMessages([...updatedMessages, { role: "model", text: responseText }]);
     } catch (err: any) {
-      console.error("Chat Gemini API Error:", err);
+      console.error("Chat API Error:", err);
       setChatError("AI 战术大师暂时掉线，请检查网络或重试。");
     } finally {
-      chatLoading && setChatLoading(false);
+      setChatLoading(false);
     }
   };
 
-  // Determine which review to show: AGI review if generated, otherwise fallback to offline review
   const displayReview = agiReview || review;
   const isAgiActive = !!agiReview;
 
@@ -230,22 +338,22 @@ export default function ExpertRead({
             <Key className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 flex-wrap">
               <h4 className="text-xs font-extrabold text-slate-800">AGI 智能解读引擎</h4>
               {savedApiKey ? (
-                <span className="text-[9px] bg-emerald-100 text-emerald-800 border border-emerald-200 px-1 py-0.2 rounded font-bold">
-                  🟢 Gemini 已锁定
+                <span className="text-[9px] bg-emerald-105 bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded font-bold">
+                  🟢 {savedProvider === "gemini" ? "Gemini" : "自定义 API"} 已连接
                 </span>
               ) : (
-                <span className="text-[9px] bg-slate-100 text-slate-500 border border-slate-200 px-1 py-0.2 rounded font-bold">
+                <span className="text-[9px] bg-slate-105 bg-slate-50 text-slate-500 border border-slate-200 px-1.5 py-0.2 rounded font-bold">
                   ⚪ 离线模拟模式
                 </span>
               )}
             </div>
             <p className="text-[10px] text-slate-500 mt-0.5">
               {savedApiKey 
-                ? "使用 Google Gemini AGI 引擎对战术进行实时深度智能解读与咨询" 
-                : "可配置 Gemini API Key 以激活 AGI 高级功能（离线模式将采用规则拟合）"}
+                ? `使用 ${savedProvider === "gemini" ? "Google Gemini" : `自定义模型 (${savedModel})`} 进行实时深度智能解读与咨询` 
+                : "可配置 Gemini 或兼容 OpenAI 格式（如 DeepSeek、通义等）的 API Key 以激活 AGI 高级功能"}
             </p>
           </div>
         </div>
@@ -254,7 +362,7 @@ export default function ExpertRead({
           {savedApiKey ? (
             <>
               <button
-                onClick={handleClearApiKey}
+                onClick={handleClearSettings}
                 className="px-2.5 py-1.5 text-[11px] font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors border border-rose-200 cursor-pointer flex-1 md:flex-none"
               >
                 清除 Key
@@ -263,7 +371,7 @@ export default function ExpertRead({
                 onClick={() => setShowKeyInput(!showKeyInput)}
                 className="px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200 cursor-pointer flex-1 md:flex-none"
               >
-                修改 Key
+                修改配置
               </button>
             </>
           ) : (
@@ -279,32 +387,89 @@ export default function ExpertRead({
 
       {/* API Key Input Dialog */}
       {showKeyInput && (
-        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-inner space-y-3 animate-fade-in">
+        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-inner space-y-4.5 animate-fade-in">
+          {/* Provider Selector */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">输入您的 Gemini API Key：</label>
-            <input
-              type="password"
-              value={apiKeyInput}
-              onChange={(e) => setApiKeyInput(e.target.value)}
-              placeholder="请输入以 AIzaSy 开头的 Gemini API Key"
-              className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
-            />
-            <span className="text-[10px] text-slate-400 mt-1 block">
-              注意：API Key 仅安全保存在您的本地浏览器中（LocalStorage），请求直接发往 Google 官方，不经过任何中间服务器。
+            <label className="block text-xs font-bold text-slate-750 mb-2">选择 API 接口格式：</label>
+            <div className="flex gap-4 border-b border-slate-200 pb-2.5">
+              <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input
+                  type="radio"
+                  name="apiProvider"
+                  checked={apiProvider === "gemini"}
+                  onChange={() => setApiProvider("gemini")}
+                  className="text-emerald-600 focus:ring-emerald-500"
+                />
+                <span>Google Gemini API</span>
+              </label>
+              <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input
+                  type="radio"
+                  name="apiProvider"
+                  checked={apiProvider === "openai_compatible"}
+                  onChange={() => setApiProvider("openai_compatible")}
+                  className="text-emerald-600 focus:ring-emerald-500"
+                />
+                <span>自定义格式 (如 DeepSeek, 阿里通义, OpenAI)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Conditional Input Fields */}
+          <div className="space-y-3">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">API Key：</label>
+              <input
+                type="password"
+                value={apiKeyInput}
+                onChange={(e) => setApiKeyInput(e.target.value)}
+                placeholder={apiProvider === "gemini" ? "请输入以 AIzaSy 开头的 Gemini API Key" : "请输入对应服务商的 API Key / Bearer Token"}
+                className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+              />
+            </div>
+
+            {apiProvider === "openai_compatible" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">API Base URL (接口基础路径)：</label>
+                  <input
+                    type="text"
+                    value={apiBaseUrl}
+                    onChange={(e) => setApiBaseUrl(e.target.value)}
+                    placeholder="例如：https://api.deepseek.com/v1"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Model Name (调用模型名称)：</label>
+                  <input
+                    type="text"
+                    value={apiModel}
+                    onChange={(e) => setApiModel(e.target.value)}
+                    placeholder="例如：deepseek-chat 或 qwen-max"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+                  />
+                </div>
+              </div>
+            )}
+            
+            <span className="text-[10px] text-slate-400 mt-1 block leading-relaxed">
+              注意：API 密钥及接口参数仅安全保存在您的本地浏览器中（LocalStorage）。所有 API 请求均在本地浏览器发起，直接连接您所配置的服务器，不经过任何中间服务器，确保个人或企业密钥安全。
             </span>
           </div>
+
           <div className="flex justify-end gap-2 text-xs">
             <button
               onClick={() => setShowKeyInput(false)}
-              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition-colors cursor-pointer"
+              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition-colors cursor-pointer font-semibold"
             >
               取消
             </button>
             <button
-              onClick={handleSaveApiKey}
+              onClick={handleSaveSettings}
               className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold transition-colors cursor-pointer"
             >
-              保存并锁固
+              保存配置并启用
             </button>
           </div>
         </div>
@@ -314,10 +479,12 @@ export default function ExpertRead({
       <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm">
         <div>
           <span className="text-[10px] bg-slate-100 text-slate-600 font-extrabold uppercase px-1.5 py-0.5 rounded font-mono border border-slate-200">
-            {savedApiKey ? "Google Gemini AGI Engine" : "Local Logic Fitting Engine"}
+            {savedApiKey ? (savedProvider === "gemini" ? "Google Gemini AGI" : "Custom OpenAI-compatible") : "Local Logic Fitting Engine"}
           </span>
           <h3 className="text-xs font-bold text-slate-800 font-mono mt-1">
-            {savedApiKey ? "gemini-2.5-flash (Real-Time AGI)" : "public-v2-market-poisson-deep"}
+            {savedApiKey 
+              ? (savedProvider === "gemini" ? "gemini-2.5-flash (AGI)" : `${savedModel || "deepseek-chat"} (AGI)`) 
+              : "public-v2-market-poisson-deep"}
           </h3>
         </div>
         
@@ -328,7 +495,7 @@ export default function ExpertRead({
             className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:from-slate-400 disabled:to-slate-500 rounded-lg transition-all cursor-pointer shadow-sm shadow-emerald-500/10"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${agiLoading ? "animate-spin" : ""}`} />
-            {agiLoading ? "AI 深度计算中..." : "⚡ 生成 Gemini AGI 智能报告"}
+            {agiLoading ? "AI 深度计算中..." : "⚡ 生成 AGI 智能报告"}
           </button>
         ) : (
           <button
@@ -378,9 +545,9 @@ export default function ExpertRead({
           >
             {/* Tag displaying AGI active status */}
             {isAgiActive && (
-              <div className="px-1 py-0.5 text-[10px] text-emerald-800 font-bold flex items-center gap-1.5 bg-emerald-50 rounded-lg w-max border border-emerald-200 animate-pulse">
+              <div className="px-1.5 py-0.5 text-[10px] text-emerald-800 font-bold flex items-center gap-1.5 bg-emerald-50 rounded-lg w-max border border-emerald-200 animate-pulse">
                 <Sparkles className="w-3 h-3" />
-                <span>实时 Google Gemini AGI 生成报告</span>
+                <span>实时 AGI 引擎对阵分析报告已生成 ({savedProvider === "gemini" ? "Gemini" : savedModel})</span>
               </div>
             )}
 
@@ -432,7 +599,7 @@ export default function ExpertRead({
                 onClick={generateAgiReport}
                 className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white transition-colors rounded-lg text-xs font-semibold cursor-pointer"
               >
-                生成 Gemini AGI 智能深度分析报告
+                生成 AGI 智能深度分析报告
               </button>
             ) : (
               <button
