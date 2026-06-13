@@ -117,19 +117,19 @@ export default function PlayerValueCard({ home, away, onEditTeamValue }: PlayerV
   };
 
   return (
-    <div className="glass-panel rounded-2xl p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-6">
+    <div className="neo-card p-6 bg-white">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-2">
-          <Users className="w-5 h-5 text-emerald-600" id="icon-users-value" />
-          <h2 className="text-lg font-semibold text-slate-900 font-sans tracking-tight">首发阵容身价详情</h2>
+          <Users className="w-5 h-5 text-slate-900 stroke-[2.5]" id="icon-users-value" />
+          <h2 className="text-sm font-black text-slate-900 font-sans uppercase tracking-wider">首发阵容身价配置</h2>
         </div>
-        <div className="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200/60 shadow-sm">
+        <div className="flex bg-slate-100 p-1 rounded-lg border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
           <button
             onClick={() => setActiveTeam("home")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1 text-xs font-black rounded transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTeam === "home"
-                ? "bg-white text-emerald-800 border border-slate-200 shadow-sm font-bold"
-                : "text-slate-500 hover:text-slate-700"
+                ? "bg-yellow-400 text-slate-950 border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]"
+                : "text-slate-600 hover:text-slate-900"
             }`}
             id="tab-edit-home"
           >
@@ -138,10 +138,10 @@ export default function PlayerValueCard({ home, away, onEditTeamValue }: PlayerV
           </button>
           <button
             onClick={() => setActiveTeam("away")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1 text-xs font-black rounded transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTeam === "away"
-                ? "bg-white text-emerald-800 border border-slate-200 shadow-sm font-bold"
-                : "text-slate-500 hover:text-slate-700"
+                ? "bg-yellow-400 text-slate-950 border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]"
+                : "text-slate-600 hover:text-slate-900"
             }`}
             id="tab-edit-away"
           >
@@ -151,14 +151,14 @@ export default function PlayerValueCard({ home, away, onEditTeamValue }: PlayerV
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 mb-5 leading-relaxed font-sans">
+      <p className="text-xs text-slate-600 mb-5 leading-relaxed font-bold">
         调整下方队员的估算德转身价，系统将实时触发上方球队总身价重新折算、累积，并将结果代入双泊松预测模型！
       </p>
 
       {/* Players List Table */}
-      <div className="overflow-x-auto border border-slate-200/80 rounded-xl bg-white/70 shadow-sm">
-        <table className="w-full text-left text-xs text-slate-700">
-          <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200/60">
+      <div className="overflow-x-auto border-2 border-slate-900 rounded-lg bg-white">
+        <table className="w-full text-left text-xs text-slate-800">
+          <thead className="bg-slate-100 text-slate-900 font-black uppercase text-[10px] tracking-wider border-b-2 border-slate-900">
             <tr>
               <th className="p-3">姓名</th>
               <th className="p-3">场上位置</th>
@@ -166,31 +166,31 @@ export default function PlayerValueCard({ home, away, onEditTeamValue }: PlayerV
               <th className="p-3 text-right">德转估计身价</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y-2 divide-slate-100">
             {currentPlayers.map((player, idx) => (
-              <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                <td className="p-3 font-semibold text-slate-800 flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></div>
+              <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                <td className="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span className="text-[10px]">⚽</span>
                   {player.name}
                 </td>
                 <td className="p-3">
-                  <span className="bg-slate-100 text-slate-750 border border-slate-200 px-1.5 py-0.5 rounded text-[10px] font-medium font-sans">
+                  <span className="bg-slate-900 text-white border border-slate-900 px-2 py-0.5 rounded font-black text-[9px]">
                     {player.position}
                   </span>
                 </td>
-                <td className="p-3 font-mono text-slate-500">{player.age} 岁</td>
+                <td className="p-3 font-mono text-slate-800 font-bold">{player.age} 岁</td>
                 <td className="p-3 text-right">
                   <div className="inline-flex items-center gap-1.5">
-                    <span className="text-[10px] text-slate-400 font-semibold font-mono">€</span>
+                    <span className="text-[10px] text-slate-500 font-bold font-mono">€</span>
                     <input
                       type="number"
                       step="0.5"
                       min="0.1"
                       value={player.value}
                       onChange={(e) => handlePlayerValueChange(idx, e.target.value)}
-                      className="w-16 h-6 px-1.5 py-0.5 text-right font-mono font-bold text-emerald-800 bg-white border border-slate-250 hover:border-slate-350 focus:border-emerald-500 rounded focus:outline-none"
+                      className="w-20 h-7 px-1.5 py-0.5 text-right font-mono font-black text-slate-900 bg-white border-2 border-slate-900 rounded focus:outline-none focus:ring-1 focus:ring-slate-900"
                     />
-                    <span className="text-[10px] text-slate-400 font-semibold font-mono">m</span>
+                    <span className="text-[10px] text-slate-500 font-bold font-mono">m</span>
                   </div>
                 </td>
               </tr>
@@ -199,14 +199,14 @@ export default function PlayerValueCard({ home, away, onEditTeamValue }: PlayerV
         </table>
       </div>
 
-      <div className="mt-5 bg-emerald-50 border border-emerald-200/80 p-4 rounded-xl flex items-center justify-between shadow-sm">
+      <div className="mt-5 bg-yellow-400 border-2 border-slate-900 p-4 rounded-lg flex items-center justify-between shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
         <div className="flex items-center gap-2">
-          <DollarSign className="w-4 h-4 text-emerald-800 animate-pulse" id="icon-dollar-pulse" />
-          <span className="text-xs text-emerald-905 font-bold font-sans">
+          <DollarSign className="w-4 h-4 text-slate-950 font-black animate-bounce" id="icon-dollar-pulse" />
+          <span className="text-xs text-slate-950 font-black font-sans">
             {selectedTeam.name}首发德转累加总身价：
           </span>
         </div>
-        <span className="font-mono font-extrabold text-lg text-emerald-700">
+        <span className="font-mono font-black text-lg text-slate-950">
           €{selectedTeam.marketValue.toFixed(2)}m
         </span>
       </div>

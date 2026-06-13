@@ -45,36 +45,36 @@ export default function DataSheet({ teams, home, away, prediction }: DataSheetPr
   return (
     <div className="space-y-6">
       {/* Poisson Probability Matrix Grid */}
-      <div className="glass-panel rounded-2xl p-6 shadow-sm">
+      <div className="neo-card p-6 bg-white">
         <div className="flex items-center gap-2 mb-4">
-          <Grid3X3 className="w-5 h-5 text-emerald-600" id="icon-grid3" />
-          <h2 className="text-lg font-semibold text-slate-900 font-sans tracking-tight">
+          <Grid3X3 className="w-5 h-5 text-slate-900 stroke-[2.5]" id="icon-grid3" />
+          <h2 className="text-sm font-black text-slate-900 font-sans uppercase tracking-wider">
             双泊松比分交叉概率矩阵 ($P(x,y)$)
           </h2>
         </div>
 
-        <p className="text-xs text-slate-500 mb-5 leading-relaxed font-sans">
+        <p className="text-xs text-slate-600 mb-5 leading-relaxed font-bold">
           下方网格中，行代表主队 <strong>{home.name}</strong> 进球数（0至4球），列代表客队 <strong>{away.name}</strong> 进球数（0至4球）。各格百分比代表精确比分出现的数学期望比率。
         </p>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-center border-collapse text-xs font-mono bg-white/70 border border-slate-200/80 rounded-xl overflow-hidden shadow-sm">
+          <table className="w-full text-center border-collapse text-xs font-mono bg-white border-2 border-slate-900 rounded-lg overflow-hidden shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-205">
-                <th className="p-3 text-slate-500 font-bold bg-slate-50">
+              <tr className="bg-slate-100 border-b-2 border-slate-900">
+                <th className="p-3 text-slate-900 font-black bg-slate-100 border-r-2 border-slate-900">
                   {home.name} \ {away.name}
                 </th>
                 {[0, 1, 2, 3, 4].map((g) => (
-                  <th key={g} className="p-3 text-slate-700 font-bold border-l border-slate-100">
+                  <th key={g} className="p-3 text-slate-900 font-black border-r-2 border-slate-900 last:border-r-0">
                     {g} 球 (客)
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y-2 divide-slate-900">
               {[0, 1, 2, 3, 4].map((hGoals) => (
-                <tr key={hGoals} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-3 font-bold bg-slate-50 border-r border-slate-200 text-slate-700">
+                <tr key={hGoals} className="hover:bg-slate-50 transition-colors">
+                  <td className="p-3 font-black bg-slate-100 border-r-2 border-slate-900 text-slate-900">
                     {hGoals} 球 (主)
                   </td>
                   {[0, 1, 2, 3, 4].map((aGoals) => {
@@ -85,15 +85,15 @@ export default function DataSheet({ teams, home, away, prediction }: DataSheetPr
                     return (
                       <td
                         key={aGoals}
-                        className={`p-3 relative font-bold transition-all border-l border-slate-100 ${
+                        className={`p-3 relative font-black transition-all border-r-2 border-slate-900 last:border-r-0 ${
                           isHighest
-                            ? "bg-emerald-500/10 text-emerald-800 border-x-2 border-emerald-500/15"
-                            : "text-slate-700"
+                            ? "bg-yellow-400 text-slate-950 border-2 border-slate-900"
+                            : "text-slate-800"
                         }`}
                       >
-                        {(prob * 105).toFixed(2)}%
+                        {(prob * 100).toFixed(2)}%
                         {isHighest && (
-                          <span className="absolute bottom-1 right-1 text-[8px] bg-emerald-600 text-white font-sans font-semibold px-1 py-0.5 rounded scale-90">
+                          <span className="absolute bottom-0.5 right-0.5 text-[8px] bg-slate-900 text-white font-sans font-black px-1.5 py-0.5 rounded border border-slate-900 scale-90">
                             主推
                           </span>
                         )}
@@ -108,66 +108,68 @@ export default function DataSheet({ teams, home, away, prediction }: DataSheetPr
       </div>
 
       {/* Complete Teams Database Attributes */}
-      <div className="glass-panel rounded-2xl p-6 shadow-sm">
+      <div className="neo-card p-6 bg-white">
         <div className="flex items-center gap-2 mb-4">
-          <Database className="w-5 h-5 text-emerald-600" id="icon-database" />
-          <h2 className="text-lg font-semibold text-slate-900 font-sans tracking-tight">
+          <Database className="w-5 h-5 text-slate-900 stroke-[2.5]" id="icon-database" />
+          <h2 className="text-sm font-black text-slate-900 font-sans uppercase tracking-wider">
             全部模拟国家队核心底层参数表 (2026版)
           </h2>
         </div>
 
-        <p className="text-xs text-slate-500 mb-5 leading-relaxed font-sans">
+        <p className="text-xs text-slate-600 mb-5 leading-relaxed font-bold">
           模型底层包含以下核心国家队的常态配置（如积分、基础进攻/防守Rating），修改主界面的局部身价值也将会实时更新下表数据：
         </p>
 
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white/70 shadow-sm">
-          <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200/80">
+        <div className="overflow-x-auto rounded-lg border-2 border-slate-900 bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+          <table className="w-full text-left text-xs text-slate-800">
+            <thead className="bg-slate-100 text-slate-900 font-black uppercase text-[10px] tracking-wider border-b-2 border-slate-900">
               <tr>
-                <th className="p-3">国家/地区</th>
-                <th className="p-3">小组</th>
-                <th className="p-3 text-right">FIFA排名</th>
-                <th className="p-3 text-right">ELO积分</th>
-                <th className="p-3 text-right">身价累加</th>
-                <th className="p-3">默认王牌战术</th>
-                <th className="p-3 text-right">常态进攻R</th>
+                <th className="p-3 border-r border-slate-205">国家/地区</th>
+                <th className="p-3 border-r border-slate-205">小组</th>
+                <th className="p-3 text-right border-r border-slate-205">FIFA排名</th>
+                <th className="p-3 text-right border-r border-slate-205">ELO积分</th>
+                <th className="p-3 text-right border-r border-slate-205">身价累加</th>
+                <th className="p-3 border-r border-slate-205">默认王牌战术</th>
+                <th className="p-3 text-right border-r border-slate-205">常态进攻R</th>
                 <th className="p-3 text-right">常态防守R</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-200">
               {Object.values(teams).map((team) => {
                 const isActiveInCurrent = team.id === home.id || team.id === away.id;
 
                 return (
                   <tr
                     key={team.id}
-                    className={`hover:bg-slate-50/70 transition-colors ${
-                      isActiveInCurrent ? "bg-emerald-500/10 font-bold text-slate-950" : ""
+                    className={`transition-colors ${
+                      isActiveInCurrent
+                        ? "bg-yellow-100 font-black text-slate-950 border-y-2 border-slate-900"
+                        : "hover:bg-slate-50"
                     }`}
                   >
-                    <td className="p-3 flex items-center gap-2">
+                    <td className="p-3 flex items-center gap-2 border-r border-slate-205">
                       <TeamFlag teamId={team.id} className="w-5 h-3.5 shadow-sm rounded-sm" />
-                      <span className="text-slate-800 font-bold">{team.name}</span>
+                      <span className="font-bold">{team.name}</span>
                     </td>
-                    <td className="p-3 font-mono text-slate-500">{team.group}</td>
-                    <td className="p-3 text-right font-mono font-bold text-slate-700">
+                    <td className="p-3 font-mono border-r border-slate-205">{team.group}</td>
+                    <td className="p-3 text-right font-mono font-bold border-r border-slate-205">
                       #{team.fifaRank}
                     </td>
-                    <td className="p-3 text-right font-mono text-slate-600">
+                    <td className="p-3 text-right font-mono border-r border-slate-205">
                       {team.elo}
                     </td>
-                    <td className="p-3 text-right font-mono font-bold text-emerald-800">
+                    <td className="p-3 text-right font-mono font-bold text-slate-900 border-r border-slate-205">
                       €{team.marketValue.toFixed(1)}m
                     </td>
-                    <td className="p-3 text-[11px]">
-                      <span className="bg-slate-100 text-slate-700 border border-slate-200/80 px-1.5 py-0.5 rounded font-semibold font-sans">
+                    <td className="p-3 text-[11px] border-r border-slate-205">
+                      <span className="bg-slate-900 text-white border border-slate-900 px-2 py-0.5 rounded font-black text-[9px]">
                         {team.tacticsName}
                       </span>
                     </td>
-                    <td className="p-3 text-right font-mono font-bold text-emerald-800">
+                    <td className="p-3 text-right font-mono font-bold text-slate-800 border-r border-slate-205">
                       {team.attackingRating}
                     </td>
-                    <td className="p-3 text-right font-mono font-bold text-indigo-700">
+                    <td className="p-3 text-right font-mono font-bold text-slate-800">
                       {team.defendingRating}
                     </td>
                   </tr>

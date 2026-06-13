@@ -53,7 +53,7 @@ export default function MatchDisplay({
       {/* 1. Header Information Bar */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white/80 border border-slate-200/60 p-4 rounded-xl gap-2 text-xs shadow-sm">
         <div className="flex items-center gap-1.5 text-slate-550 font-medium">
-          <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded font-mono font-bold uppercase border border-emerald-250/50">
+          <span className="bg-slate-900 text-yellow-400 px-2 py-0.5 rounded-md font-mono font-bold uppercase border-2 border-slate-900">
             世界杯小组赛程
           </span>
           <span className="text-slate-350">|</span>
@@ -69,11 +69,7 @@ export default function MatchDisplay({
       </div>
 
       {/* 2. Primary Match Card (Flags, Score, Conf) */}
-      <div className="glass-panel rounded-2xl p-6 md:p-8 shadow-md relative overflow-hidden bg-gradient-to-tr from-white via-emerald-50/15 to-slate-50/40 border border-white">
-        <div className="absolute top-0 right-0 p-3 bg-emerald-50 text-emerald-800 font-mono text-[10px] rounded-bl-xl font-semibold border-l border-b border-emerald-200/60">
-          poisson-v1-engine
-        </div>
-
+      <div className="neo-card p-6 md:p-8 bg-white relative overflow-hidden">
         <div className="grid grid-cols-12 items-center gap-4">
           {/* Home Team Column */}
           <div className="col-span-12 md:col-span-4 text-center space-y-3.5 order-1">
@@ -87,11 +83,11 @@ export default function MatchDisplay({
               <div className="w-20 h-13 flex items-center justify-center select-none filter drop-shadow-sm transition-transform hover:scale-105 duration-350 mb-1">
                 <TeamFlag teamId={home.id} className="w-full h-full shadow-md rounded-lg border border-slate-200/80" />
               </div>
-              <span className="text-emerald-700 uppercase font-extrabold text-[10px] tracking-wider mt-1 block">
+              <span className="text-slate-900 uppercase font-black text-[10px] tracking-wider mt-1 block">
                 HOME
               </span>
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">{home.name}</h3>
-              <p className="text-sm font-semibold font-mono text-emerald-600 mt-1">{formatMillionEuro(home.marketValue)}</p>
+              <p className="text-sm font-black font-mono text-slate-900 mt-1">{formatMillionEuro(home.marketValue)}</p>
             </motion.div>
 
             {/* Quick Interactive Adjuster inside the main card */}
@@ -103,7 +99,7 @@ export default function MatchDisplay({
                   type="number"
                   value={home.marketValue}
                   onChange={(e) => onEditTeamValue(home.id, "marketValue", parseFloat(e.target.value) || 0)}
-                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-emerald-700 focus:outline-none focus:border-emerald-500"
+                  className="w-16 h-6 px-1.5 text-xs bg-white border-2 border-slate-900 rounded font-black text-right text-slate-900 focus:outline-none focus:border-slate-600"
                 />
               </div>
               <div className="flex items-center justify-between text-[11px] text-slate-600">
@@ -112,7 +108,7 @@ export default function MatchDisplay({
                   type="number"
                   value={home.fifaRank}
                   onChange={(e) => onEditTeamValue(home.id, "fifaRank", parseInt(e.target.value) || 1)}
-                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-slate-700 focus:outline-none focus:border-emerald-500"
+                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-slate-700 focus:outline-none focus:border-slate-900"
                 />
               </div>
             </div>
@@ -133,13 +129,12 @@ export default function MatchDisplay({
             </motion.div>
 
             <div>
-              <span className="inline-block bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold px-2.5 py-1 rounded-full text-xs">
+              <span className="inline-block bg-yellow-400 text-slate-950 border-2 border-slate-900 font-black px-2.5 py-1 rounded-md text-xs shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
                 主胜 • {prediction.totalConfidence}% 置信度
               </span>
             </div>
 
             <div className="text-[10px] text-slate-500 max-w-[150px] mx-auto leading-relaxed">
-              根据海拔、气温、行军距离与双方打法的最拟合泊松估计
             </div>
           </div>
 
@@ -155,11 +150,11 @@ export default function MatchDisplay({
               <div className="w-20 h-13 flex items-center justify-center select-none filter drop-shadow-sm transition-transform hover:scale-105 duration-350 mb-1">
                 <TeamFlag teamId={away.id} className="w-full h-full shadow-md rounded-lg border border-slate-200/80" />
               </div>
-              <span className="text-emerald-700 uppercase font-extrabold text-[10px] tracking-wider mt-1 block">
+              <span className="text-slate-950 font-black uppercase font-extrabold text-[10px] tracking-wider mt-1 block">
                 AWAY
               </span>
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">{away.name}</h3>
-              <p className="text-sm font-semibold font-mono text-emerald-600 mt-1">{formatMillionEuro(away.marketValue)}</p>
+              <p className="text-sm font-semibold font-mono text-slate-900 font-black mt-1">{formatMillionEuro(away.marketValue)}</p>
             </motion.div>
 
             {/* Quick Interactive Adjuster inside the main card */}
@@ -171,7 +166,7 @@ export default function MatchDisplay({
                   type="number"
                   value={away.marketValue}
                   onChange={(e) => onEditTeamValue(away.id, "marketValue", parseFloat(e.target.value) || 0)}
-                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-emerald-700 focus:outline-none focus:border-emerald-500"
+                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-slate-900 focus:outline-none focus:border-slate-900"
                 />
               </div>
               <div className="flex items-center justify-between text-[11px] text-slate-600">
@@ -180,7 +175,7 @@ export default function MatchDisplay({
                   type="number"
                   value={away.fifaRank}
                   onChange={(e) => onEditTeamValue(away.id, "fifaRank", parseInt(e.target.value) || 1)}
-                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-slate-700 focus:outline-none focus:border-emerald-500"
+                  className="w-16 h-5 px-1 text-[10px] bg-white border border-slate-300 rounded font-semibold text-right text-slate-700 focus:outline-none focus:border-slate-900"
                 />
               </div>
             </div>
@@ -197,7 +192,7 @@ export default function MatchDisplay({
           </span>
           <span className="text-2xl font-extrabold text-slate-800 font-display mt-2">{(prediction.homeWinProb * 100).toFixed(1)}%</span>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden border border-slate-200/40">
-            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${prediction.homeWinProb * 100}%` }}></div>
+            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${prediction.homeWinProb * 100}%` }}></div>
           </div>
         </div>
 
@@ -206,7 +201,7 @@ export default function MatchDisplay({
           <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">🤝 平局概率</span>
           <span className="text-2xl font-extrabold text-slate-600 font-display mt-2">{(prediction.drawProb * 100).toFixed(1)}%</span>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden border border-slate-200/40">
-            <div className="h-full bg-slate-400 rounded-full" style={{ width: `${prediction.drawProb * 100}%` }}></div>
+            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${prediction.drawProb * 100}%` }}></div>
           </div>
         </div>
 
@@ -217,7 +212,7 @@ export default function MatchDisplay({
           </span>
           <span className="text-2xl font-extrabold text-slate-800 font-display mt-2">{(prediction.awayWinProb * 100).toFixed(1)}%</span>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden border border-slate-200/40">
-            <div className="h-full bg-blue-500 rounded-full" style={{ width: `${prediction.awayWinProb * 100}%` }}></div>
+            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${prediction.awayWinProb * 100}%` }}></div>
           </div>
         </div>
 
@@ -239,39 +234,51 @@ export default function MatchDisplay({
       {/* 4. Recommend Tiers (Three options: Primary, Stable, Aggressive) */}
       <div className="grid grid-cols-12 gap-4">
         {/* Primary Recommended */}
-        <div className="col-span-12 sm:col-span-4 bg-white/85 p-4 rounded-xl border border-slate-250 hover:bg-white transition-colors duration-220 shadow-sm relative">
-          <span className="text-[10px] tracking-wide font-extrabold text-emerald-800 bg-emerald-100 rounded px-1.5 py-0.5 border border-emerald-200 uppercase">
-            主推选项 (PRIMARY)
-          </span>
-          <div className="flex items-baseline justify-between mt-3 font-display">
-            <span className="text-3xl font-black text-slate-900">{prediction.recommendedScores.primary}</span>
-            <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md shadow-sm">
+        <div className="col-span-12 sm:col-span-4 bg-white p-4 rounded-xl border-2 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+          <div className="flex justify-center">
+            <span className="text-[9px] tracking-wide font-black text-slate-900 bg-yellow-400 rounded-md px-2 py-0.5 border-2 border-slate-900 uppercase">
+              主推选项 (PRIMARY)
+            </span>
+          </div>
+          <div className="text-center text-3xl font-black text-slate-900 my-2.5 font-display">
+            {prediction.recommendedScores.primary}
+          </div>
+          <div className="flex justify-center">
+            <span className="text-[10px] font-black text-slate-900 bg-white border-2 border-slate-900 px-2.5 py-0.5 rounded shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
               首推高概率
             </span>
           </div>
         </div>
 
         {/* Stable Conservative Recommended */}
-        <div className="col-span-12 sm:col-span-4 bg-white/85 p-4 rounded-xl border border-slate-250 hover:bg-white transition-colors duration-220 shadow-sm relative">
-          <span className="text-[10px] tracking-wide font-extrabold text-slate-700 bg-slate-100 rounded px-1.5 py-0.5 border border-slate-200 uppercase">
-            稳健策略 (STABLE)
-          </span>
-          <div className="flex items-baseline justify-between mt-3 font-display">
-            <span className="text-3xl font-black text-slate-800">{prediction.recommendedScores.stable}</span>
-            <span className="text-xs font-semibold text-slate-700 bg-slate-50 px-2 py-0.5 rounded-md shadow-sm">
+        <div className="col-span-12 sm:col-span-4 bg-white p-4 rounded-xl border-2 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+          <div className="flex justify-center">
+            <span className="text-[9px] tracking-wide font-black text-slate-900 bg-yellow-400 rounded-md px-2 py-0.5 border-2 border-slate-900 uppercase">
+              稳健策略 (STABLE)
+            </span>
+          </div>
+          <div className="text-center text-3xl font-black text-slate-900 my-2.5 font-display">
+            {prediction.recommendedScores.stable}
+          </div>
+          <div className="flex justify-center">
+            <span className="text-[10px] font-black text-slate-900 bg-white border-2 border-slate-900 px-2.5 py-0.5 rounded shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
               防冷偏向值
             </span>
           </div>
         </div>
 
         {/* Aggressive Progressive Recommended */}
-        <div className="col-span-12 sm:col-span-4 bg-white/85 p-4 rounded-xl border border-slate-250 hover:bg-white transition-colors duration-220 shadow-sm relative">
-          <span className="text-[10px] tracking-wide font-extrabold text-blue-800 bg-blue-100 rounded px-1.5 py-0.5 border border-blue-200 uppercase">
-            进取玩法 (AGGRESSIVE)
-          </span>
-          <div className="flex items-baseline justify-between mt-3 font-display">
-            <span className="text-3xl font-black text-slate-900">{prediction.recommendedScores.aggressive}</span>
-            <span className="text-xs font-semibold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md shadow-sm">
+        <div className="col-span-12 sm:col-span-4 bg-white p-4 rounded-xl border-2 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+          <div className="flex justify-center">
+            <span className="text-[9px] tracking-wide font-black text-slate-900 bg-yellow-400 rounded-md px-2 py-0.5 border-2 border-slate-900 uppercase">
+              进取玩法 (AGGRESSIVE)
+            </span>
+          </div>
+          <div className="text-center text-3xl font-black text-slate-900 my-2.5 font-display">
+            {prediction.recommendedScores.aggressive}
+          </div>
+          <div className="flex justify-center">
+            <span className="text-[10px] font-black text-slate-900 bg-white border-2 border-slate-900 px-2.5 py-0.5 rounded shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
               博单高回报
             </span>
           </div>
@@ -283,7 +290,7 @@ export default function MatchDisplay({
         <div className="flex items-center justify-between mb-4">
           <h4 className="text-sm font-bold text-slate-800">模型拟合累积边际值 (主队加权)</h4>
           <span className={`text-xs font-bold font-mono px-2.5 py-0.5 rounded-md ${
-            totalMarginNum >= 0 ? "bg-emerald-50 text-emerald-800 border border-emerald-200" : "bg-rose-50 text-rose-800 border border-rose-200"
+            totalMarginNum >= 0 ? "bg-yellow-105 text-slate-950 border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]" : "bg-white text-slate-900 border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]"
           }`}>
             总边际 {totalMarginNum >= 0 ? "+" : ""}{totalMargin}
           </span>
@@ -293,7 +300,7 @@ export default function MatchDisplay({
           {/* MV contribution */}
           <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-200/50">
             <div className="text-[10px] text-slate-500 font-medium font-sans">球员身价边际</div>
-            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.marketValue >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.marketValue >= 0 ? "text-slate-900" : "text-slate-500"}`}>
               {prediction.factorContributions.marketValue >= 0 ? "+" : ""}{prediction.factorContributions.marketValue}
             </div>
             <div className="text-[9px] text-slate-500 font-semibold font-sans select-none mt-0.5 bg-white border border-slate-100 rounded py-0.5">
@@ -304,7 +311,7 @@ export default function MatchDisplay({
           {/* Attacking/Defending form contribution */}
           <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-200/50">
             <div className="text-[10px] text-slate-500 font-medium font-sans">阵容首发实力</div>
-            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.lineupStrength >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.lineupStrength >= 0 ? "text-slate-900" : "text-slate-500"}`}>
               {prediction.factorContributions.lineupStrength >= 0 ? "+" : ""}{prediction.factorContributions.lineupStrength}
             </div>
             <div className="text-[9px] text-slate-500 font-semibold font-sans select-none mt-0.5 bg-white border border-slate-100 rounded py-0.5">
@@ -315,7 +322,7 @@ export default function MatchDisplay({
           {/* FIFA/ELO contribution */}
           <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-200/50">
             <div className="text-[10px] text-slate-500 font-medium font-sans">排名过往表现</div>
-            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.fifaRank >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.fifaRank >= 0 ? "text-slate-900" : "text-slate-500"}`}>
               {prediction.factorContributions.fifaRank >= 0 ? "+" : ""}{prediction.factorContributions.fifaRank}
             </div>
             <div className="text-[9px] text-slate-500 font-semibold font-sans select-none mt-0.5 bg-white border border-slate-100 rounded py-0.5">
@@ -326,7 +333,7 @@ export default function MatchDisplay({
           {/* Tactical Counter */}
           <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-200/50">
             <div className="text-[10px] text-slate-500 font-medium font-sans">攻防打法克制</div>
-            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.tactics >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.tactics >= 0 ? "text-slate-900" : "text-slate-500"}`}>
               {prediction.factorContributions.tactics >= 0 ? "+" : ""}{prediction.factorContributions.tactics}
             </div>
             <div className="text-[9px] text-slate-500 font-semibold font-sans select-none mt-0.5 bg-white border border-slate-100 rounded py-0.5">
@@ -337,7 +344,7 @@ export default function MatchDisplay({
           {/* External Environment */}
           <div className="bg-slate-50/70 p-2.5 rounded-xl border border-slate-200/50 col-span-2 sm:col-span-1">
             <div className="text-[10px] text-slate-500 font-medium font-sans">地理高原客行</div>
-            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.external >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+            <div className={`mt-1 font-mono font-bold text-sm ${prediction.factorContributions.external >= 0 ? "text-slate-900" : "text-slate-500"}`}>
               {prediction.factorContributions.external >= 0 ? "+" : ""}{prediction.factorContributions.external}
             </div>
             <div className="text-[9px] text-slate-500 font-semibold font-sans select-none mt-0.5 bg-white border border-slate-100 rounded py-0.5">
@@ -447,25 +454,25 @@ export default function MatchDisplay({
 
               <div className="bg-slate-50/70 p-4 rounded-xl border border-slate-200/50 text-center shadow-sm">
                 <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">胜平负方向准确率</span>
-                <div className="text-2xl font-black text-emerald-600 mt-1 font-mono">{directionAccuracy.toFixed(1)}%</div>
+                <div className="text-2xl font-black text-slate-900 mt-1 font-mono">{directionAccuracy.toFixed(1)}%</div>
                 <div className="text-[9px] text-slate-450 mt-1">
-                  预测胜/平/负方向命中率 (<span className="font-semibold text-emerald-700">{directionCorrectCount}</span>/{totalCompleted})
+                  预测胜/平/负方向命中率 (<span className="font-semibold text-slate-900">{directionCorrectCount}</span>/{totalCompleted})
                 </div>
               </div>
 
               <div className="bg-slate-50/70 p-4 rounded-xl border border-slate-200/50 text-center shadow-sm">
                 <span className="text-[10px] text-slate-505 font-bold uppercase tracking-wider block">首选比分直中率</span>
-                <div className="text-2xl font-black text-indigo-600 mt-1 font-mono">{exactAccuracy.toFixed(1)}%</div>
+                <div className="text-2xl font-black text-slate-900 mt-1 font-mono">{exactAccuracy.toFixed(1)}%</div>
                 <div className="text-[9px] text-slate-450 mt-1">
-                  主推精确比分命中率 (<span className="font-semibold text-indigo-750">{exactHitCount}</span>/{totalCompleted})
+                  主推精确比分命中率 (<span className="font-semibold text-slate-900">{exactHitCount}</span>/{totalCompleted})
                 </div>
               </div>
 
               <div className="bg-slate-50/70 p-4 rounded-xl border border-slate-200/50 text-center shadow-sm">
                 <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">三档策略覆盖率</span>
-                <div className="text-2xl font-black text-indigo-800 mt-1 font-mono">{anyScoreAccuracy.toFixed(1)}%</div>
+                <div className="text-2xl font-black text-slate-900 mt-1 font-mono">{anyScoreAccuracy.toFixed(1)}%</div>
                 <div className="text-[9px] text-slate-450 mt-1">
-                  首选+稳健+博单命中率 (<span className="font-semibold text-indigo-700">{anyScoreHitCount}</span>/{totalCompleted})
+                  首选+稳健+博单命中率 (<span className="font-semibold text-slate-900">{anyScoreHitCount}</span>/{totalCompleted})
                 </div>
               </div>
             </div>
@@ -484,7 +491,7 @@ export default function MatchDisplay({
                     className="flex flex-col md:flex-row items-center justify-between p-3.5 bg-white border border-slate-200/80 rounded-xl hover:bg-slate-50/50 transition-colors gap-4"
                   >
                     {/* Left side: Date & Teams */}
-                    <div className="flex items-center gap-3.5 w-full md:w-auto">
+                    <div className="flex items-center gap-3.5 w-full md:w-[280px] shrink-0">
                       <div className="text-center font-mono w-14 border-r border-slate-150 pr-3">
                         <span className="text-xs text-slate-500 font-bold block leading-none">{dateDisplay}</span>
                         <span className="text-[9px] text-slate-400 mt-1 block font-mono">{m.dateTime.split(" ")[1]}</span>
@@ -507,8 +514,8 @@ export default function MatchDisplay({
                         <div className="flex items-center justify-center md:justify-start gap-1 font-semibold mt-0.5">
                           {isDirectionCorrect ? (
                             <>
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                              <span className="text-emerald-700">命中首推方向</span>
+                              <CheckCircle2 className="w-4 h-4 text-slate-900 shrink-0" />
+                              <span className="text-slate-900 font-extrabold">命中首推方向</span>
                             </>
                           ) : (
                             <>
@@ -549,7 +556,7 @@ export default function MatchDisplay({
                     <div className="flex items-center justify-end w-full md:w-auto shrink-0 pl-1">
                       <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-bold border ${
                         isDirectionCorrect 
-                          ? "bg-emerald-50 text-emerald-800 border-emerald-200/50" 
+                          ? "bg-yellow-100 text-slate-950 border-yellow-300" 
                           : "bg-slate-50 text-slate-550 border-slate-200"
                       }`}>
                         {isDirectionCorrect ? "方向完全契合" : "战力偏移偏差"}

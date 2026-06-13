@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Team, Match, MatchFactors, PredictionResult, ExpertReview } from "../types";
-import { Shield, Sparkles, RefreshCw, Trophy, Skull, Key, Send, Trash2, Bot, User, HelpCircle } from "lucide-react";
+import { Shield, Sparkles, RefreshCw, Trophy, Skull, Key, Send, Trash2, Bot, User, HelpCircle, WifiOff, Activity, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import TeamFlag from "./TeamFlag";
 
@@ -428,26 +428,26 @@ export default function ExpertRead({
         className="bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+          <div className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-900 flex items-center justify-center text-yellow-400 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
             <Key className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-1.5 flex-wrap">
               <h4 className="text-xs font-extrabold text-slate-800">AGI 智能解读引擎</h4>
               {savedApiKey ? (
-                <span className="text-[9px] bg-emerald-105 bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded font-bold">
-                  🟢 {savedProvider === "gemini" ? "Gemini" : "自定义 API"} 已连接
+                <span className="flex items-center gap-1 text-[9px] bg-slate-900 text-yellow-400 border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] px-1.5 py-0.5 rounded-md font-bold">
+                  <Zap className="w-3 h-3 text-yellow-400 fill-current" /> {savedProvider === "gemini" ? "Gemini" : "自定义 API"} 已连接
                 </span>
               ) : (
-                <span className="text-[9px] bg-slate-105 bg-slate-50 text-slate-500 border border-slate-200 px-1.5 py-0.2 rounded font-bold">
-                  ⚪ 离线模拟模式
+                <span className="flex items-center gap-1 text-[9px] bg-white text-slate-900 border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] px-1.5 py-0.5 rounded-md font-black">
+                  <WifiOff className="w-3 h-3" /> 离线模拟模式
                 </span>
               )}
             </div>
             <p className="text-[10px] text-slate-500 mt-0.5">
               {savedApiKey 
                 ? `使用 ${savedProvider === "gemini" ? "Google Gemini" : `自定义模型 (${savedModel})`} 进行实时深度智能解读与咨询` 
-                : "可配置 Gemini 或兼容 OpenAI 格式（如 DeepSeek、通义等）的 API Key 以激活 AGI 高级功能"}
+                : "可配置 Gemini Key或自定义Provider（兼容 OpenAI 格式）以激活 AGI 高级功能"}
             </p>
           </div>
         </div>
@@ -471,7 +471,7 @@ export default function ExpertRead({
           ) : (
             <button
               onClick={() => setShowKeyInput(!showKeyInput)}
-              className="px-3 py-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors border border-emerald-200 cursor-pointer w-full md:w-auto"
+              className="neo-btn bg-slate-100 hover:bg-slate-200 px-3 py-1.5 text-xs active:translate-y-0.5 w-full md:w-auto"
             >
               🔑 配置 API Key
             </button>
@@ -492,7 +492,7 @@ export default function ExpertRead({
                   name="apiProvider"
                   checked={apiProvider === "gemini"}
                   onChange={() => setApiProvider("gemini")}
-                  className="text-emerald-600 focus:ring-emerald-500"
+                  className="text-slate-900 focus:ring-slate-900"
                 />
                 <span>Google Gemini API</span>
               </label>
@@ -502,9 +502,9 @@ export default function ExpertRead({
                   name="apiProvider"
                   checked={apiProvider === "openai_compatible"}
                   onChange={() => setApiProvider("openai_compatible")}
-                  className="text-emerald-600 focus:ring-emerald-500"
+                  className="text-slate-900 focus:ring-slate-900"
                 />
-                <span>自定义格式 (如 DeepSeek, 阿里通义, OpenAI)</span>
+                <span>自定义格式 (OpenAI兼容格式)</span>
               </label>
             </div>
           </div>
@@ -518,7 +518,7 @@ export default function ExpertRead({
                 value={apiKeyInput}
                 onChange={(e) => setApiKeyInput(e.target.value)}
                 placeholder={apiProvider === "gemini" ? "请输入以 AIzaSy 开头的 Gemini API Key" : "请输入对应服务商的 API Key / Bearer Token"}
-                className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+                className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 font-mono"
               />
             </div>
 
@@ -531,7 +531,7 @@ export default function ExpertRead({
                     value={apiBaseUrl}
                     onChange={(e) => setApiBaseUrl(e.target.value)}
                     placeholder="例如：https://api.deepseek.com/v1"
-                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 font-mono"
                   />
                 </div>
                 <div>
@@ -541,20 +541,23 @@ export default function ExpertRead({
                     value={apiModel}
                     onChange={(e) => setApiModel(e.target.value)}
                     placeholder="例如：deepseek-chat 或 qwen-max"
-                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+                    className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 font-mono"
                   />
                 </div>
               </div>
             )}
             
             {testResult && (
-              <div className={`text-xs p-3 rounded-lg border ${
+              <div className={`text-xs p-3 rounded-md border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${
                 testResult.success 
-                  ? "bg-emerald-50 border-emerald-250 text-emerald-800" 
-                  : "bg-rose-50 border-rose-250 text-rose-800"
-              } font-sans leading-relaxed mt-2 animate-fade-in`}>
-                <strong>{testResult.success ? "🟢 连通性测试成功" : "🔴 连通性测试失败"}</strong>
-                <p className="mt-1">{testResult.message}</p>
+                  ? "bg-yellow-400 text-slate-900" 
+                  : "bg-white text-rose-600"
+              } font-sans leading-relaxed mt-2 animate-fade-in flex flex-col gap-1`}>
+                <div className="flex items-center gap-1.5 font-black text-sm">
+                  {testResult.success ? <Zap className="w-4 h-4 fill-current" /> : <WifiOff className="w-4 h-4" />}
+                  {testResult.success ? "连通性测试成功" : "连通性测试失败"}
+                </div>
+                <p className={`font-semibold text-xs ${testResult.success ? "text-slate-800" : "text-slate-600"}`}>{testResult.message}</p>
               </div>
             )}
             <span className="text-[10px] text-slate-400 mt-2 block leading-relaxed">
@@ -567,16 +570,16 @@ export default function ExpertRead({
               <button
                 onClick={handleTestConnection}
                 disabled={testLoading || !apiKeyInput.trim()}
-                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-slate-700 hover:text-emerald-800 border border-slate-200 hover:border-emerald-300 rounded font-semibold transition-all cursor-pointer flex items-center gap-1.5"
+                className="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 disabled:opacity-50 disabled:bg-slate-100 disabled:text-slate-500 text-slate-900 border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] rounded-md font-black transition-all cursor-pointer flex items-center gap-1.5"
               >
                 {testLoading ? (
                   <>
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-900" />
                     测试中...
                   </>
                 ) : (
                   <>
-                    🧪 测试连通性
+                    <Activity className="w-3.5 h-3.5" /> 测试连通性
                   </>
                 )}
               </button>
@@ -584,58 +587,18 @@ export default function ExpertRead({
             <div className="flex gap-2">
               <button
                 onClick={() => setShowKeyInput(false)}
-                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition-colors cursor-pointer font-semibold"
+                className="px-3 py-1.5 bg-white hover:bg-slate-50 border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] rounded-md text-slate-900 transition-all cursor-pointer font-bold"
               >
                 取消
               </button>
               <button
                 onClick={handleSaveSettings}
-                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold transition-colors cursor-pointer"
+                className="neo-btn px-4 py-1.5 text-xs"
               >
                 保存配置并启用
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* 2. Tactical Analysis Action Bar */}
-      <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm">
-        <div>
-          <span className="text-[10px] bg-slate-100 text-slate-600 font-extrabold uppercase px-1.5 py-0.5 rounded font-mono border border-slate-200">
-            {savedApiKey ? (savedProvider === "gemini" ? "Google Gemini AGI" : "Custom OpenAI-compatible") : "Local Logic Fitting Engine"}
-          </span>
-          <h3 className="text-xs font-bold text-slate-800 font-mono mt-1">
-            {savedApiKey 
-              ? (savedProvider === "gemini" ? "gemini-2.5-flash (AGI)" : `${savedModel || "deepseek-chat"} (AGI)`) 
-              : "public-v2-market-poisson-deep"}
-          </h3>
-        </div>
-        
-        {savedApiKey ? (
-          <button
-            onClick={generateAgiReport}
-            disabled={agiLoading}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:from-slate-400 disabled:to-slate-500 rounded-lg transition-all cursor-pointer shadow-sm shadow-emerald-500/10"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${agiLoading ? "animate-spin" : ""}`} />
-            {agiLoading ? "AI 深度计算中..." : "⚡ 生成 AGI 智能报告"}
-          </button>
-        ) : (
-          <button
-            onClick={onRefreshReview}
-            disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-300 disabled:bg-slate-100 disabled:text-slate-400 rounded-lg transition-colors cursor-pointer border border-emerald-200"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            {isCustomized ? "加入模型参数重新评估" : "重新评估模型解读"}
-          </button>
-        )}
-      </div>
-
-      {agiError && (
-        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 rounded-xl text-xs">
-          <strong>接口错误：</strong> {agiError}
         </div>
       )}
 
@@ -650,7 +613,7 @@ export default function ExpertRead({
             className="space-y-4"
           >
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-white/80 p-5 rounded-xl border border-slate-200/60 space-y-3 shadow-sm animate-pulse">
+              <div key={i} className="neo-card p-5 space-y-3 animate-pulse">
                 <div className="h-4 bg-slate-200 rounded w-1/4"></div>
                 <div className="space-y-2">
                   <div className="h-3.5 bg-slate-100 rounded w-full"></div>
@@ -669,66 +632,66 @@ export default function ExpertRead({
           >
             {/* Tag displaying AGI active status */}
             {isAgiActive && (
-              <div className="px-1.5 py-0.5 text-[10px] text-emerald-800 font-bold flex items-center gap-1.5 bg-emerald-50 rounded-lg w-max border border-emerald-200 animate-pulse">
-                <Sparkles className="w-3 h-3" />
+              <div className="px-2 py-0.5 text-[10px] text-slate-900 font-black flex items-center gap-1.5 bg-yellow-400 border-2 border-slate-900 rounded-lg w-max shadow-[1px_1px_0px_rgba(15,23,42,1)]">
+                <Sparkles className="w-3 h-3 text-slate-950" />
                 <span>实时 AGI 引擎对阵分析报告已生成 ({savedProvider === "gemini" ? "Gemini" : savedModel})</span>
               </div>
             )}
 
             {/* Tactical Counter Analysis Block */}
-            <div className="glass-panel p-5 rounded-2xl shadow-sm space-y-2 relative overflow-hidden bg-white border border-slate-200/50">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-blue-600" />
-                <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">攻防克制分析</h4>
+            <div className="neo-card p-5 relative overflow-hidden bg-white">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-900"></div>
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-4 h-4 text-slate-900 stroke-[2]" />
+                <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">攻防克制分析</h4>
               </div>
-              <p className="text-[13px] text-slate-700 leading-relaxed font-sans">{displayReview.tacticalCounter}</p>
+              <p className="text-[13px] text-slate-700 leading-relaxed font-bold font-sans">{displayReview.tacticalCounter}</p>
             </div>
 
             {/* Squad status and players */}
-            <div className="glass-panel p-5 rounded-2xl shadow-sm space-y-2 relative overflow-hidden bg-white border border-slate-200/50">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-emerald-600" />
-                <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">伤病与阵容推演</h4>
+            <div className="neo-card p-5 relative overflow-hidden bg-white">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-yellow-400"></div>
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="w-4 h-4 text-yellow-600 stroke-[2]" />
+                <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">伤病与阵容推演</h4>
               </div>
-              <p className="text-[13px] text-slate-700 leading-relaxed font-sans">{displayReview.squadCondition}</p>
+              <p className="text-[13px] text-slate-700 leading-relaxed font-bold font-sans">{displayReview.squadCondition}</p>
             </div>
 
             {/* Path and Promotion analysis */}
-            <div className="glass-panel p-5 rounded-2xl shadow-sm space-y-2 relative overflow-hidden bg-white border border-slate-200/50">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-indigo-600" />
-                <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">环境、战意与出线走向</h4>
+            <div className="neo-card p-5 relative overflow-hidden bg-white">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-900"></div>
+              <div className="flex items-center gap-2 mb-2">
+                <Trophy className="w-4 h-4 text-slate-900 stroke-[2]" />
+                <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">环境、战意与出线走向</h4>
               </div>
-              <p className="text-[13px] text-slate-700 leading-relaxed font-sans">{displayReview.pathAndTrend}</p>
+              <p className="text-[13px] text-slate-700 leading-relaxed font-bold font-sans">{displayReview.pathAndTrend}</p>
             </div>
 
             {/* Model primary summary */}
-            <div className="bg-emerald-50/75 p-5 rounded-2xl border border-emerald-600/15 shadow-sm space-y-2 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-600"></div>
-              <div className="flex items-center gap-2">
-                <Skull className="w-4 h-4 text-emerald-700" />
-                <h4 className="text-xs font-extrabold text-emerald-800 uppercase tracking-wider">核心模型首要判断</h4>
+            <div className="neo-card p-5 relative overflow-hidden bg-white">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-yellow-400"></div>
+              <div className="flex items-center gap-2 mb-2">
+                <Skull className="w-4 h-4 text-slate-900 stroke-[2]" />
+                <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">核心模型首要判断</h4>
               </div>
-              <p className="text-[13.5px] text-slate-900 font-extrabold leading-relaxed font-sans">{displayReview.primaryJudgment}</p>
+              <p className="text-[13.5px] text-slate-900 font-black leading-relaxed font-sans">{displayReview.primaryJudgment}</p>
             </div>
           </motion.div>
         ) : (
-          <div className="bg-slate-50 p-8 rounded-xl border border-slate-200 text-center space-y-3">
-            <p className="text-sm text-slate-500">未获取到专家模型评估，请点击按钮生成报告。</p>
+          <div className="neo-card p-8 text-center space-y-4 bg-slate-50">
+            <p className="text-xs font-bold text-slate-600">未获取到专家模型评估，请点击按钮生成报告。</p>
             {savedApiKey ? (
               <button
                 onClick={generateAgiReport}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white transition-colors rounded-lg text-xs font-semibold cursor-pointer"
+                className="neo-btn bg-slate-900 hover:bg-slate-950 px-4 py-2 text-xs cursor-pointer active:translate-y-0.5"
               >
                 生成 AGI 智能深度分析报告
               </button>
             ) : (
               <button
                 onClick={onRefreshReview}
-                className="px-4 py-2 bg-emerald-600 text-white hover:bg-emerald-700 transition-colors rounded-lg text-xs font-semibold cursor-pointer"
+                className="neo-btn px-4 py-2 text-xs cursor-pointer active:translate-y-0.5"
               >
                 一键生成专业战术报告
               </button>
@@ -738,22 +701,22 @@ export default function ExpertRead({
       </AnimatePresence>
 
       {/* 4. AGI Chat Window Panel */}
-      <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden flex flex-col mt-6">
+      <div className="bg-white rounded-xl border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col mt-6">
         {/* Chat Header */}
-        <div className="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
+        <div className="bg-white border-b-2 border-slate-200 p-4 flex items-center justify-between text-slate-900">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
+            <div className="w-7 h-7 rounded-lg bg-yellow-400 border border-slate-900 flex items-center justify-center text-slate-950">
               <Bot className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-extrabold text-slate-800">AI 战术大师实时对谈</h4>
-              <p className="text-[9px] text-slate-400 mt-0.5">针对本场赛事，与 AI 解说大师进行深度战术讨论</p>
+              <h4 className="text-xs font-black text-slate-900">AI 战术大师实时对谈</h4>
+              <p className="text-[9px] text-slate-500 mt-0.5">针对本场赛事，与 AI 解说大师进行深度战术讨论</p>
             </div>
           </div>
           {savedApiKey && chatMessages.length > 0 && (
             <button
               onClick={() => setChatMessages([])}
-              className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors cursor-pointer"
+              className="p-1 text-slate-400 hover:text-rose-450 rounded transition-colors cursor-pointer"
               title="清空聊天记录"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -762,15 +725,15 @@ export default function ExpertRead({
         </div>
 
         {/* Chat Messages Body */}
-        <div className="p-4 min-h-[160px] max-h-[320px] overflow-y-auto space-y-3.5 bg-slate-50/40">
+        <div className="p-4 min-h-[160px] max-h-[320px] overflow-y-auto space-y-4 bg-slate-50">
           {!savedApiKey ? (
             <div className="flex flex-col items-center justify-center py-8 text-center space-y-3">
-              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+              <div className="w-10 h-10 rounded-lg bg-white border-2 border-slate-900 flex items-center justify-center text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
                 <Key className="w-5 h-5" />
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-slate-700 font-bold">AI 战术大师未激活</p>
-                <p className="text-[10px] text-slate-400 max-w-[340px] leading-relaxed">
+                <p className="text-xs text-slate-900 font-black">AI 战术大师未激活</p>
+                <p className="text-[10px] text-slate-500 max-w-[340px] leading-relaxed font-bold">
                   请先在页面顶部配置您的 **Gemini API Key** 或 **自定义大模型 API Key (如 DeepSeek、通义等)**。激活后，即可在此处向 AI 提问任何有关 2026 世界杯的分析、规则或战术探讨。
                 </p>
               </div>
@@ -781,17 +744,17 @@ export default function ExpertRead({
                     configRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }, 100);
                 }}
-                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[10.5px] font-bold transition-colors cursor-pointer"
+                className="neo-btn bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-3.5 py-1.5 text-[10.5px] cursor-pointer"
               >
                 立即配置 API Key
               </button>
             </div>
           ) : chatMessages.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-center space-y-2.5">
-              <HelpCircle className="w-7 h-7 text-slate-300" />
+              <HelpCircle className="w-7 h-7 text-slate-400" />
               <div>
-                <p className="text-xs text-slate-600 font-bold">开始关于本赛事的战术探讨</p>
-                <p className="text-[10px] text-slate-400 mt-1 max-w-[280px]">
+                <p className="text-xs text-slate-700 font-black">开始关于本赛事的战术探讨</p>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[280px] font-bold">
                   您可以提问任何世界杯相关问题，例如：“下雨对哪方更有利？”、“${home.name}如何防守${away.name}的${away.tacticsName}打法？”等。
                 </p>
               </div>
@@ -803,51 +766,50 @@ export default function ExpertRead({
                 className={`flex gap-2.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 {msg.role === "model" && (
-                  <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
                 <div
-                  className={`p-3 rounded-2xl max-w-[85%] text-[12.5px] leading-relaxed shadow-sm font-sans ${
+                  className={`p-3 rounded-xl max-w-[85%] text-[12.5px] leading-relaxed font-sans font-bold border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${
                     msg.role === "user"
-                      ? "bg-emerald-600 text-white rounded-tr-none"
-                      : "bg-white text-slate-800 border border-slate-200/50 rounded-tl-none"
+                      ? "bg-slate-900 text-white rounded-tr-none"
+                      : "bg-white text-slate-900 rounded-tl-none"
                   }`}
                 >
                   {msg.text}
                 </div>
                 {msg.role === "user" && (
-                  <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-0.5 font-bold text-[10px]">
+                  <div className="w-7 h-7 rounded-lg bg-yellow-400 border-2 border-slate-900 flex items-center justify-center text-slate-950 shrink-0 mt-0.5 font-black text-[10px] shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
                     U
                   </div>
                 )}
               </div>
             ))
           )}
-
           {chatLoading && (
             <div className="flex gap-2.5 justify-start animate-pulse">
-              <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0 mt-0.5">
+              <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
                 <Bot className="w-3.5 h-3.5" />
               </div>
-              <div className="p-3 bg-white text-slate-500 border border-slate-200/50 rounded-2xl rounded-tl-none text-xs flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce delay-75"></span>
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce delay-150"></span>
+              <div className="p-3 bg-white text-slate-900 border-2 border-slate-900 rounded-xl rounded-tl-none text-xs flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                <span className="w-1.5 h-1.5 bg-slate-900 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-slate-900 rounded-full animate-bounce delay-75"></span>
+                <span className="w-1.5 h-1.5 bg-slate-900 rounded-full animate-bounce delay-150"></span>
                 <span>AI 战术大师正在思考中...</span>
               </div>
             </div>
           )}
 
           {chatError && (
-            <div className="p-2 text-center text-[10px] text-rose-700 bg-rose-50 border border-rose-100 rounded-lg">
+            <div className="p-2 text-center text-[10px] text-rose-900 bg-rose-50 border-2 border-slate-900 rounded-lg font-bold">
               {chatError}
             </div>
           )}
         </div>
 
         {/* Chat Footer Input */}
-        <div className="p-3 bg-white border-t border-slate-100 flex gap-2">
+        <div className="p-3 bg-slate-100 border-t-2 border-slate-900 flex gap-2">
           <input
             type="text"
             value={chatInput}
@@ -855,12 +817,12 @@ export default function ExpertRead({
             onKeyDown={(e) => e.key === "Enter" && handleSendChatMessage()}
             placeholder={savedApiKey ? `向战术大师提问关于本场对战的技战术细节...` : "请先配置 API Key 以开启对话..."}
             disabled={chatLoading || !savedApiKey}
-            className="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 disabled:opacity-50"
+            className="flex-1 p-2.5 text-xs border-2 border-slate-900 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 font-bold disabled:opacity-50"
           />
           <button
             onClick={handleSendChatMessage}
             disabled={chatLoading || !chatInput.trim() || !savedApiKey}
-            className="p-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl transition-all cursor-pointer shadow-sm shadow-emerald-500/10 flex items-center justify-center"
+            className="p-2.5 bg-yellow-400 hover:bg-yellow-500 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-350 disabled:shadow-none text-slate-900 border-2 border-slate-900 rounded-lg shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] transition-all cursor-pointer flex items-center justify-center shrink-0"
           >
             <Send className="w-4 h-4" />
           </button>

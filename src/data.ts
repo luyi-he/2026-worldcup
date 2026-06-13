@@ -1339,9 +1339,9 @@ export function runMatchPrediction(
   // Primary (主推): single highest probability score
   const primary = topScores[0].score;
 
-  // Stable (稳健): the highest probability score among low goal outcomes (0-0, 1-0, 0-1, 1-1, 2-0, 2-1)
-  const stableScores = scoreProbsList.filter(item => item.h + item.a <= 3 && item.h - item.a >= 0);
-  const stable = stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "1-1");
+  // Stable (稳健): the highest probability score among low goal outcomes (0-0, 1-0, 0-1, 1-1, 2-0, 2-1, 0-2, 1-2)
+  const stableScores = scoreProbsList.filter(item => item.h + item.a <= 3);
+  const stable = stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1");
 
   // Aggressive (进取): robust score with higher goal scoring (e.g., at least 3 goals combined or home team win by 2+)
   const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 3) && (item.h !== item.a));

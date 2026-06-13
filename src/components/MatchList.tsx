@@ -35,8 +35,7 @@ export default function MatchList({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const listHeight = rightColHeight ? Math.max(300, rightColHeight - 240) : 650;
-  const dynamicStyle = isDesktop ? { height: `${listHeight}px` } : { maxHeight: "600px" };
+  const dynamicStyle = isDesktop ? {} : { maxHeight: "600px" };
 
   // Determine dynamic schedule status based on current local date
   const now = new Date();
@@ -69,30 +68,33 @@ export default function MatchList({
   }
 
   return (
-    <div className="space-y-4">
+    <div 
+      className="space-y-4 lg:space-y-0 lg:flex lg:flex-col lg:h-full"
+      style={isDesktop && rightColHeight ? { height: `${rightColHeight}px` } : {}}
+    >
       {/* Search Grounding or header info */}
-      <div className="glass-panel rounded-2xl p-4 shadow-sm">
-        <span className="text-[10px] uppercase font-bold text-emerald-700 tracking-wider">WORLD CUP FORECAST ENGINE</span>
-        <h1 className="text-lg font-bold text-slate-900 font-sans tracking-tight mb-2 mt-1">世界杯比分预测</h1>
+      <div className="neo-card p-5 bg-white shrink-0 lg:mb-4">
+        <span className="text-[9px] uppercase font-bold text-yellow-400 bg-slate-900 border-2 border-slate-900 rounded-md px-1.5 py-0.5 tracking-widest font-sans">⚽ WORLD CUP FORECAST ENGINE</span>
+        <h1 className="text-lg font-black text-slate-900 font-display tracking-tight mb-2 mt-2">世界杯比分预测</h1>
         <p className="text-xs text-slate-600 leading-relaxed">
           用赔率后验、身价对比、首发战力、FIFA ELO及攻防克制模型，生成赛前一键可知的专业比分判断报告。
         </p>
-        <div className="mt-3.5 pt-3.5 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+        <div className="mt-3.5 pt-3.5 border-t-2 border-slate-900 mt-4 pt-4 flex items-center justify-between text-xs text-slate-500 font-medium">
           <span>{statusText}</span>
-          <span className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded font-mono font-bold text-[10px]">
+          <span className="bg-slate-900 border-2 border-slate-900 text-yellow-400 font-bold px-2 px-1.5 py-0.5 rounded font-mono font-bold text-[10px]">
             {dateBadge}
           </span>
         </div>
       </div>
 
-      <div className="space-y-2.5">
-        <div className="flex items-center gap-1.5 px-1 text-xs font-semibold text-slate-500">
-          <Calendar className="w-3.5 h-3.5 text-slate-450" id="icon-calendar" />
-          <span>小组赛赛程与比分精测</span>
+      <div className="space-y-2.5 lg:flex-1 lg:flex lg:flex-col lg:min-h-0">
+        <div className="flex items-center gap-1.5 px-1.5 text-xs font-bold text-slate-900 tracking-wider uppercase shrink-0">
+          <Calendar className="w-3.5 h-3.5 text-slate-900 stroke-[2]" id="icon-calendar" />
+          <span>⚽ 小组赛赛程与比分精测</span>
         </div>
 
         <div 
-          className="space-y-2 overflow-y-auto pr-1.5 scroll-smooth"
+          className="space-y-3.5 overflow-y-auto pr-2 scroll-smooth lg:flex-1 lg:min-h-0"
           style={dynamicStyle}
         >
           {sortedMatches.map((m) => {
@@ -116,27 +118,27 @@ export default function MatchList({
               <button
                 key={m.id}
                 onClick={() => onSelectMatch(m.id)}
-                className={`w-full text-left p-3.5 rounded-xl transition-all duration-300 border cursor-pointer group flex items-center justify-between ${
+                className={`w-full text-left p-3.5 rounded-xl cursor-pointer flex items-center justify-between relative overflow-hidden transition-all duration-100 ${
                   isSelected
-                    ? "bg-emerald-500/10 border-emerald-500/40 shadow-sm shadow-emerald-500/5 text-slate-900"
-                    : "bg-white hover:bg-slate-50 border-slate-200/80 hover:border-slate-300"
+                    ? "bg-yellow-400 border-2 border-slate-900 text-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]"
+                    : "bg-white hover:bg-slate-50 border-2 border-slate-900 text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]"
                 }`}
                 id={`btn-match-${m.id}`}
               >
-                <div className="space-y-1.5 flex-1 min-w-0 pr-2">
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400">
-                    <span className="font-semibold text-slate-500">{dateDisplay}</span>
+                <div className="space-y-2 flex-1 min-w-0 pr-2 pl-1">
+                  <div className={`flex items-center gap-1.5 text-[9px] font-mono font-bold ${isSelected ? "text-slate-950" : "text-slate-400"}`}>
+                    <span className="font-semibold">{dateDisplay}</span>
                     <span>•</span>
                     <span>{timeStr}</span>
                   </div>
  
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-slate-700 font-medium group-hover:text-slate-950 transition-colors">
-                      <TeamFlag teamId={home.id} className="w-5.5 h-3.5 shadow-sm" />
-                      <span className="truncate max-w-[100px] font-semibold">{home.name}</span>
-                      <span className="text-[10px] text-slate-400 font-mono">VS</span>
-                      <TeamFlag teamId={away.id} className="w-5.5 h-3.5 shadow-sm" />
-                      <span className="truncate max-w-[100px] font-semibold">{away.name}</span>
+                    <div className="flex items-center gap-2.5 text-[13px] text-slate-900 font-black font-sans">
+                      <TeamFlag teamId={home.id} className="w-5 h-3.5 shadow-sm rounded-sm border border-slate-900/10" />
+                      <span className="truncate max-w-[85px]">{home.name}</span>
+                      <span className={`text-[10px] ${isSelected ? "text-slate-900" : "text-slate-400"} font-mono font-normal`}>VS</span>
+                      <TeamFlag teamId={away.id} className="w-5 h-3.5 shadow-sm rounded-sm border border-slate-900/10" />
+                      <span className="truncate max-w-[85px]">{away.name}</span>
                     </div>
                   </div>
                 </div>
@@ -144,28 +146,28 @@ export default function MatchList({
                 <div className="flex items-center gap-2">
                   <div className="text-right">
                     {m.actualScore ? (
-                      <span className={`inline-block font-mono font-bold text-xs px-2 py-1 rounded-md text-center border ${
+                      <span className={`inline-block font-mono font-black text-xs px-2 py-1 rounded-md text-center border-2 border-slate-900 ${
                         isSelected
-                          ? "bg-amber-500/20 text-amber-800 border-amber-500/25"
-                          : "bg-amber-500/5 text-amber-700 border-amber-300/30"
+                          ? "bg-slate-900 text-yellow-400"
+                          : "bg-yellow-400 text-slate-900"
                       }`}>
                         完 {m.actualScore.home}:{m.actualScore.away}
                       </span>
                     ) : (
-                      <span className={`inline-block font-mono font-bold text-xs px-2.5 py-1 rounded-md text-center border ${
+                      <span className={`inline-block font-mono font-black text-xs px-2.5 py-1 rounded-md text-center border-2 border-slate-900 ${
                         isSelected
-                          ? "bg-emerald-500/20 text-emerald-800 border-emerald-500/25"
-                          : "bg-slate-100 text-slate-600 border-slate-200/50"
+                          ? "bg-slate-900 text-yellow-400"
+                          : "bg-slate-100 text-slate-900"
                       }`}>
                         {prediction.recommendedScores.primary}
                       </span>
                     )}
-                    <div className="text-[9px] text-slate-450 font-medium font-sans mt-0.5" title="主胜预期发生率">
+                    <div className={`text-[9px] ${isSelected ? "text-slate-900 font-bold" : "text-slate-400 font-semibold"} font-sans mt-1`} title="主胜预期发生率">
                       主胜 {Math.round(prediction.homeWinProb * 100)}%
                     </div>
                   </div>
-                  <ChevronRight className={`w-4 h-4 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-0.5 transition-all ${
-                    isSelected ? "text-emerald-600 translate-x-0.5" : ""
+                  <ChevronRight className={`w-4 h-4 transition-transform ${
+                    isSelected ? "text-slate-950 translate-x-0.5" : "text-slate-400"
                   }`} id={`chevron-${m.id}`} />
                 </div>
               </button>
