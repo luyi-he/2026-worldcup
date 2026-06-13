@@ -19,7 +19,8 @@ export default function MatchList({
   onSelectMatch,
   factors
 }: MatchListProps) {
-  // Sort or group matches if needed. Since there's 6, listing directly is excellent.
+  const sortedMatches = [...matches].sort((a, b) => a.dateTime.localeCompare(b.dateTime));
+
   return (
     <div className="space-y-4">
       {/* Search Grounding or header info */}
@@ -44,7 +45,7 @@ export default function MatchList({
         </div>
 
         <div className="space-y-2">
-          {matches.map((m) => {
+          {sortedMatches.map((m) => {
             const home = teams[m.homeTeamId];
             const away = teams[m.awayTeamId];
             if (!home || !away) return null;
