@@ -1,94 +1,89 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# 🏆 2026年世界杯比分预测与战术模拟分析系统 (2026 World Cup Predictor)
 
-# 🏆 2026 World Cup Predictor
+这是一个纯前端、零配置、零后端依赖的 **2026年世界杯双泊松比分模拟预测与战术推演系统**。该系统基于球队身价对比、FIFA/ELO积分、历史战绩、战术克制矩阵、以及高原/旅行疲劳等外部环境因子，在浏览器中进行实时双泊松建模和战术沙盘模拟。
 
-A pure frontend, zero-config web application that utilizes double Poisson regression models and simulated expert reviews to analyze, simulate, and predict match strategic outcomes for the 2026 World Cup.
-
-> ⚡ **Zero Backend, Zero API Keys**: The entire prediction and strategic analysis engine runs entirely in the user's browser. No API keys, database, or backend server are required. Clone and deploy instantly!
+> ⚡ **纯本地运行，免 API Key，零后端配置**：系统与任何云端大模型接口完全解耦。所有的比分拟合计算与“专家战术报告生成”全部在本地前端浏览器运行。克隆后即可秒级部署或直接本地双击打开运行！
 
 ---
 
-## 🚀 Local Development (How to Open)
+## 📸 网页截图与系统界面
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
+![系统运行主看板](assets/dashboard_mockup.png)
 
-### Step 1: Install Dependencies
-Open your terminal in the project directory and run:
+---
+
+## ✨ 核心功能与特色
+
+1. **📊 全面准确的数据底座**
+   - **48支球队全覆盖**：支持 2026 年世界杯 A组 到 L组 完整 12 个小组的 48 支参赛球队。
+   - **权威实时数据**：录入所有球队 2026 年最新德转（Transfermarkt）身价、FIFA 官方排名、世界 Elo 积分以及主力球员信息。
+   - **真实赛程与比分**：包含第一阶段完整 24 场小组赛程、比赛场馆、比赛地海拔以及已完赛的真实历史战果（如加拿大 1-1 波黑、美国 4-1 巴拉圭）。
+
+2. **🧮 双泊松回归模拟器 (Double Poisson Engine)**
+   - 动态通过期望进球率（Expected Goals, xG）与概率网格进行双泊松求解，计算双方胜平负概率及前五大概率比分。
+
+3. **🎛️ 动态模型微调面板 (Model Tuner)**
+   - 支持实时手动滑块调节身价权重、战术克制、FIFA排名、外部因子和历史状态的调节参数，页面即时重绘，秒级响应。
+
+4. **🧠 本地“专家报告”动态生成 (Tactical Sandbox)**
+   - 解耦云端 AI，利用预设的战术对抗逻辑，根据微调滑块和模拟结果，本地快速拟合出包含“战术博弈点”、“伤病与体能”、“出线形势”和“最终研判比分策略”的专业战术分析报告。
+
+5. **🎯 已完场赛事实况回测看板 (Accuracy Backtesting)**
+   - 自动对照已完场赛事的真实比分，与当前参数下的模型进行“胜平负方向”及“精确比分”精度核验，支持策略覆盖计算，展现极致的专业回测体验。
+
+---
+
+## 🚀 两种打开与运行方式
+
+本系统提供了**“直接免编译运行”**和**“源代码编译开发”**两种使用方式：
+
+### 方式一：直接双击打开（预编译版本，推荐 ⚡）
+我们已经将项目打包编译好的静态文件放到了仓库中。你**不需要安装任何环境（如 Node.js 或 Git）**，即可直接体验：
+1. 下载或克隆本仓库到本地。
+2. 进入根目录下的 **`dist/`** 文件夹。
+3. 双击直接用任意浏览器打开 **[index.html](dist/index.html)** 即可使用全部功能！
+   *(注：我们已将 Vite 静态资源配置为相对路径 `./`，因此无需启动本地 Web 服务即可本地直接双击预览。)*
+
+---
+
+### 方式二：源代码编译开发与本地调试
+如果你想对项目进行二次开发、修改代码、或本地调试，请按以下步骤操作：
+
+#### 前提条件
+- 电脑安装有 [Node.js](https://nodejs.org/) (推荐 v18 或更高版本)
+- 安装有 npm（随 Node.js 自动安装）
+
+#### 步骤 1：安装依赖包
+在项目根目录下打开终端，运行：
 ```bash
 npm install
 ```
 
-### Step 2: Start Development Server
-Run the local Vite development server:
+#### 步骤 2：启动本地开发服务器
+运行 Vite 本地开发命令：
 ```bash
 npm run dev
 ```
-Open your browser and navigate to:
+打开浏览器访问：
 👉 **[http://localhost:3000](http://localhost:3000)**
+*(在本地修改代码会触发热更新，即时呈现在网页中。)*
+
+#### 步骤 3：编译打包生产版本
+如需要将修改后的项目打包生成静态文件：
+```bash
+npm run build
+```
+这会在根目录下生成 `dist/` 文件夹，里面包含了经过压缩优化的高性能单页应用文件（HTML/CSS/JS）。你可以将此目录直接部署到 Vercel, Netlify 或 GitHub Pages 等静态托管平台。
 
 ---
 
-## 📦 How to Build and Preview Locally
+## ☁️ 一键静态部署指南
 
-To compile and bundle the React code into optimized, static HTML/JS/CSS files:
+由于本系统是**纯前端静态单页应用**，不需数据库和服务器，您可以免费且秒级地部署至公网：
 
-1. **Build the project:**
-   ```bash
-   npm run build
-   ```
-   This compiles the typescript and bundles frontend assets using Vite into the `dist/` directory.
-
-2. **Preview the production build locally:**
-   ```bash
-   npm run preview
-   ```
-   This serves the static `dist/` folder on **[http://localhost:3000](http://localhost:3000)** so you can test the production build locally.
-
----
-
-## ☁️ Deployment Guide
-
-Since this is a **pure static web application**, you can host it for free on any static hosting platform. No backend server or environment variables are required!
-
-### Option 1: Deploy to Vercel (Recommended & Easiest)
-1. Sign up/Log in to [Vercel](https://vercel.com/).
-2. Click **Add New** -> **Project**.
-3. Import your GitHub repository.
-4. Vercel will automatically detect the **Vite** project.
-5. Keep default settings:
+### 部署到 Vercel/Netlify
+1. 导入您的 GitHub 仓库。
+2. 配置构建命令：
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
-6. Click **Deploy**. Your site will be live in seconds!
-
-### Option 2: Deploy to Netlify
-1. Log in to [Netlify](https://www.netlify.com/).
-2. Click **Add new site** -> **Import an existing project** -> Choose **GitHub**.
-3. Select your repository.
-4. Configure settings:
-   - **Build command**: `npm run build`
-   - **Publish directory**: `dist`
-5. Click **Deploy site**.
-
-### Option 3: Deploy to GitHub Pages
-To publish the static site directly to your GitHub Pages:
-1. Install `gh-pages` helper utility:
-   ```bash
-   npm install -D gh-pages
-   ```
-2. Add the following scripts to your `package.json`:
-   ```json
-   "predeploy": "npm run build",
-   "deploy": "gh-pages -d dist"
-   ```
-3. Set the `base` configuration in `vite.config.ts` to your repository name:
-   ```typescript
-   base: '/2026-worldcup/'
-   ```
-4. Run:
-   ```bash
-   npm run deploy
-   ```
+3. 点击 **Deploy**，几秒钟后即可获得公网访问 URL。
