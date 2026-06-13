@@ -49,7 +49,21 @@ export default function App() {
   const [lastRefreshed, setLastRefreshed] = useState<string>("");
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-  // Using pure CSS grid stretching and flexbox to align left/right heights.
+  // Right column height tracker for left match list scroll height alignment
+  const rightColRef = React.useRef<HTMLDivElement>(null);
+  const [rightColHeight, setRightColHeight] = useState<number>(0);
+
+  useEffect(() => {
+    if (rightColRef.current) {
+      const observer = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          setRightColHeight(entry.contentRect.height);
+        }
+      });
+      observer.observe(rightColRef.current);
+      return () => observer.disconnect();
+    }
+  }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -280,18 +294,19 @@ export default function App() {
         <div className="grid grid-cols-12 gap-6">
           
           {/* Left Column (Match List Search Bar) - takes 4 cols on lg, full on mobile */}
-          <div className="col-span-12 lg:col-span-4 pr-0 lg:pr-2 lg:flex lg:flex-col lg:h-full">
+          <div className="col-span-12 lg:col-span-4 pr-0 lg:pr-2">
             <MatchList
               matches={PRESET_MATCHES}
               teams={localTeams}
               selectedMatchId={selectedMatchId}
               onSelectMatch={setSelectedMatchId}
               factors={factors}
+              rightColHeight={rightColHeight}
             />
           </div>
 
           {/* Right Column (Dynamic Tab Container Display) - takes 8 cols on lg */}
-          <div className="col-span-12 lg:col-span-8 space-y-6">
+          <div className="col-span-12 lg:col-span-8 space-y-6" ref={rightColRef}>
             
             {/* Warning banner if custom variables are loaded */}
             {isCustomized && (

@@ -10,6 +10,7 @@ interface MatchListProps {
   selectedMatchId: string;
   onSelectMatch: (matchId: string) => void;
   factors: MatchFactors;
+  rightColHeight?: number;
 }
 
 export default function MatchList({
@@ -17,9 +18,25 @@ export default function MatchList({
   teams,
   selectedMatchId,
   onSelectMatch,
-  factors
+  factors,
+  rightColHeight
 }: MatchListProps) {
   const sortedMatches = [...matches].sort((a, b) => a.dateTime.localeCompare(b.dateTime));
+
+  // State to check if desktop layout is active (lg breakpoint is 1024px)
+  const [isDesktop, setIsDesktop] = React.useState(typeof window !== "undefined" ? window.innerWidth >= 1024 : true);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const listHeight = rightColHeight ? Math.max(300, rightColHeight - 240) : 650;
+  const dynamicStyle = isDesktop ? { height: `${listHeight}px` } : { maxHeight: "600px" };
 
   // Determine dynamic schedule status based on current local date
   const now = new Date();
@@ -52,9 +69,9 @@ export default function MatchList({
   }
 
   return (
-    <div className="space-y-4 flex flex-col lg:h-full">
+    <div className="space-y-4">
       {/* Search Grounding or header info */}
-      <div className="glass-panel rounded-2xl p-4 shadow-sm shrink-0">
+      <div className="glass-panel rounded-2xl p-4 shadow-sm">
         <span className="text-[10px] uppercase font-bold text-emerald-700 tracking-wider">WORLD CUP FORECAST ENGINE</span>
         <h1 className="text-lg font-bold text-slate-900 font-sans tracking-tight mb-2 mt-1">世界杯比分预测</h1>
         <p className="text-xs text-slate-600 leading-relaxed">
@@ -68,14 +85,15 @@ export default function MatchList({
         </div>
       </div>
 
-      <div className="space-y-2.5 flex flex-col lg:flex-1 lg:min-h-0">
-        <div className="flex items-center gap-1.5 px-1 text-xs font-semibold text-slate-500 shrink-0">
+      <div className="space-y-2.5">
+        <div className="flex items-center gap-1.5 px-1 text-xs font-semibold text-slate-500">
           <Calendar className="w-3.5 h-3.5 text-slate-450" id="icon-calendar" />
           <span>小组赛赛程与比分精测</span>
         </div>
 
         <div 
-          className="space-y-2 max-h-[600px] lg:max-h-none overflow-y-auto pr-1.5 scroll-smooth lg:flex-1 lg:min-h-0"
+          className="space-y-2 overflow-y-auto pr-1.5 scroll-smooth"
+          style={dynamicStyle}
         >
           {sortedMatches.map((m) => {
             const home = teams[m.homeTeamId];
