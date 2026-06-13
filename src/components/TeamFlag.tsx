@@ -17,6 +17,14 @@ const FLAG_MAPPING: Record<string, string> = {
   KOR: "kr",
   BRA: "br",
   SEN: "sn",
+  CZE: "cz",
+  AUS: "au",
+  TUR: "tr",
+  MAR: "ma",
+  ALG: "dz",
+  NED: "nl",
+  CRO: "hr",
+  FRA: "fr",
 };
 
 export default function TeamFlag({ teamId, className = "w-6 h-4", altText }: TeamFlagProps) {
