@@ -21,6 +21,36 @@ export default function MatchList({
 }: MatchListProps) {
   const sortedMatches = [...matches].sort((a, b) => a.dateTime.localeCompare(b.dateTime));
 
+  // Determine dynamic schedule status based on current local date
+  const now = new Date();
+  const year = now.getFullYear();
+  const monthStr = String(now.getMonth() + 1).padStart(2, "0");
+  const dateStr = String(now.getDate()).padStart(2, "0");
+  const todayDateString = `${year}-${monthStr}-${dateStr}`;
+
+  const todayMatches = matches.filter(m => m.dateTime.startsWith(todayDateString));
+
+  let statusText = "";
+  let dateBadge = "";
+
+  if (todayMatches.length > 0) {
+    statusText = `今日赛程已开启，共 ${todayMatches.length} 场精彩对决`;
+    dateBadge = todayDateString;
+  } else {
+    // Find the next upcoming match day
+    const upcomingMatches = [...matches]
+      .filter(m => m.dateTime.split(" ")[0].localeCompare(todayDateString) > 0)
+      .sort((a, b) => a.dateTime.localeCompare(b.dateTime));
+
+    if (upcomingMatches.length > 0) {
+      statusText = "今日暂无比赛，展示下一场";
+      dateBadge = upcomingMatches[0].dateTime.split(" ")[0];
+    } else {
+      statusText = "全部小组赛程已结束";
+      dateBadge = todayDateString;
+    }
+  }
+
   return (
     <div className="space-y-4">
       {/* Search Grounding or header info */}
@@ -31,9 +61,9 @@ export default function MatchList({
           用赔率后验、身价对比、首发战力、FIFA ELO及攻防克制模型，生成赛前一键可知的专业比分判断报告。
         </p>
         <div className="mt-3.5 pt-3.5 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
-          <span>今日暂无比赛，展示下一场</span>
+          <span>{statusText}</span>
           <span className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded font-mono font-bold text-[10px]">
-            2026-06-12
+            {dateBadge}
           </span>
         </div>
       </div>

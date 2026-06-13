@@ -184,7 +184,6 @@ export default function App() {
                     Pro Engine
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-505 font-medium border-none">赛前数据交叉建模与双泊松动态仿真预测系统</p>
               </div>
             </div>
 
