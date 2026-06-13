@@ -708,31 +708,8 @@ ${match.actualScore
         {/* Chat Header */}
         <div className="bg-white border-b-2 border-slate-200 p-4 flex items-center justify-between text-slate-900">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#1a1a1a] border-2 border-slate-900 flex items-center justify-center shrink-0 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] overflow-hidden">
-              <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-                <rect x="7" y="0" width="2" height="1" fill="#d97757"/>
-                <rect x="6" y="1" width="4" height="1" fill="#d97757"/>
-                <rect x="3" y="2" width="10" height="8" fill="#d97757"/>
-                <rect x="2" y="3" width="12" height="6" fill="#d97757"/>
-                <rect x="1" y="4" width="14" height="4" fill="#d97757"/>
-                <rect x="4" y="4" width="3" height="3" fill="white"/>
-                <rect x="9" y="4" width="3" height="3" fill="white"/>
-                <rect x="5" y="5" width="2" height="2" fill="#1a1a1a"/>
-                <rect x="10" y="5" width="2" height="2" fill="#1a1a1a"/>
-                <rect x="5" y="5" width="1" height="1" fill="white"/>
-                <rect x="10" y="5" width="1" height="1" fill="white"/>
-                <rect x="5" y="8" width="1" height="1" fill="#1a1a1a"/>
-                <rect x="6" y="9" width="4" height="1" fill="#1a1a1a"/>
-                <rect x="10" y="8" width="1" height="1" fill="#1a1a1a"/>
-                <rect x="2" y="10" width="2" height="4" fill="#d97757"/>
-                <rect x="1" y="13" width="2" height="1" fill="#d97757"/>
-                <rect x="5" y="10" width="2" height="5" fill="#d97757"/>
-                <rect x="4" y="14" width="2" height="1" fill="#d97757"/>
-                <rect x="9" y="10" width="2" height="5" fill="#d97757"/>
-                <rect x="9" y="14" width="2" height="1" fill="#d97757"/>
-                <rect x="12" y="10" width="2" height="4" fill="#d97757"/>
-                <rect x="13" y="13" width="2" height="1" fill="#d97757"/>
-              </svg>
+            <div className="w-7 h-7 rounded-lg bg-yellow-400 border border-slate-900 flex items-center justify-center text-slate-950">
+              <Bot className="w-4 h-4" />
             </div>
             <div>
               <h4 className="text-xs font-black text-slate-900">AI 战术大师实时对谈</h4>
@@ -808,38 +785,8 @@ ${match.actualScore
                   {msg.text}
                 </div>
                 {msg.role === "user" && (
-                  <div className="w-7 h-7 rounded-lg bg-yellow-400 border-2 border-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] overflow-hidden">
-                    {/* pixel cat */}
-                    <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-                      {/* ears */}
-                      <rect x="2" y="0" width="3" height="3" fill="#1e293b"/>
-                      <rect x="3" y="1" width="1" height="1" fill="#f9a8d4"/>
-                      <rect x="11" y="0" width="3" height="3" fill="#1e293b"/>
-                      <rect x="12" y="1" width="1" height="1" fill="#f9a8d4"/>
-                      {/* head */}
-                      <rect x="2" y="3" width="12" height="7" fill="#1e293b"/>
-                      <rect x="1" y="4" width="14" height="5" fill="#1e293b"/>
-                      {/* eyes */}
-                      <rect x="4" y="5" width="3" height="2" fill="#facc15"/>
-                      <rect x="9" y="5" width="3" height="2" fill="#facc15"/>
-                      <rect x="5" y="5" width="1" height="2" fill="#1e293b"/>
-                      <rect x="10" y="5" width="1" height="2" fill="#1e293b"/>
-                      {/* nose */}
-                      <rect x="7" y="8" width="2" height="1" fill="#f9a8d4"/>
-                      {/* whiskers */}
-                      <rect x="1" y="8" width="4" height="1" fill="#94a3b8"/>
-                      <rect x="11" y="8" width="4" height="1" fill="#94a3b8"/>
-                      <rect x="1" y="7" width="3" height="1" fill="#94a3b8"/>
-                      <rect x="12" y="7" width="3" height="1" fill="#94a3b8"/>
-                      {/* mouth */}
-                      <rect x="6" y="9" width="1" height="1" fill="#94a3b8"/>
-                      <rect x="9" y="9" width="1" height="1" fill="#94a3b8"/>
-                      {/* body */}
-                      <rect x="3" y="10" width="10" height="5" fill="#1e293b"/>
-                      {/* tail */}
-                      <rect x="13" y="11" width="2" height="1" fill="#1e293b"/>
-                      <rect x="14" y="12" width="2" height="2" fill="#1e293b"/>
-                    </svg>
+                  <div className="w-7 h-7 rounded-lg bg-yellow-400 border-2 border-slate-900 flex items-center justify-center text-slate-950 shrink-0 mt-0.5 font-black text-[10px] shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
+                    U
                   </div>
                 )}
               </div>
@@ -847,32 +794,8 @@ ${match.actualScore
           )}
           {chatLoading && (
             <div className="flex gap-2.5 justify-start animate-pulse">
-              <div className="w-7 h-7 rounded-lg bg-[#1a1a1a] border-2 border-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] overflow-hidden">
-                {/* Clawd - pixel monster */}
-                <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
-                  <rect x="7" y="0" width="2" height="1" fill="#d97757"/>
-                  <rect x="6" y="1" width="4" height="1" fill="#d97757"/>
-                  <rect x="3" y="2" width="10" height="8" fill="#d97757"/>
-                  <rect x="2" y="3" width="12" height="6" fill="#d97757"/>
-                  <rect x="1" y="4" width="14" height="4" fill="#d97757"/>
-                  <rect x="4" y="4" width="3" height="3" fill="white"/>
-                  <rect x="9" y="4" width="3" height="3" fill="white"/>
-                  <rect x="5" y="5" width="2" height="2" fill="#1a1a1a"/>
-                  <rect x="10" y="5" width="2" height="2" fill="#1a1a1a"/>
-                  <rect x="5" y="5" width="1" height="1" fill="white"/>
-                  <rect x="10" y="5" width="1" height="1" fill="white"/>
-                  <rect x="5" y="8" width="1" height="1" fill="#1a1a1a"/>
-                  <rect x="6" y="9" width="4" height="1" fill="#1a1a1a"/>
-                  <rect x="10" y="8" width="1" height="1" fill="#1a1a1a"/>
-                  <rect x="2" y="10" width="2" height="4" fill="#d97757"/>
-                  <rect x="1" y="13" width="2" height="1" fill="#d97757"/>
-                  <rect x="5" y="10" width="2" height="5" fill="#d97757"/>
-                  <rect x="4" y="14" width="2" height="1" fill="#d97757"/>
-                  <rect x="9" y="10" width="2" height="5" fill="#d97757"/>
-                  <rect x="9" y="14" width="2" height="1" fill="#d97757"/>
-                  <rect x="12" y="10" width="2" height="4" fill="#d97757"/>
-                  <rect x="13" y="13" width="2" height="1" fill="#d97757"/>
-                </svg>
+              <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
+                <Bot className="w-3.5 h-3.5" />
               </div>
               <div className="p-3 bg-white text-slate-900 border-2 border-slate-900 rounded-xl rounded-tl-none text-xs flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
                 <span className="w-1.5 h-1.5 bg-slate-900 rounded-full animate-bounce"></span>
