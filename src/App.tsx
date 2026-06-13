@@ -49,6 +49,8 @@ export default function App() {
   const [lastRefreshed, setLastRefreshed] = useState<string>("");
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
+  // Using pure CSS grid stretching and flexbox to align left/right heights.
+
   useEffect(() => {
     const now = new Date();
     const month = now.getMonth() + 1;
@@ -278,7 +280,7 @@ export default function App() {
         <div className="grid grid-cols-12 gap-6">
           
           {/* Left Column (Match List Search Bar) - takes 4 cols on lg, full on mobile */}
-          <div className="col-span-12 lg:col-span-4 pr-0 lg:pr-2">
+          <div className="col-span-12 lg:col-span-4 pr-0 lg:pr-2 lg:flex lg:flex-col lg:h-full">
             <MatchList
               matches={PRESET_MATCHES}
               teams={localTeams}
