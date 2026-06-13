@@ -35,7 +35,7 @@ const DEFAULT_FACTORS: MatchFactors = {
 export default function App() {
   // 1. Core state
   const [factors, setFactors] = useState<MatchFactors>(DEFAULT_FACTORS);
-  const [selectedMatchId, setSelectedMatchId] = useState<string>("match_001");
+  const [selectedMatchId, setSelectedMatchId] = useState<string>(PRESET_MATCHES[0]?.id || "");
   const [activeTab, setActiveTab] = useState<"predict" | "margins" | "expert" | "squad" | "sheet">("predict");
   
   // Storing copy of TEAMS in state so user can make dynamic live sandbox changes!
