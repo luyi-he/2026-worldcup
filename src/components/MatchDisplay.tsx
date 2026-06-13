@@ -492,20 +492,21 @@ export default function MatchDisplay({
                   >
                     {/* Top row: Date, Teams and Status Banner */}
                     <div className="flex items-center justify-between w-full">
-                      {/* Left side: Date & Teams */}
-                      <div className="flex items-center gap-3.5 shrink-0">
-                        <div className="text-center font-mono w-[4.5rem] shrink-0 border-r-2 border-slate-900 pr-3">
-                          <span className="text-[11px] text-slate-900 font-black block leading-tight whitespace-nowrap">{dateDisplay}</span>
-                          <span className="text-[10px] text-slate-500 mt-0.5 block font-mono font-bold whitespace-nowrap">{m.dateTime.split(" ")[1]}</span>
-                        </div>
+                      {/* Date */}
+                      <div className="text-center font-mono shrink-0 border-r-2 border-slate-900 pr-3">
+                        <span className="text-[11px] text-slate-900 font-black whitespace-nowrap">{dateDisplay} {m.dateTime.split(" ")[1]}</span>
+                      </div>
+                      
+                      {/* Teams (Centered) */}
+                      <div className="flex-1 flex justify-center px-2 overflow-hidden">
                         <div className="flex items-center gap-2 text-sm text-slate-900 font-black">
-                          <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
-                          <span className="truncate max-w-[85px]">{h.name}</span>
-                          <span className="text-xs px-2.5 py-1 rounded-sm bg-yellow-400 text-slate-900 font-mono font-black border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
+                          <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm shrink-0" />
+                          <span className="truncate max-w-[85px] text-right">{h.name}</span>
+                          <span className="text-xs px-2.5 py-1 rounded-sm bg-yellow-400 text-slate-900 font-mono font-black border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] shrink-0">
                             {m.actualScore!.home} : {m.actualScore!.away}
                           </span>
-                          <TeamFlag teamId={a.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
-                          <span className="truncate max-w-[85px]">{a.name}</span>
+                          <TeamFlag teamId={a.id} className="w-5.5 h-3.5 shadow-sm rounded-sm shrink-0" />
+                          <span className="truncate max-w-[85px] text-left">{a.name}</span>
                         </div>
                       </div>
 
@@ -553,7 +554,7 @@ export default function MatchDisplay({
                           ) : isAnyScoreHit ? (
                             <span className="text-[9.5px] font-bold text-slate-900 bg-slate-50 border border-slate-900 px-1 py-0.5 rounded leading-none shrink-0 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">策略补防中</span>
                           ) : (
-                            <span className="text-[9.5px] font-medium text-slate-400 whitespace-nowrap">未中</span>
+                            <span className="text-[9.5px] font-medium text-slate-400 bg-slate-50 border border-slate-200 px-1 py-0.5 rounded leading-none shrink-0 shadow-[1px_1px_0px_0px_rgba(15,23,42,0.15)] whitespace-nowrap">未中</span>
                           )}
                         </div>
                       </div>
