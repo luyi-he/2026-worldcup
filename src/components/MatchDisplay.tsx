@@ -361,9 +361,10 @@ export default function MatchDisplay({
           const actualDiff = m.actualScore!.home - m.actualScore!.away;
           const actualResult = actualDiff > 0 ? "home" : actualDiff === 0 ? "draw" : "away";
 
-          const predResult = (pred.homeWinProb > pred.drawProb && pred.homeWinProb > pred.awayWinProb)
+          const [predHomeGoals, predAwayGoals] = pred.recommendedScores.primary.split("-").map(Number);
+          const predResult = predHomeGoals > predAwayGoals
             ? "home"
-            : (pred.drawProb > pred.homeWinProb && pred.drawProb > pred.awayWinProb)
+            : predHomeGoals === predAwayGoals
               ? "draw"
               : "away";
 
