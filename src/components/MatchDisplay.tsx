@@ -508,46 +508,46 @@ export default function MatchDisplay({
                     </div>
 
                     {/* Middle: Predictions & Odds */}
-                    <div className="grid grid-cols-3 gap-2.5 flex-1 w-full text-center md:text-left md:ml-10 text-xs">
-                      <div>
-                        <span className="text-[10px] text-slate-400 block font-medium">方向判断</span>
-                        <div className="flex items-center justify-center md:justify-start gap-1 font-semibold mt-0.5">
+                    <div className="flex flex-col md:flex-row flex-1 w-full text-center md:text-left md:ml-8 text-xs gap-3 md:gap-6 justify-between">
+                      <div className="flex-1 shrink-0">
+                        <span className="text-[10px] text-slate-500 block font-bold">方向判断</span>
+                        <div className="flex items-center justify-center md:justify-start gap-1.5 font-semibold mt-0.5">
                           {isDirectionCorrect ? (
                             <>
                               <CheckCircle2 className="w-4 h-4 text-slate-900 shrink-0" />
-                              <span className="text-slate-900 font-extrabold">命中首推方向</span>
+                              <span className="text-slate-900 font-extrabold whitespace-nowrap">命中首推方向</span>
                             </>
                           ) : (
                             <>
                               <XCircle className="w-4 h-4 text-slate-400 shrink-0" />
-                              <span className="text-slate-500 font-semibold text-[11px]">方向偏差</span>
+                              <span className="text-slate-500 font-semibold text-[11px] whitespace-nowrap">方向偏差</span>
                             </>
                           )}
                         </div>
                       </div>
 
-                      <div>
-                        <span className="text-[10px] text-slate-400 block font-medium">主推比分</span>
+                      <div className="flex-1 shrink-0">
+                        <span className="text-[10px] text-slate-500 block font-bold">主推比分</span>
                         <div className="flex items-center justify-center md:justify-start gap-1.5 mt-0.5">
-                          <span className="font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded leading-none">
+                          <span className="font-mono font-bold text-slate-900 bg-white border border-slate-900 px-1.5 py-0.5 rounded leading-none shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">
                             {pred.recommendedScores.primary}
                           </span>
                           {isExactHit ? (
-                            <span className="text-[9.5px] font-black text-indigo-700 bg-indigo-50 border border-indigo-200 px-1 py-0.5 rounded leading-none shrink-0 animate-pulse">比分直中!</span>
+                            <span className="text-[9.5px] font-black text-slate-900 bg-yellow-400 border border-slate-900 px-1 py-0.5 rounded leading-none shrink-0 animate-pulse shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">比分直中!</span>
                           ) : isAnyScoreHit ? (
-                            <span className="text-[9.5px] font-bold text-pink-700 bg-pink-50 border border-pink-200 px-1 py-0.5 rounded leading-none shrink-0">策略补防中</span>
+                            <span className="text-[9.5px] font-bold text-slate-900 bg-slate-50 border border-slate-900 px-1 py-0.5 rounded leading-none shrink-0 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">策略补防中</span>
                           ) : (
-                            <span className="text-[9.5px] font-medium text-slate-400">未中</span>
+                            <span className="text-[9.5px] font-medium text-slate-400 whitespace-nowrap">未中</span>
                           )}
                         </div>
                       </div>
 
-                      <div>
-                        <span className="text-[10px] text-slate-400 block font-medium">策略支持集</span>
-                        <div className="flex items-center justify-center md:justify-start gap-1 mt-0.5 font-mono text-[9.5px] text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap">
-                          <span>稳:{pred.recommendedScores.stable}</span>
+                      <div className="flex-1 shrink-0">
+                        <span className="text-[10px] text-slate-500 block font-bold">策略支持集</span>
+                        <div className="flex items-center justify-center md:justify-start gap-1 mt-0.5 font-mono text-[9.5px] text-slate-500 whitespace-nowrap">
+                          <span className="bg-slate-50 border border-slate-200 px-1 rounded text-slate-700 font-semibold">稳:{pred.recommendedScores.stable}</span>
                           <span>•</span>
-                          <span>博:{pred.recommendedScores.aggressive}</span>
+                          <span className="bg-slate-50 border border-slate-200 px-1 rounded text-slate-700 font-semibold">博:{pred.recommendedScores.aggressive}</span>
                         </div>
                       </div>
                     </div>
