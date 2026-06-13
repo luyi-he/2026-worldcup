@@ -477,8 +477,8 @@ export default function MatchDisplay({
               </div>
             </div>
 
-            {/* Detailed Game Review List */}
-            <div className="space-y-3">
+            {/* Detailed Game Review List — fixed height, scrollable */}
+            <div className="overflow-y-auto max-h-[680px] space-y-3 pr-1">
               {stats.map(({ match: m, home: h, away: a, prediction: pred, isDirectionCorrect, isExactHit, isAnyScoreHit, actualScoreStr }) => {
                 const dateObj = new Date(m.dateTime.replace(" ", "T"));
                 const month = dateObj.getMonth() + 1;
