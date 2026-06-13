@@ -46,6 +46,10 @@ export default function ExpertRead({
   const [showKeyInput, setShowKeyInput] = useState<boolean>(false);
   const configRef = React.useRef<HTMLDivElement>(null);
 
+  // Connection testing states
+  const [testLoading, setTestLoading] = useState<boolean>(false);
+  const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
+
   // 2. AGI Analysis States
   const [agiReview, setAgiReview] = useState<ExpertReview | null>(null);
   const [agiLoading, setAgiLoading] = useState<boolean>(false);
@@ -117,6 +121,92 @@ export default function ExpertRead({
     setSavedModel("");
     setAgiReview(null);
     setChatMessages([]);
+  };
+
+  // Clear test connection states on config panel toggle or input change
+  useEffect(() => {
+    setTestResult(null);
+    setTestLoading(false);
+  }, [showKeyInput]);
+
+  useEffect(() => {
+    setTestResult(null);
+  }, [apiKeyInput, apiProvider, apiBaseUrl, apiModel]);
+
+  // Test connection to the selected API provider using current input values
+  const handleTestConnection = async () => {
+    if (!apiKeyInput.trim()) {
+      setTestResult({ success: false, message: "请输入 API Key 后再进行测试。" });
+      return;
+    }
+    setTestLoading(true);
+    setTestResult(null);
+
+    try {
+      if (apiProvider === "gemini") {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKeyInput.trim()}`;
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: "ping" }] }]
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          const errMsg = errData?.error?.message || `HTTP 状态码 ${response.status}`;
+          throw new Error(errMsg);
+        }
+
+        const data = await response.json();
+        if (data.candidates && data.candidates.length > 0) {
+          setTestResult({ success: true, message: "Gemini API 连通性测试成功！您的 Key 可以正常使用。" });
+        } else {
+          throw new Error("接口未返回有效候选回答。");
+        }
+      } else {
+        const baseUrl = apiBaseUrl.trim() || "https://api.deepseek.com/v1";
+        const modelName = apiModel.trim() || "deepseek-chat";
+        const url = `${baseUrl}/chat/completions`;
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKeyInput.trim()}`
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: [{ role: "user", content: "ping" }],
+            max_tokens: 5
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          const errMsg = errData?.error?.message || `HTTP 状态码 ${response.status}`;
+          throw new Error(errMsg);
+        }
+
+        const data = await response.json();
+        if (data.choices && data.choices.length > 0) {
+          setTestResult({ success: true, message: `自定义 API (${modelName}) 连通性测试成功！您的 Key 可以正常使用。` });
+        } else {
+          throw new Error("接口未返回有效对话选择项。");
+        }
+      }
+    } catch (error: any) {
+      console.error("Test connection error:", error);
+      setTestResult({
+        success: false,
+        message: `测试失败: ${error.message || "请求发送失败，请检查网络或 Base URL 格式是否正确。"}`
+      });
+    } finally {
+      setTestLoading(false);
+    }
   };
 
   // Generate AGI Tactical Report via selected API Provider
@@ -457,24 +547,54 @@ export default function ExpertRead({
               </div>
             )}
             
-            <span className="text-[10px] text-slate-400 mt-1 block leading-relaxed">
+            {testResult && (
+              <div className={`text-xs p-3 rounded-lg border ${
+                testResult.success 
+                  ? "bg-emerald-50 border-emerald-250 text-emerald-800" 
+                  : "bg-rose-50 border-rose-250 text-rose-800"
+              } font-sans leading-relaxed mt-2 animate-fade-in`}>
+                <strong>{testResult.success ? "🟢 连通性测试成功" : "🔴 连通性测试失败"}</strong>
+                <p className="mt-1">{testResult.message}</p>
+              </div>
+            )}
+            <span className="text-[10px] text-slate-400 mt-2 block leading-relaxed">
               注意：API 密钥及接口参数仅安全保存在您的本地浏览器中（LocalStorage）。所有 API 请求均在本地浏览器发起，直接连接您所配置的服务器，不经过任何中间服务器，确保个人或企业密钥安全。
             </span>
           </div>
 
-          <div className="flex justify-end gap-2 text-xs">
-            <button
-              onClick={() => setShowKeyInput(false)}
-              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition-colors cursor-pointer font-semibold"
-            >
-              取消
-            </button>
-            <button
-              onClick={handleSaveSettings}
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold transition-colors cursor-pointer"
-            >
-              保存配置并启用
-            </button>
+          <div className="flex justify-between items-center text-xs">
+            <div>
+              <button
+                onClick={handleTestConnection}
+                disabled={testLoading || !apiKeyInput.trim()}
+                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-slate-700 hover:text-emerald-800 border border-slate-200 hover:border-emerald-300 rounded font-semibold transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                {testLoading ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+                    测试中...
+                  </>
+                ) : (
+                  <>
+                    🧪 测试连通性
+                  </>
+                )}
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowKeyInput(false)}
+                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600 transition-colors cursor-pointer font-semibold"
+              >
+                取消
+              </button>
+              <button
+                onClick={handleSaveSettings}
+                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold transition-colors cursor-pointer"
+              >
+                保存配置并启用
+              </button>
+            </div>
           </div>
         </div>
       )}
