@@ -769,8 +769,26 @@ ${match.actualScore
                 className={`flex gap-2.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 {msg.role === "model" && (
-                  <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
-                    <Bot className="w-3.5 h-3.5" />
+                  <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] overflow-hidden">
+                    <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
+                      {/* antenna */}
+                      <rect x="4" y="0" width="2" height="1" fill="#facc15"/>
+                      {/* head */}
+                      <rect x="2" y="1" width="6" height="4" fill="#facc15"/>
+                      {/* eyes */}
+                      <rect x="3" y="2" width="1" height="1" fill="#0f172a"/>
+                      <rect x="6" y="2" width="1" height="1" fill="#0f172a"/>
+                      {/* mouth */}
+                      <rect x="3" y="4" width="4" height="1" fill="#0f172a"/>
+                      {/* body */}
+                      <rect x="2" y="5" width="6" height="3" fill="#facc15"/>
+                      {/* arms */}
+                      <rect x="0" y="5" width="2" height="2" fill="#facc15"/>
+                      <rect x="8" y="5" width="2" height="2" fill="#facc15"/>
+                      {/* legs */}
+                      <rect x="2" y="8" width="2" height="2" fill="#facc15"/>
+                      <rect x="6" y="8" width="2" height="2" fill="#facc15"/>
+                    </svg>
                   </div>
                 )}
                 <div
@@ -783,8 +801,21 @@ ${match.actualScore
                   {msg.text}
                 </div>
                 {msg.role === "user" && (
-                  <div className="w-7 h-7 rounded-lg bg-yellow-400 border-2 border-slate-900 flex items-center justify-center text-slate-950 shrink-0 mt-0.5 font-black text-[10px] shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
-                    U
+                  <div className="w-7 h-7 rounded-lg bg-yellow-400 border-2 border-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] overflow-hidden">
+                    <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
+                      {/* head */}
+                      <rect x="3" y="0" width="4" height="4" fill="#0f172a"/>
+                      {/* hair */}
+                      <rect x="2" y="0" width="6" height="1" fill="#0f172a"/>
+                      {/* eyes */}
+                      <rect x="3" y="2" width="1" height="1" fill="#facc15"/>
+                      <rect x="6" y="2" width="1" height="1" fill="#facc15"/>
+                      {/* body */}
+                      <rect x="2" y="4" width="6" height="4" fill="#0f172a"/>
+                      {/* legs */}
+                      <rect x="2" y="8" width="2" height="2" fill="#0f172a"/>
+                      <rect x="6" y="8" width="2" height="2" fill="#0f172a"/>
+                    </svg>
                   </div>
                 )}
               </div>
@@ -792,8 +823,19 @@ ${match.actualScore
           )}
           {chatLoading && (
             <div className="flex gap-2.5 justify-start animate-pulse">
-              <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
-                <Bot className="w-3.5 h-3.5" />
+              <div className="w-7 h-7 rounded-lg bg-slate-900 border-2 border-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] overflow-hidden">
+                <svg width="20" height="20" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" shapeRendering="crispEdges">
+                  <rect x="4" y="0" width="2" height="1" fill="#facc15"/>
+                  <rect x="2" y="1" width="6" height="4" fill="#facc15"/>
+                  <rect x="3" y="2" width="1" height="1" fill="#0f172a"/>
+                  <rect x="6" y="2" width="1" height="1" fill="#0f172a"/>
+                  <rect x="3" y="4" width="4" height="1" fill="#0f172a"/>
+                  <rect x="2" y="5" width="6" height="3" fill="#facc15"/>
+                  <rect x="0" y="5" width="2" height="2" fill="#facc15"/>
+                  <rect x="8" y="5" width="2" height="2" fill="#facc15"/>
+                  <rect x="2" y="8" width="2" height="2" fill="#facc15"/>
+                  <rect x="6" y="8" width="2" height="2" fill="#facc15"/>
+                </svg>
               </div>
               <div className="p-3 bg-white text-slate-900 border-2 border-slate-900 rounded-xl rounded-tl-none text-xs flex items-center gap-1.5 font-bold shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
                 <span className="w-1.5 h-1.5 bg-slate-900 rounded-full animate-bounce"></span>
