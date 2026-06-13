@@ -2,37 +2,28 @@
 <img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
 </div>
 
-# 🏆 2026 World Cup Predictor (Gemini AI Powered)
+# 🏆 2026 World Cup Predictor
 
-An advanced web application that utilizes double Poisson regression models combined with Gemini AI (powered by Google GenAI SDK) to analyze, simulate, and predict match strategic outcomes for the 2026 World Cup.
+A pure frontend, zero-config web application that utilizes double Poisson regression models and simulated expert reviews to analyze, simulate, and predict match strategic outcomes for the 2026 World Cup.
+
+> ⚡ **Zero Backend, Zero API Keys**: The entire prediction and strategic analysis engine runs entirely in the user's browser. No API keys, database, or backend server are required. Clone and deploy instantly!
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🚀 Local Development (How to Open)
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v18 or higher recommended)
 - [npm](https://www.npmjs.com/) (comes with Node.js)
 
 ### Step 1: Install Dependencies
-Clone this repository to your local machine, open your terminal in the project directory, and run:
+Open your terminal in the project directory and run:
 ```bash
 npm install
 ```
 
-### Step 2: Configure Environment Variables
-1. Copy the `.env.example` file to create a new `.env` file:
-   ```bash
-   cp .env.example .env
-   ```
-2. Open the `.env` file and set your Gemini API key:
-   ```env
-   GEMINI_API_KEY=your_actual_gemini_api_key_here
-   ```
-   > 💡 **Note**: If you don't configure a `GEMINI_API_KEY`, the application will gracefully fall back to high-quality simulated tactical analysis reports.
-
-### Step 3: Run the App
-Start the development server with Vite middleware:
+### Step 2: Start Development Server
+Run the local Vite development server:
 ```bash
 npm run dev
 ```
@@ -41,55 +32,63 @@ Open your browser and navigate to:
 
 ---
 
-## 📦 Production Build & Run Locally
+## 📦 How to Build and Preview Locally
 
-Before deploying or running in production, build the static client files and compile the Express server:
+To compile and bundle the React code into optimized, static HTML/JS/CSS files:
 
 1. **Build the project:**
    ```bash
    npm run build
    ```
-   This will bundle frontend assets using Vite and backend code using `esbuild` into the `dist/` directory.
+   This compiles the typescript and bundles frontend assets using Vite into the `dist/` directory.
 
-2. **Start the production server:**
+2. **Preview the production build locally:**
    ```bash
-   npm start
+   npm run preview
    ```
-   The app will run in production mode on **[http://localhost:3000](http://localhost:3000)** (or the port defined by your environment).
+   This serves the static `dist/` folder on **[http://localhost:3000](http://localhost:3000)** so you can test the production build locally.
 
 ---
 
 ## ☁️ Deployment Guide
 
-Since this project has a Node.js/Express backend that handles API requests (calling Gemini API) and serves React static files, it must be deployed to a platform that supports Node.js hosting.
+Since this is a **pure static web application**, you can host it for free on any static hosting platform. No backend server or environment variables are required!
 
-### Option 1: Deploy to Render (Recommended & Free Tier Available)
-1. Sign up/Log in to [Render](https://render.com/).
-2. Click **New** -> **Web Service**.
-3. Connect your GitHub repository.
-4. Configure the service settings:
-   - **Name**: `worldcup-2026-predictor`
-   - **Environment**: `Node`
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
-5. Click **Advanced** and add the following **Environment Variables**:
-   - `GEMINI_API_KEY`: *(Your Gemini API key)*
-   - `NODE_ENV`: `production`
-6. Click **Deploy Web Service**. Render will automatically build and serve your app.
+### Option 1: Deploy to Vercel (Recommended & Easiest)
+1. Sign up/Log in to [Vercel](https://vercel.com/).
+2. Click **Add New** -> **Project**.
+3. Import your GitHub repository.
+4. Vercel will automatically detect the **Vite** project.
+5. Keep default settings:
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+6. Click **Deploy**. Your site will be live in seconds!
 
-### Option 2: Deploy to Railway
-1. Sign up/Log in to [Railway](https://railway.app/).
-2. Click **New Project** -> **Deploy from GitHub repo**.
+### Option 2: Deploy to Netlify
+1. Log in to [Netlify](https://www.netlify.com/).
+2. Click **Add new site** -> **Import an existing project** -> Choose **GitHub**.
 3. Select your repository.
-4. Railway will automatically detect the Node.js project.
-5. Go to the project **Variables** tab and add:
-   - `GEMINI_API_KEY`: *(Your Gemini API key)*
-   - `NODE_ENV`: `production`
-6. Under **Settings**, make sure the Start command is blank (it will automatically run `npm start` from `package.json`).
-7. Railway will generate a public URL for your application.
+4. Configure settings:
+   - **Build command**: `npm run build`
+   - **Publish directory**: `dist`
+5. Click **Deploy site**.
 
-### Option 3: Deploy to Zeabur / Heroku / Fly.io
-The setup is identical for other Node.js PaaS platforms:
-- Build command: `npm run build`
-- Start command: `npm start`
-- Environment variables: `GEMINI_API_KEY` (required for live Gemini analyses).
+### Option 3: Deploy to GitHub Pages
+To publish the static site directly to your GitHub Pages:
+1. Install `gh-pages` helper utility:
+   ```bash
+   npm install -D gh-pages
+   ```
+2. Add the following scripts to your `package.json`:
+   ```json
+   "predeploy": "npm run build",
+   "deploy": "gh-pages -d dist"
+   ```
+3. Set the `base` configuration in `vite.config.ts` to your repository name:
+   ```typescript
+   base: '/2026-worldcup/'
+   ```
+4. Run:
+   ```bash
+   npm run deploy
+   ```
