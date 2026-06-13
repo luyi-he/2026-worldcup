@@ -1,6 +1,7 @@
 import { Team, Match, TacticsType, MatchFactors, PredictionResult } from "./types";
 
 export const TEAMS: Record<string, Team> = {
+  // === Group A ===
   MEX: {
     id: "MEX",
     name: "墨西哥",
@@ -65,6 +66,140 @@ export const TEAMS: Record<string, Team> = {
     mainPlayers: ["Tomáš Souček", "Patrik Schick", "Pavel Šulc"],
     elo: 1740
   },
+
+  // === Group B ===
+  CAN: {
+    id: "CAN",
+    name: "加拿大",
+    englishName: "Canada",
+    flag: "🇨🇦",
+    group: "B组",
+    marketValue: 180.50,
+    fifaRank: 30,
+    attackingRating: 78,
+    defendingRating: 73,
+    tacticsType: TacticsType.HIGH_PRESS,
+    tacticsName: "全能压迫",
+    tacticsDescription: "加拿大在马什带领下主打典型美式逼抢，擅长依靠戴维斯和戴维的超凡速度在由守转攻瞬间打穿对手。",
+    mainPlayers: ["Alphonso Davies", "Jonathan David", "Ismaël Koné"],
+    elo: 1788
+  },
+  BIH: {
+    id: "BIH",
+    name: "波黑",
+    englishName: "Bosnia and Herzegovina",
+    flag: "🇧🇦",
+    group: "B组",
+    marketValue: 112.30,
+    fifaRank: 64,
+    attackingRating: 71,
+    defendingRating: 72,
+    tacticsType: TacticsType.ROUTE_ONE,
+    tacticsName: "坚韧长传",
+    tacticsDescription: "波黑依靠坚韧的低位防守，断球后迅速长传寻找支点哲科，以身体对抗和二点球争抢制造威胁。",
+    mainPlayers: ["Edin Džeko", "Ermedin Demirović", "Nikola Katić"],
+    elo: 1595
+  },
+  QAT: {
+    id: "QAT",
+    name: "卡塔尔",
+    englishName: "Qatar",
+    flag: "🇶🇦",
+    group: "B组",
+    marketValue: 20.40,
+    fifaRank: 56,
+    attackingRating: 73,
+    defendingRating: 67,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "防守反击",
+    tacticsDescription: "卡塔尔在洛佩特吉的带领下强调中后场防守的紧密性，通过阿菲夫的个人创造力和阿里在禁区内的饰演实施高效反击。",
+    mainPlayers: ["Akram Afif", "Almoez Ali", "Hassan Al-Haydos"],
+    elo: 1421
+  },
+  SUI: {
+    id: "SUI",
+    name: "瑞士",
+    englishName: "Switzerland",
+    flag: "🇨🇭",
+    group: "B组",
+    marketValue: 282.50,
+    fifaRank: 19,
+    attackingRating: 80,
+    defendingRating: 81,
+    tacticsType: TacticsType.POSSESSION,
+    tacticsName: "稳健控球",
+    tacticsDescription: "瑞士球风老辣硬朗，以扎卡为攻防枢纽，在中后场建立极其稳定的控球体系，通过边中结合渐进推进。",
+    mainPlayers: ["Granit Xhaka", "Manuel Akanji", "Yann Sommer"],
+    elo: 1840
+  },
+
+  // === Group C ===
+  BRA: {
+    id: "BRA",
+    name: "巴西",
+    englishName: "Brazil",
+    flag: "🇧🇷",
+    group: "C组",
+    marketValue: 928.20,
+    fifaRank: 6,
+    attackingRating: 93,
+    defendingRating: 86,
+    tacticsType: TacticsType.WING_OVERLOAD,
+    tacticsName: "桑巴攻势",
+    tacticsDescription: "五星巴西崇尚个人技术与瞬间变速。进攻多处超载，维尼修斯等人具备极强的1v1爆破和撕碎低位大巴的能力。",
+    mainPlayers: ["Vinícius Júnior", "Neymar", "Bruno Guimarães"],
+    elo: 1991
+  },
+  MAR: {
+    id: "MAR",
+    name: "摩洛哥",
+    englishName: "Morocco",
+    flag: "🇲🇦",
+    group: "C组",
+    marketValue: 447.70,
+    fifaRank: 7,
+    attackingRating: 83,
+    defendingRating: 84,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "铁血防反",
+    tacticsDescription: "摩洛哥防守体系极为严密，依靠哈基米的边路推进和齐耶赫的精准传球发动致命反击。",
+    mainPlayers: ["Achraf Hakimi", "Hakim Ziyech", "Youssef En-Nesyri"],
+    elo: 1824
+  },
+  HAI: {
+    id: "HAI",
+    name: "海地",
+    englishName: "Haiti",
+    flag: "🇭🇹",
+    group: "C组",
+    marketValue: 15.60,
+    fifaRank: 83,
+    attackingRating: 68,
+    defendingRating: 65,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "爆发突袭",
+    tacticsDescription: "海地踢法简单直接，依赖锋线皮埃罗等人的身体素质和快速反突击速度，在守转攻瞬间依靠爆发力撕扯防线。",
+    mainPlayers: ["Frantzdy Pierrot", "Duckens Nazon", "Danley Jean Jacques"],
+    elo: 1548
+  },
+  SCO: {
+    id: "SCO",
+    name: "苏格兰",
+    englishName: "Scotland",
+    flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    group: "C组",
+    marketValue: 210.00,
+    fifaRank: 42,
+    attackingRating: 73,
+    defendingRating: 74,
+    tacticsType: TacticsType.ROUTE_ONE,
+    tacticsName: "英式轰炸",
+    tacticsDescription: "苏格兰秉承英伦传统球风，拼抢硬朗，主要通过罗伯逊的边路起球和麦克托米奈的后插上争抢头球制造威胁。",
+    mainPlayers: ["Andrew Robertson", "Scott McTominay", "John McGinn"],
+    elo: 1767
+  },
+
+  // === Group D ===
   USA: {
     id: "USA",
     name: "美国",
@@ -129,38 +264,338 @@ export const TEAMS: Record<string, Team> = {
     mainPlayers: ["Arda Güler", "Hakan Çalhanoğlu", "Kenan Yıldız"],
     elo: 1911
   },
-  BRA: {
-    id: "BRA",
-    name: "巴西",
-    englishName: "Brazil",
-    flag: "🇧🇷",
-    group: "C组",
-    marketValue: 928.20,
-    fifaRank: 6,
-    attackingRating: 93,
-    defendingRating: 86,
-    tacticsType: TacticsType.WING_OVERLOAD,
-    tacticsName: "桑巴攻势",
-    tacticsDescription: "五星巴西崇尚个人技术与瞬间变速。进攻多处超载，维尼修斯等人具备极强的1v1爆破和撕碎低位大巴的能力。",
-    mainPlayers: ["Vinícius Júnior", "Neymar", "Bruno Guimarães"],
-    elo: 1991
+
+  // === Group E ===
+  GER: {
+    id: "GER",
+    name: "德国",
+    englishName: "Germany",
+    flag: "🇩🇪",
+    group: "E组",
+    marketValue: 947.00,
+    fifaRank: 10,
+    attackingRating: 91,
+    defendingRating: 85,
+    tacticsType: TacticsType.POSSESSION,
+    tacticsName: "空间渗透",
+    tacticsDescription: "德国队在中路拥有维尔茨和穆西亚拉的双核驱动，极致的小范围配合与无球跑动渗透能瞬间解构对手的阵地防线。",
+    mainPlayers: ["Florian Wirtz", "Jamal Musiala", "Kai Havertz"],
+    elo: 1925
   },
-  MAR: {
-    id: "MAR",
-    name: "摩洛哥",
-    englishName: "Morocco",
-    flag: "🇲🇦",
-    group: "C组",
-    marketValue: 447.70,
-    fifaRank: 7,
-    attackingRating: 83,
-    defendingRating: 84,
+  CUW: {
+    id: "CUW",
+    name: "库拉索",
+    englishName: "Curaçao",
+    flag: "🇨🇼",
+    group: "E组",
+    marketValue: 12.50,
+    fifaRank: 82,
+    attackingRating: 65,
+    defendingRating: 64,
     tacticsType: TacticsType.COUNTER_ATTACK,
-    tacticsName: "铁血防反",
-    tacticsDescription: "摩洛哥在2022世界杯四强后愈发成熟，防守体系极为严密，依靠哈基米的边路推进和齐耶赫的精准传球发动致命反击。",
-    mainPlayers: ["Achraf Hakimi", "Hakim Ziyech", "Youssef En-Nesyri"],
-    elo: 1824
+    tacticsName: "防守反击",
+    tacticsDescription: "作为中北美及加勒比海地区的黑马，库拉索以低位防守为主，依靠巴库纳兄弟在中场的拦截和传导进行快速反击。",
+    mainPlayers: ["Leandro Bacuna", "Juninho Bacuna", "Eloy Room"],
+    elo: 1434
   },
+  CIV: {
+    id: "CIV",
+    name: "科特迪瓦",
+    englishName: "Ivory Coast",
+    flag: "🇨🇮",
+    group: "E组",
+    marketValue: 522.10,
+    fifaRank: 33,
+    attackingRating: 81,
+    defendingRating: 79,
+    tacticsType: TacticsType.WING_OVERLOAD,
+    tacticsName: "大象冲击",
+    tacticsDescription: "科特迪瓦球员身体素质极其劲爆，擅长利用边路超载人数，依靠阿丁格拉等人的边路生吃能力为禁区内的哈勒创造抢点机会。",
+    mainPlayers: ["Franck Kessié", "Sébastien Haller", "Simon Adingra"],
+    elo: 1695
+  },
+  ECU: {
+    id: "ECU",
+    name: "厄瓜多尔",
+    englishName: "Ecuador",
+    flag: "🇪🇨",
+    group: "E组",
+    marketValue: 368.70,
+    fifaRank: 23,
+    attackingRating: 78,
+    defendingRating: 82,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "高原铁骑",
+    tacticsDescription: "厄瓜多尔拼抢极其硬朗，中场由凯塞多统领，具备极强的覆盖与拦截能力，在断球后利用边锋的绝对速度直接撕裂防区。",
+    mainPlayers: ["Moisés Caicedo", "Piero Hincapié", "Enner Valencia"],
+    elo: 1935
+  },
+
+  // === Group F ===
+  NED: {
+    id: "NED",
+    name: "荷兰",
+    englishName: "Netherlands",
+    flag: "🇳🇱",
+    group: "F组",
+    marketValue: 754.20,
+    fifaRank: 8,
+    attackingRating: 88,
+    defendingRating: 85,
+    tacticsType: TacticsType.POSSESSION,
+    tacticsName: "全攻全守",
+    tacticsDescription: "荷兰继承全攻全守哲学，依靠西蒙斯 and 加克波的创造力主导中前场，范迪克镇守后防线，攻守转换流畅高效。",
+    mainPlayers: ["Virgil van Dijk", "Cody Gakpo", "Xavi Simons"],
+    elo: 1948
+  },
+  JPN: {
+    id: "JPN",
+    name: "日本",
+    englishName: "Japan",
+    flag: "🇯🇵",
+    group: "F组",
+    marketValue: 270.85,
+    fifaRank: 18,
+    attackingRating: 82,
+    defendingRating: 80,
+    tacticsType: TacticsType.HIGH_PRESS,
+    tacticsName: "前场反抢",
+    tacticsDescription: "日本队极具凝聚力，前场压迫加快速攻防转换极为致命，边路爆点高频撕扯配合高水准地面过渡。",
+    mainPlayers: ["Takefusa Kubo", "Wataru Endo", "Daichi Kamada"],
+    elo: 1906
+  },
+  SWE: {
+    id: "SWE",
+    name: "瑞典",
+    englishName: "Sweden",
+    flag: "🇸🇪",
+    group: "F组",
+    marketValue: 406.08,
+    fifaRank: 38,
+    attackingRating: 84,
+    defendingRating: 76,
+    tacticsType: TacticsType.HIGH_PRESS,
+    tacticsName: "锋线狂飙",
+    tacticsDescription: "瑞典拥有约克雷斯和伊萨克组成的超强北欧双塔锋线，通过前场高强度的逼抢快速断球，依靠前锋的顶级个人能力直接摧毁防线。",
+    mainPlayers: ["Viktor Gyökeres", "Alexander Isak", "Dejan Kulusevski"],
+    elo: 1712
+  },
+  TUN: {
+    id: "TUN",
+    name: "突尼斯",
+    englishName: "Tunisia",
+    flag: "🇹🇳",
+    group: "F组",
+    marketValue: 50.30,
+    fifaRank: 45,
+    attackingRating: 69,
+    defendingRating: 72,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "迦太基鹰",
+    tacticsDescription: "突尼斯是一支典型的北非防守强队，注重在中后场构建极具对抗性的防线，通过斯希里的战术拦截切断对手渗透，寻找反击空隙。",
+    mainPlayers: ["Ellyes Skhiri", "Aïssa Laïdouni", "Youssef Msakni"],
+    elo: 1633
+  },
+
+  // === Group G ===
+  BEL: {
+    id: "BEL",
+    name: "比利时",
+    englishName: "Belgium",
+    flag: "🇧🇪",
+    group: "G组",
+    marketValue: 547.50,
+    fifaRank: 9,
+    attackingRating: 86,
+    defendingRating: 80,
+    tacticsType: TacticsType.POSSESSION,
+    tacticsName: "红魔控推",
+    tacticsDescription: "比利时以德布劳内为中场绝对大脑，通过精妙的传球和多维度带球组织进攻，多库等人在边路的撕裂能力极大扩展了门前宽度。",
+    mainPlayers: ["Kevin De Bruyne", "Romelu Lukaku", "Jérémy Doku"],
+    elo: 1893
+  },
+  EGY: {
+    id: "EGY",
+    name: "埃及",
+    englishName: "Egypt",
+    flag: "🇪🇬",
+    group: "G组",
+    marketValue: 130.40,
+    fifaRank: 29,
+    attackingRating: 79,
+    defendingRating: 72,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "法老闪击",
+    tacticsDescription: "埃及主打快速简洁的守转攻反击，依靠核心萨拉赫的个人超凡突破和内切射门，辅以马尔穆什的高速跑动，快速打击对手防区。",
+    mainPlayers: ["Mohamed Salah", "Mostafa Mohamed", "Omar Marmoush"],
+    elo: 1720
+  },
+  IRN: {
+    id: "IRN",
+    name: "伊朗",
+    englishName: "Iran",
+    flag: "🇮🇷",
+    group: "G组",
+    marketValue: 45.80,
+    fifaRank: 20,
+    attackingRating: 76,
+    defendingRating: 73,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "铁血防守",
+    tacticsDescription: "波斯铁骑身体强壮，在中后场建立极其坚固的低位防守。依靠阿兹蒙和塔雷米在锋线的双核策应，在断球后瞬间打出立体反击。",
+    mainPlayers: ["Mehdi Taremi", "Sardar Azmoun", "Alireza Jahanbakhsh"],
+    elo: 1772
+  },
+  NZL: {
+    id: "NZL",
+    name: "新西兰",
+    englishName: "New Zealand",
+    flag: "🇳🇿",
+    group: "G组",
+    marketValue: 25.40,
+    fifaRank: 90,
+    attackingRating: 66,
+    defendingRating: 68,
+    tacticsType: TacticsType.ROUTE_ONE,
+    tacticsName: "长传强轰",
+    tacticsDescription: "新西兰依靠克里斯·伍德的超强身体对抗与高空制空权，打法简单粗暴，频繁利用起球吊入禁区争抢第一与第二落点。",
+    mainPlayers: ["Chris Wood", "Liberato Cacace", "Sarpreet Singh"],
+    elo: 1450
+  },
+
+  // === Group H ===
+  ESP: {
+    id: "ESP",
+    name: "西班牙",
+    englishName: "Spain",
+    flag: "🇪🇸",
+    group: "H组",
+    marketValue: 1220.00,
+    fifaRank: 2,
+    attackingRating: 94,
+    defendingRating: 89,
+    tacticsType: TacticsType.POSSESSION,
+    tacticsName: "斗牛传控",
+    tacticsDescription: "西班牙在德拉富恩特带领下升级为立体传控，罗德里掌控中场节奏，亚马尔和尼科·威廉姆斯提供致命的边路爆破力。",
+    mainPlayers: ["Lamine Yamal", "Rodri", "Pedri"],
+    elo: 2010
+  },
+  CPV: {
+    id: "CPV",
+    name: "佛得角",
+    englishName: "Cape Verde",
+    flag: "🇨🇻",
+    group: "H组",
+    marketValue: 30.50,
+    fifaRank: 67,
+    attackingRating: 70,
+    defendingRating: 70,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "蓝鲨坚韧",
+    tacticsDescription: "佛得角具备出色的防守韧性与快速转换，利用门德斯和罗德里格斯等老将在前场的冲击速度撕开防守空档。",
+    mainPlayers: ["Ryan Mendes", "Garry Rodrigues", "Logan Costa"],
+    elo: 1578
+  },
+  KSA: {
+    id: "KSA",
+    name: "沙特阿拉伯",
+    englishName: "Saudi Arabia",
+    flag: "🇸🇦",
+    group: "H组",
+    marketValue: 22.80,
+    fifaRank: 61,
+    attackingRating: 71,
+    defendingRating: 68,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "绿鹰防守",
+    tacticsDescription: "沙特强调中场的高频跑动拦截与落位防守，以多沙里为反击主导，伺机在反击中通过技术能力进行快速渗透。",
+    mainPlayers: ["Salem Al-Dawsari", "Firas Al-Buraikan", "Saud Abdulhamid"],
+    elo: 1560
+  },
+  URU: {
+    id: "URU",
+    name: "乌拉圭",
+    englishName: "Uruguay",
+    flag: "🇺🇾",
+    group: "H组",
+    marketValue: 359.30,
+    fifaRank: 16,
+    attackingRating: 84,
+    defendingRating: 82,
+    tacticsType: TacticsType.HIGH_PRESS,
+    tacticsName: "疯狗压迫",
+    tacticsDescription: "贝尔萨麾下的乌拉圭执行全场高强度的疯狗式人盯人压迫，依赖巴尔韦德的无限体能和努涅斯的反复穿插快速抢占球权。",
+    mainPlayers: ["Federico Valverde", "Darwin Núñez", "Ronald Araújo"],
+    elo: 1892
+  },
+
+  // === Group I ===
+  FRA: {
+    id: "FRA",
+    name: "法国",
+    englishName: "France",
+    flag: "🇫🇷",
+    group: "I组",
+    marketValue: 1520.00,
+    fifaRank: 3,
+    attackingRating: 95,
+    defendingRating: 88,
+    tacticsType: TacticsType.HIGH_PRESS,
+    tacticsName: "闪电战术",
+    tacticsDescription: "法国拥有世界最豪华的锋线配置，姆巴佩的绝对速度配合格列兹曼的战术串联，前场高压与反击速度无人能挡。",
+    mainPlayers: ["Kylian Mbappé", "Antoine Griezmann", "Aurélien Tchouaméni"],
+    elo: 2063
+  },
+  SEN: {
+    id: "SEN",
+    name: "塞内加尔",
+    englishName: "Senegal",
+    flag: "🇸🇳",
+    group: "I组",
+    marketValue: 478.10,
+    fifaRank: 15,
+    attackingRating: 79,
+    defendingRating: 80,
+    tacticsType: TacticsType.ROUTE_ONE,
+    tacticsName: "强硬压迫",
+    tacticsDescription: "塞内加尔兼具精湛身体条件与欧化技战术，在后场防守坚韧，中前场通过大跨步直传以及爆发力寻找射门点。",
+    mainPlayers: ["Sadio Mané", "Nicolas Jackson", "Pape Matar Sarr"],
+    elo: 1867
+  },
+  IRQ: {
+    id: "IRQ",
+    name: "伊拉克",
+    englishName: "Iraq",
+    flag: "🇮🇶",
+    group: "I组",
+    marketValue: 15.40,
+    fifaRank: 57,
+    attackingRating: 70,
+    defendingRating: 67,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "美索狂攻",
+    tacticsDescription: "伊拉克依靠强壮的身体对抗和硬朗的边路起球，核心前锋胡塞因在禁区内具备极强的抢点争顶得分能力。",
+    mainPlayers: ["Aymen Hussein", "Ali Jasim", "Ibrahim Bayesh"],
+    elo: 1618
+  },
+  NOR: {
+    id: "NOR",
+    name: "挪威",
+    englishName: "Norway",
+    flag: "🇳🇴",
+    group: "I组",
+    marketValue: 589.90,
+    fifaRank: 31,
+    attackingRating: 87,
+    defendingRating: 77,
+    tacticsType: TacticsType.POSSESSION,
+    tacticsName: "双星闪耀",
+    tacticsDescription: "挪威战术极其明确，厄德高在中路负责精准直塞与分球，锋线霸王哈兰德负责无视防守的身体生吃和恐怖终结。",
+    mainPlayers: ["Erling Haaland", "Martin Ødegaard", "Oscar Bobb"],
+    elo: 1917
+  },
+
+  // === Group J ===
   ARG: {
     id: "ARG",
     name: "阿根廷",
@@ -193,38 +628,106 @@ export const TEAMS: Record<string, Team> = {
     mainPlayers: ["Riyad Mahrez", "Ismaël Bennacer", "Amine Gouiri"],
     elo: 1760
   },
-  JPN: {
-    id: "JPN",
-    name: "日本",
-    englishName: "Japan",
-    flag: "🇯🇵",
-    group: "F组",
-    marketValue: 270.85,
-    fifaRank: 18,
-    attackingRating: 82,
-    defendingRating: 80,
+  AUT: {
+    id: "AUT",
+    name: "奥地利",
+    englishName: "Austria",
+    flag: "🇦🇹",
+    group: "J组",
+    marketValue: 245.20,
+    fifaRank: 25,
+    attackingRating: 80,
+    defendingRating: 79,
     tacticsType: TacticsType.HIGH_PRESS,
-    tacticsName: "前场反抢",
-    tacticsDescription: "日本队极具凝聚力，前场压迫加快速攻防转换极为致命，边路爆点高频撕扯配合高水准地面过渡。",
-    mainPlayers: ["Takefusa Kubo", "Wataru Endo", "Daichi Kamada"],
-    elo: 1906
+    tacticsName: "高强红牛",
+    tacticsDescription: "奥地利彻底贯彻朗尼克的红牛式前场高压逼抢，强调极其迅速的前插与攻守瞬间的就地围抢。",
+    mainPlayers: ["David Alaba", "Marcel Sabitzer", "Konrad Laimer"],
+    elo: 1830
   },
-  NED: {
-    id: "NED",
-    name: "荷兰",
-    englishName: "Netherlands",
-    flag: "🇳🇱",
-    group: "F组",
-    marketValue: 754.20,
-    fifaRank: 8,
-    attackingRating: 88,
-    defendingRating: 85,
+  JOR: {
+    id: "JOR",
+    name: "约旦",
+    englishName: "Jordan",
+    flag: "🇯🇴",
+    group: "J组",
+    marketValue: 18.20,
+    fifaRank: 63,
+    attackingRating: 72,
+    defendingRating: 69,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "快速冲杀",
+    tacticsDescription: "约旦队战术统一，注重在防守时落位低位，依靠锋线塔马里的个人速度与盘带能力制造单人反击威胁。",
+    mainPlayers: ["Musa Al-Taamari", "Yazan Al-Naimat", "Ali Olwan"],
+    elo: 1685
+  },
+
+  // === Group K ===
+  POR: {
+    id: "POR",
+    name: "葡萄牙",
+    englishName: "Portugal",
+    flag: "🇵🇹",
+    group: "K组",
+    marketValue: 1010.00,
+    fifaRank: 5,
+    attackingRating: 92,
+    defendingRating: 87,
     tacticsType: TacticsType.POSSESSION,
-    tacticsName: "全攻全守",
-    tacticsDescription: "荷兰继承全攻全守哲学，依靠西蒙斯和加克波的创造力主导中前场，范迪克镇守后防线，攻守转换流畅高效。",
-    mainPlayers: ["Virgil van Dijk", "Cody Gakpo", "Xavi Simons"],
-    elo: 1948
+    tacticsName: "五盾控局",
+    tacticsDescription: "葡萄牙打法极为细腻，全场强调通过B费和B席掌控战局，锋线C罗依然是高效终结者，莱奥提供边路极限纵深。",
+    mainPlayers: ["Cristiano Ronaldo", "Bruno Fernandes", "Bernardo Silva"],
+    elo: 1986
   },
+  COD: {
+    id: "COD",
+    name: "刚果民主共和国",
+    englishName: "DR Congo",
+    flag: "🇨🇩",
+    group: "K组",
+    marketValue: 143.90,
+    fifaRank: 46,
+    attackingRating: 74,
+    defendingRating: 73,
+    tacticsType: TacticsType.ROUTE_ONE,
+    tacticsName: "刚果狂飙",
+    tacticsDescription: "刚果民共注重防守端的拦截身板，利用维萨和沙迪基在锋线的速度和冲击力在反击中实施大跨步直袭。",
+    mainPlayers: ["Yoane Wissa", "Chancel Mbemba", "Noah Sadiki"],
+    elo: 1661
+  },
+  UZB: {
+    id: "UZB",
+    name: "乌兹别克斯坦",
+    englishName: "Uzbekistan",
+    flag: "🇺🇿",
+    group: "K组",
+    marketValue: 85.33,
+    fifaRank: 50,
+    attackingRating: 73,
+    defendingRating: 72,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "中亚狼群",
+    tacticsDescription: "乌兹别克拼抢坚硬，防守极为严密。中场防守落位深，反击主要寻找锋线老将肖穆罗多夫作为支点展开进攻。",
+    mainPlayers: ["Abdukodir Khusanov", "Eldor Shomurodov", "Oston Urunov"],
+    elo: 1718
+  },
+  COL: {
+    id: "COL",
+    name: "哥伦比亚",
+    englishName: "Colombia",
+    flag: "🇨🇴",
+    group: "K组",
+    marketValue: 302.35,
+    fifaRank: 13,
+    attackingRating: 85,
+    defendingRating: 81,
+    tacticsType: TacticsType.WING_OVERLOAD,
+    tacticsName: "南美风暴",
+    tacticsDescription: "哥伦比亚在路易斯·迪亚斯的带领下边路突防锐利，结合哈梅斯·罗德里格斯的精细直塞和调度，攻势如潮。",
+    mainPlayers: ["Luis Díaz", "James Rodríguez", "Daniel Muñoz"],
+    elo: 1977
+  },
+
+  // === Group L ===
   ENG: {
     id: "ENG",
     name: "英格兰",
@@ -257,331 +760,393 @@ export const TEAMS: Record<string, Team> = {
     mainPlayers: ["Luka Modrić", "Joško Gvardiol", "Mateo Kovačić"],
     elo: 1912
   },
-  SEN: {
-    id: "SEN",
-    name: "塞内加尔",
-    englishName: "Senegal",
-    flag: "🇸🇳",
-    group: "I组",
-    marketValue: 478.10,
-    fifaRank: 15,
-    attackingRating: 79,
-    defendingRating: 80,
-    tacticsType: TacticsType.ROUTE_ONE,
-    tacticsName: "强硬压迫",
-    tacticsDescription: "塞内加尔兼具精湛身体条件与欧化技战术，在后场防守坚韧，中前场通过大跨步直传以及爆发力寻找射门点。",
-    mainPlayers: ["Sadio Mané", "Nicolas Jackson", "Pape Matar Sarr"],
-    elo: 1867
+  GHA: {
+    id: "GHA",
+    name: "加纳",
+    englishName: "Ghana",
+    flag: "🇬🇭",
+    group: "L组",
+    marketValue: 180.20,
+    fifaRank: 73,
+    attackingRating: 74,
+    defendingRating: 71,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "黑星突袭",
+    tacticsDescription: "加纳主打快速守转攻，主要核心库杜斯拥有极强的中场突破和过人能力，能够通过单兵作战撕开对手防守。",
+    mainPlayers: ["Mohammed Kudus", "Iñaki Williams", "Thomas Partey"],
+    elo: 1580
   },
-  FRA: {
-    id: "FRA",
-    name: "法国",
-    englishName: "France",
-    flag: "🇫🇷",
-    group: "I组",
-    marketValue: 1520.00,
-    fifaRank: 3,
-    attackingRating: 95,
-    defendingRating: 88,
-    tacticsType: TacticsType.HIGH_PRESS,
-    tacticsName: "闪电战术",
-    tacticsDescription: "法国拥有世界最豪华的锋线配置，姆巴佩的绝对速度配合格列兹曼的战术串联，前场高压与反击速度无人能挡。",
-    mainPlayers: ["Kylian Mbappé", "Antoine Griezmann", "Aurélien Tchouaméni"],
-    elo: 2063
+  PAN: {
+    id: "PAN",
+    name: "巴拿马",
+    englishName: "Panama",
+    flag: "🇵🇦",
+    group: "L组",
+    marketValue: 20.80,
+    fifaRank: 34,
+    attackingRating: 71,
+    defendingRating: 73,
+    tacticsType: TacticsType.COUNTER_ATTACK,
+    tacticsName: "运河大闸",
+    tacticsDescription: "巴拿马防守落位极深且极具纪律性，中场核心卡拉斯基利亚拥有极佳的战术反击出球视野，能送出穿透性长传。",
+    mainPlayers: ["Adalberto Carrasquilla", "Michael Amir Murillo", "José Fajardo"],
+    elo: 1730
   }
 };
 
 export const PRESET_MATCHES: Match[] = [
-  // ===== A组 =====
+  // === June 12 (Beijing Time) ===
   {
-    id: "match_a1",
+    id: "match_1",
     homeTeamId: "MEX",
     awayTeamId: "RSA",
-    dateTime: "2026-06-11 15:00",
+    dateTime: "2026-06-12 05:00",
     venue: "阿兹特克体育场 (墨西哥城)",
     altitude: 2240,
     travelDistanceHome: 50,
     travelDistanceAway: 14500,
     weather: "炎热高原天气",
-    marketOdds: {
-      homeWin: 1.31,
-      draw: 4.10,
-      awayWin: 8.30
-    },
-    actualScore: {
-      home: 2,
-      away: 0
-    }
+    marketOdds: { homeWin: 1.31, draw: 4.10, awayWin: 8.30 },
+    actualScore: { home: 2, away: 0 }
   },
   {
-    id: "match_a2",
+    id: "match_2",
     homeTeamId: "KOR",
     awayTeamId: "CZE",
-    dateTime: "2026-06-11 22:00",
+    dateTime: "2026-06-13 00:00",
     venue: "阿克伦体育场 (瓜达拉哈拉)",
     altitude: 1566,
     travelDistanceHome: 11200,
     travelDistanceAway: 10800,
     weather: "温暖干燥",
-    marketOdds: {
-      homeWin: 2.10,
-      draw: 3.30,
-      awayWin: 3.40
-    },
-    actualScore: {
-      home: 2,
-      away: 1
-    }
+    marketOdds: { homeWin: 2.10, draw: 3.30, awayWin: 3.40 },
+    actualScore: { home: 2, away: 1 }
   },
   {
-    id: "match_a3",
-    homeTeamId: "CZE",
-    awayTeamId: "RSA",
-    dateTime: "2026-06-18 12:00",
-    venue: "梅赛德斯-奔驰体育场 (亚特兰大)",
-    altitude: 320,
-    travelDistanceHome: 10800,
-    travelDistanceAway: 14500,
-    weather: "室内空调理想气温",
-    marketOdds: {
-      homeWin: 1.90,
-      draw: 3.30,
-      awayWin: 4.20
-    }
+    id: "match_3",
+    homeTeamId: "CAN",
+    awayTeamId: "BIH",
+    dateTime: "2026-06-13 03:00",
+    venue: "多伦多体育场 (多伦多)",
+    altitude: 75,
+    travelDistanceHome: 100,
+    travelDistanceAway: 7200,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 1.85, draw: 3.40, awayWin: 4.20 },
+    actualScore: { home: 1, away: 1 } // Completed
   },
   {
-    id: "match_a4",
-    homeTeamId: "MEX",
-    awayTeamId: "KOR",
-    dateTime: "2026-06-18 21:00",
-    venue: "阿克伦体育场 (瓜达拉哈拉)",
-    altitude: 1566,
-    travelDistanceHome: 500,
-    travelDistanceAway: 11200,
-    weather: "温暖干燥",
-    marketOdds: {
-      homeWin: 2.15,
-      draw: 3.20,
-      awayWin: 3.30
-    }
-  },
-  {
-    id: "match_a5",
-    homeTeamId: "CZE",
-    awayTeamId: "MEX",
-    dateTime: "2026-06-24 21:00",
-    venue: "阿兹特克体育场 (墨西哥城)",
-    altitude: 2240,
-    travelDistanceHome: 10800,
-    travelDistanceAway: 50,
-    weather: "炎热高原天气",
-    marketOdds: {
-      homeWin: 4.50,
-      draw: 3.50,
-      awayWin: 1.75
-    }
-  },
-  {
-    id: "match_a6",
-    homeTeamId: "RSA",
-    awayTeamId: "KOR",
-    dateTime: "2026-06-24 21:00",
-    venue: "BBVA体育场 (蒙特雷)",
-    altitude: 540,
-    travelDistanceHome: 14500,
-    travelDistanceAway: 11200,
-    weather: "炎热干燥",
-    marketOdds: {
-      homeWin: 4.80,
-      draw: 3.40,
-      awayWin: 1.70
-    }
-  },
-  // ===== D组 =====
-  {
-    id: "match_d1",
+    id: "match_4",
     homeTeamId: "USA",
     awayTeamId: "PAR",
-    dateTime: "2026-06-12 21:00",
+    dateTime: "2026-06-13 06:00",
     venue: "SoFi体育场 (洛杉矶)",
     altitude: 120,
     travelDistanceHome: 200,
     travelDistanceAway: 9300,
     weather: "燥热、晴朗",
-    marketOdds: {
-      homeWin: 1.55,
-      draw: 3.75,
-      awayWin: 5.50
-    },
-    actualScore: {
-      home: 4,
-      away: 1
-    }
+    marketOdds: { homeWin: 1.55, draw: 3.75, awayWin: 5.50 },
+    actualScore: { home: 4, away: 1 } // Completed
+  },
+  
+  // === June 14 (Beijing Time) ===
+  {
+    id: "match_5",
+    homeTeamId: "QAT",
+    awayTeamId: "SUI",
+    dateTime: "2026-06-14 03:00",
+    venue: "旧金山湾区体育场 (旧金山)",
+    altitude: 10,
+    travelDistanceHome: 12800,
+    travelDistanceAway: 9200,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 5.80, draw: 3.80, awayWin: 1.50 }
   },
   {
-    id: "match_d2",
+    id: "match_6",
+    homeTeamId: "BRA",
+    awayTeamId: "MAR",
+    dateTime: "2026-06-14 06:00",
+    venue: "纽约新泽西体育场 (东拉瑟福德)",
+    altitude: 10,
+    travelDistanceHome: 7700,
+    travelDistanceAway: 5700,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 1.75, draw: 3.40, awayWin: 4.50 }
+  },
+  {
+    id: "match_7",
+    homeTeamId: "HAI",
+    awayTeamId: "SCO",
+    dateTime: "2026-06-14 09:00",
+    venue: "波士顿体育场 (福克斯堡)",
+    altitude: 80,
+    travelDistanceHome: 3000,
+    travelDistanceAway: 5100,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 6.50, draw: 4.00, awayWin: 1.45 }
+  },
+  {
+    id: "match_8",
     homeTeamId: "AUS",
     awayTeamId: "TUR",
-    dateTime: "2026-06-13 18:00",
+    dateTime: "2026-06-14 12:00",
     venue: "卑诗体育馆 (温哥华)",
     altitude: 20,
     travelDistanceHome: 13500,
     travelDistanceAway: 10200,
     weather: "气候凉爽",
-    marketOdds: {
-      homeWin: 4.20,
-      draw: 3.50,
-      awayWin: 1.80
-    }
+    marketOdds: { homeWin: 4.20, draw: 3.50, awayWin: 1.80 }
+  },
+
+  // === June 15 (Beijing Time) ===
+  {
+    id: "match_9",
+    homeTeamId: "GER",
+    awayTeamId: "CUW",
+    dateTime: "2026-06-15 03:00",
+    venue: "休斯敦体育场 (休斯敦)",
+    altitude: 15,
+    travelDistanceHome: 8200,
+    travelDistanceAway: 3100,
+    weather: "闷热干燥",
+    marketOdds: { homeWin: 1.10, draw: 7.50, awayWin: 18.00 }
   },
   {
-    id: "match_d3",
-    homeTeamId: "USA",
-    awayTeamId: "AUS",
-    dateTime: "2026-06-19 15:00",
-    venue: "流明球场 (西雅图)",
-    altitude: 20,
-    travelDistanceHome: 1700,
-    travelDistanceAway: 13500,
-    weather: "气候凉爽",
-    marketOdds: {
-      homeWin: 1.50,
-      draw: 3.80,
-      awayWin: 6.00
-    }
-  },
-  {
-    id: "match_d4",
-    homeTeamId: "TUR",
-    awayTeamId: "PAR",
-    dateTime: "2026-06-19 18:00",
-    venue: "李维斯体育场 (旧金山)",
-    altitude: 10,
-    travelDistanceHome: 10200,
-    travelDistanceAway: 9300,
-    weather: "温暖宜人",
-    marketOdds: {
-      homeWin: 1.65,
-      draw: 3.60,
-      awayWin: 5.00
-    }
-  },
-  {
-    id: "match_d5",
-    homeTeamId: "TUR",
-    awayTeamId: "USA",
-    dateTime: "2026-06-25 22:00",
-    venue: "SoFi体育场 (洛杉矶)",
-    altitude: 120,
-    travelDistanceHome: 10200,
-    travelDistanceAway: 200,
-    weather: "燥热、晴朗",
-    marketOdds: {
-      homeWin: 2.80,
-      draw: 3.20,
-      awayWin: 2.40
-    }
-  },
-  {
-    id: "match_d6",
-    homeTeamId: "PAR",
-    awayTeamId: "AUS",
-    dateTime: "2026-06-25 18:00",
-    venue: "李维斯体育场 (旧金山)",
-    altitude: 10,
-    travelDistanceHome: 9300,
-    travelDistanceAway: 13500,
-    weather: "温暖宜人",
-    marketOdds: {
-      homeWin: 2.20,
-      draw: 3.20,
-      awayWin: 3.30
-    }
-  },
-  // ===== C组 =====
-  {
-    id: "match_c1",
-    homeTeamId: "BRA",
-    awayTeamId: "MAR",
-    dateTime: "2026-06-13 18:00",
-    venue: "大都会人寿体育场 (纽约/新泽西)",
-    altitude: 10,
-    travelDistanceHome: 7700,
-    travelDistanceAway: 5700,
-    weather: "温暖宜人",
-    marketOdds: {
-      homeWin: 1.75,
-      draw: 3.40,
-      awayWin: 4.50
-    }
-  },
-  // ===== F组 =====
-  {
-    id: "match_f1",
+    id: "match_10",
     homeTeamId: "NED",
     awayTeamId: "JPN",
-    dateTime: "2026-06-14 18:00",
-    venue: "AT&T体育场 (达拉斯)",
+    dateTime: "2026-06-15 06:00",
+    venue: "达拉斯体育场 (阿灵顿)",
     altitude: 180,
     travelDistanceHome: 8000,
     travelDistanceAway: 11000,
     weather: "室内空调理想气温",
-    marketOdds: {
-      homeWin: 1.70,
-      draw: 3.50,
-      awayWin: 4.80
-    }
+    marketOdds: { homeWin: 1.70, draw: 3.50, awayWin: 4.80 }
   },
-  // ===== I组 =====
   {
-    id: "match_i1",
+    id: "match_11",
+    homeTeamId: "CIV",
+    awayTeamId: "ECU",
+    dateTime: "2026-06-15 09:00",
+    venue: "费城体育场 (费城)",
+    altitude: 12,
+    travelDistanceHome: 8400,
+    travelDistanceAway: 4800,
+    weather: "温暖干燥",
+    marketOdds: { homeWin: 2.80, draw: 3.20, awayWin: 2.40 }
+  },
+  {
+    id: "match_12",
+    homeTeamId: "TUN",
+    awayTeamId: "SWE",
+    dateTime: "2026-06-15 12:00",
+    venue: "蒙特雷体育场 (蒙特雷)",
+    altitude: 540,
+    travelDistanceHome: 9500,
+    travelDistanceAway: 8900,
+    weather: "炎热干燥",
+    marketOdds: { homeWin: 3.90, draw: 3.30, awayWin: 1.95 }
+  },
+
+  // === June 16 (Beijing Time) ===
+  {
+    id: "match_13",
+    homeTeamId: "ESP",
+    awayTeamId: "CPV",
+    dateTime: "2026-06-16 03:00",
+    venue: "阿克伦体育场 (瓜达拉哈拉)",
+    altitude: 1566,
+    travelDistanceHome: 9200,
+    travelDistanceAway: 8800,
+    weather: "温暖干燥",
+    marketOdds: { homeWin: 1.12, draw: 6.80, awayWin: 16.00 }
+  },
+  {
+    id: "match_14",
+    homeTeamId: "BEL",
+    awayTeamId: "EGY",
+    dateTime: "2026-06-16 06:00",
+    venue: "卑诗体育馆 (温哥华)",
+    altitude: 20,
+    travelDistanceHome: 8500,
+    travelDistanceAway: 10500,
+    weather: "气候凉爽",
+    marketOdds: { homeWin: 1.60, draw: 3.75, awayWin: 5.00 }
+  },
+  {
+    id: "match_15",
+    homeTeamId: "KSA",
+    awayTeamId: "URU",
+    dateTime: "2026-06-16 09:00",
+    venue: "迈阿密体育场 (迈阿密)",
+    altitude: 5,
+    travelDistanceHome: 12000,
+    travelDistanceAway: 7000,
+    weather: "潮湿闷热",
+    marketOdds: { homeWin: 7.20, draw: 4.20, awayWin: 1.40 }
+  },
+  {
+    id: "match_16",
+    homeTeamId: "IRN",
+    awayTeamId: "NZL",
+    dateTime: "2026-06-16 12:00",
+    venue: "SoFi体育场 (洛杉矶)",
+    altitude: 120,
+    travelDistanceHome: 12000,
+    travelDistanceAway: 10500,
+    weather: "燥热、晴朗",
+    marketOdds: { homeWin: 1.70, draw: 3.50, awayWin: 4.80 }
+  },
+
+  // === June 17 (Beijing Time) ===
+  {
+    id: "match_17",
     homeTeamId: "FRA",
     awayTeamId: "SEN",
-    dateTime: "2026-06-16 18:00",
-    venue: "大都会人寿体育场 (纽约/新泽西)",
+    dateTime: "2026-06-17 03:00",
+    venue: "纽约新泽西体育场 (东拉瑟福德)",
     altitude: 10,
     travelDistanceHome: 5800,
     travelDistanceAway: 7500,
     weather: "温暖宜人",
-    marketOdds: {
-      homeWin: 1.40,
-      draw: 4.30,
-      awayWin: 7.00
-    }
+    marketOdds: { homeWin: 1.40, draw: 4.30, awayWin: 7.00 }
   },
-  // ===== J组 =====
   {
-    id: "match_j1",
+    id: "match_18",
+    homeTeamId: "IRQ",
+    awayTeamId: "NOR",
+    dateTime: "2026-06-17 06:00",
+    venue: "波士顿体育场 (福克斯堡)",
+    altitude: 80,
+    travelDistanceHome: 9800,
+    travelDistanceAway: 5800,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 7.80, draw: 4.50, awayWin: 1.35 }
+  },
+  {
+    id: "match_19",
     homeTeamId: "ARG",
     awayTeamId: "ALG",
-    dateTime: "2026-06-16 21:00",
+    dateTime: "2026-06-17 09:00",
     venue: "箭头体育场 (堪萨斯城)",
     altitude: 250,
     travelDistanceHome: 8600,
     travelDistanceAway: 8200,
     weather: "温暖宜人",
-    marketOdds: {
-      homeWin: 1.35,
-      draw: 4.50,
-      awayWin: 7.50
-    }
+    marketOdds: { homeWin: 1.35, draw: 4.50, awayWin: 7.50 }
   },
-  // ===== L组 =====
   {
-    id: "match_l1",
+    id: "match_20",
+    homeTeamId: "AUT",
+    awayTeamId: "JOR",
+    dateTime: "2026-06-17 12:00",
+    venue: "旧金山湾区体育场 (旧金山)",
+    altitude: 10,
+    travelDistanceHome: 9100,
+    travelDistanceAway: 12200,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 1.45, draw: 4.10, awayWin: 6.80 }
+  },
+
+  // === June 18 (Beijing Time) ===
+  {
+    id: "match_21",
+    homeTeamId: "POR",
+    awayTeamId: "COD",
+    dateTime: "2026-06-18 03:00",
+    venue: "休斯敦体育场 (休斯敦)",
+    altitude: 15,
+    travelDistanceHome: 8400,
+    travelDistanceAway: 11000,
+    weather: "闷热干燥",
+    marketOdds: { homeWin: 1.25, draw: 5.20, awayWin: 9.80 }
+  },
+  {
+    id: "match_22",
     homeTeamId: "ENG",
     awayTeamId: "CRO",
-    dateTime: "2026-06-17 18:00",
-    venue: "AT&T体育场 (达拉斯)",
+    dateTime: "2026-06-18 06:00",
+    venue: "达拉斯体育场 (阿灵顿)",
     altitude: 180,
     travelDistanceHome: 7700,
     travelDistanceAway: 8500,
     weather: "室内空调理想气温",
-    marketOdds: {
-      homeWin: 1.55,
-      draw: 3.60,
-      awayWin: 5.80
-    }
+    marketOdds: { homeWin: 1.55, draw: 3.60, awayWin: 5.80 }
+  },
+  {
+    id: "match_23",
+    homeTeamId: "GHA",
+    awayTeamId: "PAN",
+    dateTime: "2026-06-18 09:00",
+    venue: "多伦多体育场 (多伦多)",
+    altitude: 75,
+    travelDistanceHome: 8200,
+    travelDistanceAway: 3800,
+    weather: "温暖宜人",
+    marketOdds: { homeWin: 2.10, draw: 3.20, awayWin: 3.40 }
+  },
+  {
+    id: "match_24",
+    homeTeamId: "UZB",
+    awayTeamId: "COL",
+    dateTime: "2026-06-18 12:00",
+    venue: "阿兹特克体育场 (墨西哥城)",
+    altitude: 2240,
+    travelDistanceHome: 6200,
+    travelDistanceAway: 3200,
+    weather: "炎热高原天气",
+    marketOdds: { homeWin: 5.20, draw: 3.60, awayWin: 1.65 }
+  },
+
+  // === Group Stage Round 2 (June 19 Beijing Time) ===
+  {
+    id: "match_25",
+    homeTeamId: "CZE",
+    awayTeamId: "RSA",
+    dateTime: "2026-06-19 03:00",
+    venue: "梅赛德斯-奔驰体育场 (亚特兰大)",
+    altitude: 320,
+    travelDistanceHome: 10800,
+    travelDistanceAway: 14500,
+    weather: "室内空调理想气温",
+    marketOdds: { homeWin: 1.90, draw: 3.30, awayWin: 4.20 }
+  },
+  {
+    id: "match_26",
+    homeTeamId: "SUI",
+    awayTeamId: "BIH",
+    dateTime: "2026-06-19 06:00",
+    venue: "SoFi体育场 (洛杉矶)",
+    altitude: 120,
+    travelDistanceHome: 9200,
+    travelDistanceAway: 9800,
+    weather: "燥热、晴朗",
+    marketOdds: { homeWin: 1.65, draw: 3.60, awayWin: 5.00 }
+  },
+  {
+    id: "match_27",
+    homeTeamId: "CAN",
+    awayTeamId: "QAT",
+    dateTime: "2026-06-19 09:00",
+    venue: "卑诗体育馆 (温哥华)",
+    altitude: 20,
+    travelDistanceHome: 100,
+    travelDistanceAway: 12800,
+    weather: "气候凉爽",
+    marketOdds: { homeWin: 1.70, draw: 3.60, awayWin: 4.60 }
+  },
+  {
+    id: "match_28",
+    homeTeamId: "MEX",
+    awayTeamId: "KOR",
+    dateTime: "2026-06-19 12:00",
+    venue: "阿克伦体育场 (瓜达拉哈拉)",
+    altitude: 1566,
+    travelDistanceHome: 500,
+    travelDistanceAway: 11200,
+    weather: "温暖干燥",
+    marketOdds: { homeWin: 2.15, draw: 3.20, awayWin: 3.30 }
   }
 ];
 
