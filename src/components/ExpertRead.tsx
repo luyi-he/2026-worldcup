@@ -338,9 +338,12 @@ export default function ExpertRead({
 模型预测：胜率 [主胜 ${(prediction.homeWinProb * 100).toFixed(0)}% | 平局 ${(prediction.drawProb * 100).toFixed(0)}% | 客胜 ${(prediction.awayWinProb * 100).toFixed(0)}%]
 期望进球值 xG：[${prediction.homeExpectedGoals} : ${prediction.awayExpectedGoals}]
 推荐比分：核心主推 ${prediction.recommendedScores.primary}，稳健防守 ${prediction.recommendedScores.stable}。
-本场真实赛果：${match.actualScore ? `完赛比分 ${match.actualScore.home}:${match.actualScore.away}` : "尚未开赛"}
+本场真实赛果：${match.actualScore ? `完赛比分 ${match.actualScore.home}:${match.actualScore.away} (注意：本场比赛已在现实中结束！)` : "尚未开赛"}
 
-请结合上述战术打法、环境制约以及数据模型，回答用户的提问。
+${match.actualScore 
+  ? "【重要指令】：由于这场比赛已经在现实中打完，请**不要使用预测或假设的口吻**。如果用户询问进球者、比赛细节或赛况，请你调用自身的网络搜索能力（或基于最新的比赛知识），如实回答现实中发生的真实战况。你可以分析我们的模型预测与真实赛果的偏差，做赛后复盘。" 
+  : "请结合上述战术打法、环境制约以及数据模型，进行赛前模拟预测与战术沙盘推演，回答用户的提问。"}
+
 请保持口吻专业、透彻且风趣，就像解说界的大师。字数尽量控制在 200 字以内，直击要害。`;
 
     try {
