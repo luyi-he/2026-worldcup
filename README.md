@@ -8,7 +8,7 @@
 
 ## 📸 网页截图与系统界面
 
-![系统运行主看板](assets/hero_dashboard.png)
+![系统运行主看板](assets/screenshot-1781360504573.png)
 
 ---
 
