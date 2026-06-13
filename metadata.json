@@ -1,0 +1,6 @@
+{
+  "name": "2026世界杯比分预测",
+  "description": "基于球员身价、攻守打法、战术克制、赔率、过往战绩以及高原/客行等外部因素的2026年世界杯双泊松比分建模预测系统。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
