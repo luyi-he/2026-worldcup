@@ -488,20 +488,20 @@ export default function MatchDisplay({
                 return (
                   <div
                     key={m.id}
-                    className="flex flex-col p-3.5 bg-white border border-slate-200/80 rounded-xl hover:bg-slate-50/50 transition-colors gap-3"
+                    className="flex flex-col p-4 bg-white border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] rounded-xl hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] transition-all gap-3.5"
                   >
                     {/* Top row: Date, Teams and Status Banner */}
                     <div className="flex items-center justify-between w-full">
                       {/* Left side: Date & Teams */}
                       <div className="flex items-center gap-3.5 shrink-0">
-                        <div className="text-center font-mono w-14 border-r border-slate-150 pr-3">
-                          <span className="text-xs text-slate-500 font-bold block leading-none">{dateDisplay}</span>
-                          <span className="text-[9px] text-slate-400 mt-1 block font-mono">{m.dateTime.split(" ")[1]}</span>
+                        <div className="text-center font-mono w-[4.5rem] shrink-0 border-r-2 border-slate-900 pr-3">
+                          <span className="text-[11px] text-slate-900 font-black block leading-tight whitespace-nowrap">{dateDisplay}</span>
+                          <span className="text-[10px] text-slate-500 mt-0.5 block font-mono font-bold whitespace-nowrap">{m.dateTime.split(" ")[1]}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-800 font-bold">
+                        <div className="flex items-center gap-2 text-sm text-slate-900 font-black">
                           <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
                           <span className="truncate max-w-[85px]">{h.name}</span>
-                          <span className="text-xs px-2.5 py-1 rounded bg-slate-100 text-slate-800 font-mono font-black border border-slate-200">
+                          <span className="text-xs px-2.5 py-1 rounded-sm bg-yellow-400 text-slate-900 font-mono font-black border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
                             {m.actualScore!.home} : {m.actualScore!.away}
                           </span>
                           <TeamFlag teamId={a.id} className="w-5.5 h-3.5 shadow-sm rounded-sm" />
@@ -511,17 +511,17 @@ export default function MatchDisplay({
 
                       {/* Right side check status banner */}
                       <div className="shrink-0 pl-2">
-                        <div className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-bold border ${
+                        <div className={`flex items-center gap-1.5 text-[10px] px-2 py-1 rounded font-black border-2 ${
                           isDirectionCorrect 
-                            ? "bg-yellow-100 text-slate-950 border-yellow-300" 
-                            : "bg-slate-50 text-slate-550 border-slate-200"
+                            ? "bg-yellow-400 text-slate-900 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]" 
+                            : "bg-slate-50 text-slate-400 border-slate-200"
                         }`}>
                           {isDirectionCorrect ? "方向完全契合" : "战力偏移偏差"}
                         </div>
                       </div>
                     </div>
 
-                    <div className="w-full h-px bg-slate-100"></div>
+                    <div className="w-full h-0 border-t-2 border-dashed border-slate-900/20"></div>
 
                     {/* Bottom row: Predictions & Odds */}
                     <div className="flex flex-row w-full text-left text-xs gap-3 md:gap-6 justify-between items-center pl-2">
