@@ -1298,7 +1298,7 @@ export function runMatchPrediction(
   };
 
   // Dixon-Coles adjustment for low-scoring dependence (to correct draw underestimation)
-  const rho = match.isKnockout ? 0 : -0.12; 
+  const rho = match.isKnockout ? 0 : 0.05; 
   const getDixonColesAdj = (h: number, a: number, l1: number, l2: number): number => {
     if (h === 0 && a === 0) return 1 - rho * l1 * l2;
     if (h === 1 && a === 0) return 1 + rho * l2;
