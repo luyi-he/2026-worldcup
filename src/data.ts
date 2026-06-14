@@ -1350,24 +1350,55 @@ export function runMatchPrediction(
   scoreProbsList.sort((a, b) => b.prob - a.prob);
   const topScores = scoreProbsList.slice(0, 5).map(item => ({ score: item.score, prob: item.prob }));
 
-  // Recommended Tiers
-  // Primary (主推): single highest probability score (excludes draws in knockout)
-  const nonDrawScores = scoreProbsList.filter(item => item.h !== item.a);
-  const primary = match.isKnockout 
-    ? (nonDrawScores.length > 0 ? nonDrawScores[0].score : "1-0") 
-    : topScores[0].score;
+  // Determine predicted outcome category using threshold (10% diff threshold for draws)
+  let predictedOutcome: "home" | "draw" | "away";
+  if (match.isKnockout) {
+    predictedOutcome = homeWinProb >= awayWinProb ? "home" : "away";
+  } else {
+    if (Math.abs(homeWinProb - awayWinProb) < 0.10) {
+      predictedOutcome = "draw";
+    } else {
+      predictedOutcome = homeWinProb > awayWinProb ? "home" : "away";
+    }
+  }
 
-  // Stable (稳健): the highest probability score among low goal outcomes (excludes draws in knockout)
+  // Filter scoreProbsList for predicted outcome category
+  const matchingScores = scoreProbsList.filter(item => {
+    if (predictedOutcome === "home") return item.h > item.a;
+    if (predictedOutcome === "away") return item.h < item.a;
+    return item.h === item.a;
+  });
+
+  const primary = matchingScores.length > 0 ? matchingScores[0].score : topScores[0].score;
+
+  // Stable (稳健): the highest probability score among low goal outcomes in the same predicted direction
   const stableScores = scoreProbsList.filter(item => item.h + item.a <= 3);
-  const stable = match.isKnockout
-    ? (stableScores.filter(item => item.h !== item.a).length > 0 
-        ? stableScores.filter(item => item.h !== item.a)[0].score 
-        : (homeLambda >= awayLambda ? "1-0" : "0-1"))
-    : (stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1"));
+  let stable = "1-0";
+  if (match.isKnockout) {
+    const validStable = stableScores.filter(item => {
+      if (predictedOutcome === "home") return item.h > item.a;
+      return item.h < item.a;
+    });
+    stable = validStable.length > 0 ? validStable[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1");
+  } else {
+    const validStable = stableScores.filter(item => {
+      if (predictedOutcome === "home") return item.h > item.a;
+      if (predictedOutcome === "away") return item.h < item.a;
+      return item.h === item.a;
+    });
+    stable = validStable.length > 0 ? validStable[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1");
+  }
 
-  // Aggressive (进取): robust score with higher goal scoring (e.g., at least 3 goals combined or home team win by 2+)
-  const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 3) && (item.h !== item.a));
-  const aggressive = aggressiveScores.length > 0 ? aggressiveScores[0].score : "3-1";
+  // Aggressive (进取): robust score with higher goal scoring in the same predicted direction
+  const aggressiveScores = scoreProbsList.filter(item => {
+    const matchesGoals = item.h + item.a >= 3;
+    if (predictedOutcome === "home") return matchesGoals && item.h > item.a;
+    if (predictedOutcome === "away") return matchesGoals && item.h < item.a;
+    return matchesGoals && item.h === item.a;
+  });
+  const aggressive = aggressiveScores.length > 0 
+    ? aggressiveScores[0].score 
+    : (predictedOutcome === "home" ? "3-1" : predictedOutcome === "away" ? "1-3" : "2-2");
 
   // Margins attribution calculation (relative contribution offset)
   const baselineDiff = 0;
