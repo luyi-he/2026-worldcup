@@ -523,14 +523,23 @@ export default function MatchDisplay({
                         <span className="text-[11px] text-slate-900 font-black whitespace-nowrap">{dateDisplay} {m.dateTime.split(" ")[1]}</span>
                       </div>
                       
-                      {/* Teams (Centered) */}
-                      <div className="flex-1 flex justify-center px-2 overflow-hidden">
-                        <div className="flex items-center gap-2 text-sm text-slate-900 font-black">
-                          <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm shrink-0" />
+                      {/* Teams (Centered and Aligned) */}
+                      <div className="flex-1 flex items-center px-2 overflow-hidden">
+                        {/* Home Team (Right Aligned) */}
+                        <div className="flex-1 flex items-center justify-end gap-2 text-sm text-slate-900 font-black min-w-0">
                           <span className="truncate max-w-[85px] text-right">{h.name}</span>
-                          <span className="text-xs px-2.5 py-1 rounded-sm bg-yellow-400 text-slate-900 font-mono font-black border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] shrink-0">
+                          <TeamFlag teamId={h.id} className="w-5.5 h-3.5 shadow-sm rounded-sm shrink-0" />
+                        </div>
+                        
+                        {/* Score Badge (Exactly Centered) */}
+                        <div className="w-20 flex justify-center shrink-0">
+                          <span className="text-xs px-2.5 py-1 rounded-sm bg-yellow-400 text-slate-900 font-mono font-black border-2 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
                             {m.actualScore!.home} : {m.actualScore!.away}
                           </span>
+                        </div>
+
+                        {/* Away Team (Left Aligned) */}
+                        <div className="flex-1 flex items-center justify-start gap-2 text-sm text-slate-900 font-black min-w-0">
                           <TeamFlag teamId={a.id} className="w-5.5 h-3.5 shadow-sm rounded-sm shrink-0" />
                           <span className="truncate max-w-[85px] text-left">{a.name}</span>
                         </div>
