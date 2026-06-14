@@ -1350,12 +1350,12 @@ export function runMatchPrediction(
   scoreProbsList.sort((a, b) => b.prob - a.prob);
   const topScores = scoreProbsList.slice(0, 5).map(item => ({ score: item.score, prob: item.prob }));
 
-  // Determine predicted outcome category using threshold (10% diff threshold for draws)
+  // Determine predicted outcome category using threshold (3% diff threshold for draws)
   let predictedOutcome: "home" | "draw" | "away";
   if (match.isKnockout) {
     predictedOutcome = homeWinProb >= awayWinProb ? "home" : "away";
   } else {
-    if (Math.abs(homeWinProb - awayWinProb) < 0.10) {
+    if (Math.abs(homeWinProb - awayWinProb) < 0.03) {
       predictedOutcome = "draw";
     } else {
       predictedOutcome = homeWinProb > awayWinProb ? "home" : "away";
