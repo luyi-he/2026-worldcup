@@ -10,6 +10,12 @@
 
 ![系统运行主看板](assets/screenshot-1781360504573.png)
 
+### 🤖 AGI 智能助手与大模型分析
+
+| ⚙️ 自定义 API Key 配置 | 💬 AGI 实时问答与战术解读 |
+| :---: | :---: |
+| ![自定义 API Key 配置](assets/screenshot-AI-2.png) | ![AGI 实时对战分析](assets/screenshot-AI-1.png) |
+
 ---
 
 ## ✨ 核心功能与特色

@@ -860,7 +860,8 @@ export const PRESET_MATCHES: Match[] = [
     travelDistanceHome: 12800,
     travelDistanceAway: 9200,
     weather: "温暖宜人",
-    marketOdds: { homeWin: 5.80, draw: 3.80, awayWin: 1.50 }
+    marketOdds: { homeWin: 5.80, draw: 3.80, awayWin: 1.50 },
+    actualScore: { home: 1, away: 1 }
   },
   {
     id: "match_6",
@@ -872,7 +873,8 @@ export const PRESET_MATCHES: Match[] = [
     travelDistanceHome: 7700,
     travelDistanceAway: 5700,
     weather: "温暖宜人",
-    marketOdds: { homeWin: 1.75, draw: 3.40, awayWin: 4.50 }
+    marketOdds: { homeWin: 1.75, draw: 3.40, awayWin: 4.50 },
+    actualScore: { home: 1, away: 1 }
   },
   {
     id: "match_7",

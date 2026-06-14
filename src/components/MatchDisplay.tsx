@@ -116,7 +116,7 @@ export default function MatchDisplay({
 
           {/* Core Score/Prediction Column */}
           <div className="col-span-12 md:col-span-4 text-center space-y-4 order-2 py-4 md:py-0 border-y md:border-y-0 md:border-x border-slate-200/80">
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">注能估计比分</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">智能预测比分</span>
             
             <motion.div 
               key={prediction.recommendedScores.primary}
@@ -130,7 +130,11 @@ export default function MatchDisplay({
 
             <div>
               <span className="inline-block bg-yellow-400 text-slate-950 border-2 border-slate-900 font-black px-2.5 py-1 rounded-md text-xs shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
-                主胜 • {prediction.totalConfidence}% 置信度
+                {prediction.homeWinProb > prediction.awayWinProb && prediction.homeWinProb > prediction.drawProb 
+                  ? "主胜" 
+                  : prediction.awayWinProb > prediction.homeWinProb && prediction.awayWinProb > prediction.drawProb 
+                    ? "客胜" 
+                    : "平局"} • {prediction.totalConfidence}% 置信度
               </span>
             </div>
 
