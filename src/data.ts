@@ -1374,16 +1374,19 @@ export function runMatchPrediction(
     ? (nonDrawScores.length > 0 ? nonDrawScores[0].score : "1-0") 
     : topScores[0].score;
 
-  // Stable (稳健): the highest probability score among low goal outcomes (excludes draws in knockout)
+  // Stable (稳健): the highest probability score among low goal outcomes, excluding the primary score for diversity (excludes draws in knockout)
   const stableScores = scoreProbsList.filter(item => item.h + item.a <= 3);
-  const stable = match.isKnockout
-    ? (stableScores.filter(item => item.h !== item.a).length > 0 
-        ? stableScores.filter(item => item.h !== item.a)[0].score 
-        : (homeLambda >= awayLambda ? "1-0" : "0-1"))
-    : (stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1"));
+  let stable = "1-0";
+  if (match.isKnockout) {
+    const validStable = stableScores.filter(item => item.h !== item.a && item.score !== primary);
+    stable = validStable.length > 0 ? validStable[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1");
+  } else {
+    const validStable = stableScores.filter(item => item.score !== primary);
+    stable = validStable.length > 0 ? validStable[0].score : (stableScores.length > 0 ? stableScores[0].score : "1-0");
+  }
 
-  // Aggressive (进取): robust score with higher goal scoring (e.g., at least 4 goals combined, focusing on true high scores like 3-1, 1-3)
-  const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 4) && (item.h !== item.a));
+  // Aggressive (进取): robust score with higher goal scoring (excludes draws, primary/stable scores for maximum coverage)
+  const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 3) && (item.h !== item.a) && item.score !== primary && item.score !== stable);
   const aggressive = aggressiveScores.length > 0 ? aggressiveScores[0].score : "3-1";
 
   // Margins attribution calculation (relative contribution offset)
