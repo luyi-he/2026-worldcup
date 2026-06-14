@@ -1297,10 +1297,23 @@ export function runMatchPrediction(
     return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial;
   };
 
+  // Dixon-Coles adjustment for low-scoring dependence (to correct draw underestimation)
+  const rho = -0.12; 
+  const getDixonColesAdj = (h: number, a: number, l1: number, l2: number): number => {
+    if (h === 0 && a === 0) return 1 - rho * l1 * l2;
+    if (h === 1 && a === 0) return 1 + rho * l2;
+    if (h === 0 && a === 1) return 1 + rho * l1;
+    if (h === 1 && a === 1) return 1 - rho;
+    return 1.0;
+  };
+
   let sumProb = 0;
   for (let h = 0; h <= maxGoal; h++) {
     for (let a = 0; a <= maxGoal; a++) {
-      const p = poissonProb(h, homeLambda) * poissonProb(a, awayLambda);
+      let p = poissonProb(h, homeLambda) * poissonProb(a, awayLambda);
+      if (h <= 1 && a <= 1) {
+        p *= getDixonColesAdj(h, a, homeLambda, awayLambda);
+      }
       grid[h][a] = p;
       sumProb += p;
     }

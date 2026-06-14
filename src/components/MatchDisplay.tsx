@@ -543,7 +543,7 @@ export default function MatchDisplay({
                             ? "bg-yellow-400 text-slate-900 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]" 
                             : "bg-slate-50 text-slate-400 border-slate-200"
                         }`}>
-                          {isDirectionCorrect ? "方向完全契合" : "战力偏移偏差"}
+                          {isDirectionCorrect ? "胜负预测正确" : "胜负预测偏差"}
                         </div>
                       </div>
                     </div>
