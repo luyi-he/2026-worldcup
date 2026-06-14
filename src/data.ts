@@ -1202,18 +1202,18 @@ export function runMatchPrediction(
 ): PredictionResult {
   const baseGoalExpectancy = 1.32; // Normal match expectancy per team
 
-  // 1. Market Value Influence
+  // 1. Market Value Influence (sharpened coefficient: 0.45 -> 0.60)
   const totalMV = home.marketValue + away.marketValue;
   const homeMVRatio = home.marketValue / (totalMV || 1);
   const mvStrengthDiff = (homeMVRatio - 0.5) * 2; // -1 to 1 range
-  const homeMVFactor = 1 + mvStrengthDiff * factors.marketValueWeight * 0.45;
-  const awayMVFactor = 1 - mvStrengthDiff * factors.marketValueWeight * 0.45;
+  const homeMVFactor = 1 + mvStrengthDiff * factors.marketValueWeight * 0.60;
+  const awayMVFactor = 1 - mvStrengthDiff * factors.marketValueWeight * 0.60;
 
-  // 2. FIFA Rank & ELO Influence
+  // 2. FIFA Rank & ELO Influence (sharpened coefficient: 0.35 -> 0.50)
   const eloDiff = home.elo - away.elo;
   const eloStrengthDiff = eloDiff / 400; // 400 is standard Elo scale
-  const homeEloFactor = 1 + eloStrengthDiff * factors.fifaRankWeight * 0.35;
-  const awayEloFactor = 1 - eloStrengthDiff * factors.fifaRankWeight * 0.35;
+  const homeEloFactor = 1 + eloStrengthDiff * factors.fifaRankWeight * 0.50;
+  const awayEloFactor = 1 - eloStrengthDiff * factors.fifaRankWeight * 0.50;
 
   // 3. Tactical Playstyle Counter Advantage
   const homeTacticAdv = TACTICAL_MATRIX[home.tacticsType][away.tacticsType] || 1.0;
@@ -1270,17 +1270,34 @@ export function runMatchPrediction(
     awayExtFactor += 0.08 * factors.externalFactorWeight;
   }
 
-  // 5. Form Weight (ELO + Efficacy)
-  const homeFormFactor = 1 + (home.attackingRating - 75) / 100 * factors.formWeight * 0.4;
-  const awayFormFactor = 1 + (away.attackingRating - 75) / 100 * factors.formWeight * 0.4;
+  // 5. Form Weight (ELO + Efficacy) (sharpened coefficient: 0.4 -> 0.55)
+  const homeFormFactor = 1 + (home.attackingRating - 75) / 100 * factors.formWeight * 0.55;
+  const awayFormFactor = 1 + (away.attackingRating - 75) / 100 * factors.formWeight * 0.55;
 
-  const homeDefenseFactor = 1 + (75 - home.defendingRating) / 100 * factors.formWeight * 0.4;
-  const awayDefenseFactor = 1 + (75 - away.defendingRating) / 100 * factors.formWeight * 0.4;
+  const homeDefenseFactor = 1 + (75 - home.defendingRating) / 100 * factors.formWeight * 0.55;
+  const awayDefenseFactor = 1 + (75 - away.defendingRating) / 100 * factors.formWeight * 0.55;
 
-  // Expected Goal (xG) calculation
-  // Lambda (λ) = base * attackingMultiplier * defendingMultiplier
-  let homeLambda = baseGoalExpectancy * homeMVFactor * homeEloFactor * homeTacticFactor * homeExtFactor * homeFormFactor * awayDefenseFactor;
-  let awayLambda = baseGoalExpectancy * awayMVFactor * awayEloFactor * awayTacticFactor * awayExtFactor * awayFormFactor * homeDefenseFactor;
+  // 6. World Cup Championship Pedigree Factor (大赛夺冠底蕴)
+  const WORLD_CUP_TITLES: Record<string, number> = {
+    BRA: 5, GER: 4, ARG: 3, FRA: 2, URU: 2, ENG: 1, ESP: 1
+  };
+  const homeTitles = WORLD_CUP_TITLES[home.id] || 0;
+  const awayTitles = WORLD_CUP_TITLES[away.id] || 0;
+  const titlesDiff = homeTitles - awayTitles;
+  const pedigreeFactor = 1 + titlesDiff * 0.06 * factors.fifaRankWeight;
+
+  // 7. Star Power Factor (核心球星指数)
+  const STAR_POWER_RATINGS: Record<string, number> = {
+    FRA: 98, BRA: 97, ENG: 96, ARG: 95, POR: 94, NOR: 92, ESP: 92, GER: 91, EGY: 90, BEL: 89, KOR: 88
+  };
+  const homeStarPower = STAR_POWER_RATINGS[home.id] || home.attackingRating;
+  const awayStarPower = STAR_POWER_RATINGS[away.id] || away.attackingRating;
+  const starPowerDiff = (homeStarPower - awayStarPower) / 100;
+  const starPowerFactor = 1 + starPowerDiff * 0.25 * factors.formWeight;
+
+  // Expected Goal (xG) calculation with Pedigree and Star Power
+  let homeLambda = baseGoalExpectancy * homeMVFactor * homeEloFactor * homeTacticFactor * homeExtFactor * homeFormFactor * awayDefenseFactor * pedigreeFactor * starPowerFactor;
+  let awayLambda = baseGoalExpectancy * awayMVFactor * awayEloFactor * awayTacticFactor * awayExtFactor * awayFormFactor * homeDefenseFactor * (2 - pedigreeFactor) * (2 - starPowerFactor);
 
   // Clamping lambda to healthy limits
   homeLambda = Math.max(0.1, Math.min(4.8, homeLambda));
