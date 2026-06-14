@@ -140,6 +140,10 @@ export default function App() {
     setIsRefreshing(false);
   };
 
+  const handleToggleKnockout = (matchId: string) => {
+    setLocalMatches(prev => prev.map(m => m.id === matchId ? { ...m, isKnockout: !m.isKnockout } : m));
+  };
+
   // Active match structures
   const activeMatch = localMatches.find(m => m.id === selectedMatchId) || localMatches[0];
   const homeTeam = localTeams[activeMatch.homeTeamId];
@@ -396,6 +400,7 @@ export default function App() {
                     onEditTeamValue={handleEditTeamValue}
                     teams={localTeams}
                     allMatches={localMatches}
+                    onToggleKnockout={handleToggleKnockout}
                   />
                 )}
 

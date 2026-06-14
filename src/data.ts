@@ -1338,12 +1338,19 @@ export function runMatchPrediction(
   const topScores = scoreProbsList.slice(0, 5).map(item => ({ score: item.score, prob: item.prob }));
 
   // Recommended Tiers
-  // Primary (主推): single highest probability score
-  const primary = topScores[0].score;
+  // Primary (主推): single highest probability score (excludes draws in knockout)
+  const nonDrawScores = scoreProbsList.filter(item => item.h !== item.a);
+  const primary = match.isKnockout 
+    ? (nonDrawScores.length > 0 ? nonDrawScores[0].score : "1-0") 
+    : topScores[0].score;
 
-  // Stable (稳健): the highest probability score among low goal outcomes (0-0, 1-0, 0-1, 1-1, 2-0, 2-1, 0-2, 1-2)
+  // Stable (稳健): the highest probability score among low goal outcomes (excludes draws in knockout)
   const stableScores = scoreProbsList.filter(item => item.h + item.a <= 3);
-  const stable = stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1");
+  const stable = match.isKnockout
+    ? (stableScores.filter(item => item.h !== item.a).length > 0 
+        ? stableScores.filter(item => item.h !== item.a)[0].score 
+        : (homeLambda >= awayLambda ? "1-0" : "0-1"))
+    : (stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1"));
 
   // Aggressive (进取): robust score with higher goal scoring (e.g., at least 3 goals combined or home team win by 2+)
   const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 3) && (item.h !== item.a));
@@ -1363,6 +1370,18 @@ export function runMatchPrediction(
   // Confidence goes up when factors have rich data, high ELO delta, or stark tactical contrast.
   const confidencePercent = Math.round(92 + Math.min(6, (Math.abs(homeLambda - awayLambda) * 3)));
 
+  // Advance probabilities (used for knockout matches to split draw chance)
+  let homeAdvanceProb = homeWinProb;
+  let awayAdvanceProb = awayWinProb;
+  const totalWinProb = homeWinProb + awayWinProb;
+  if (totalWinProb > 0) {
+    homeAdvanceProb = homeWinProb + drawProb * (homeWinProb / totalWinProb);
+    awayAdvanceProb = awayWinProb + drawProb * (awayWinProb / totalWinProb);
+  } else {
+    homeAdvanceProb = 0.5;
+    awayAdvanceProb = 0.5;
+  }
+
   return {
     homeWinProb,
     drawProb,
@@ -1376,6 +1395,8 @@ export function runMatchPrediction(
       aggressive
     },
     factorContributions,
-    totalConfidence: Math.min(99, Math.max(88, confidencePercent))
+    totalConfidence: Math.min(99, Math.max(88, confidencePercent)),
+    homeAdvanceProb,
+    awayAdvanceProb
   };
 }

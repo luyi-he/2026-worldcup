@@ -14,6 +14,7 @@ interface MatchDisplayProps {
   onEditTeamValue: (teamId: string, field: "marketValue" | "fifaRank" | "elo" | "attackingRating" | "defendingRating", value: number) => void;
   teams?: Record<string, Team>;
   allMatches?: Match[];
+  onToggleKnockout?: (matchId: string) => void;
 }
 
 export default function MatchDisplay({
@@ -24,7 +25,8 @@ export default function MatchDisplay({
   prediction,
   onEditTeamValue,
   teams,
-  allMatches
+  allMatches,
+  onToggleKnockout
 }: MatchDisplayProps) {
   const formatMillionEuro = (val: number) => {
     return `€${val.toFixed(2)}m`;
@@ -54,17 +56,31 @@ export default function MatchDisplay({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white/80 border border-slate-200/60 p-4 rounded-xl gap-2 text-xs shadow-sm">
         <div className="flex items-center gap-1.5 text-slate-550 font-medium">
           <span className="bg-slate-900 text-yellow-400 px-2 py-0.5 rounded-md font-mono font-bold uppercase border-2 border-slate-900">
-            世界杯小组赛程
+            {match.isKnockout ? "世界杯淘汰赛" : "世界杯小组赛"}
           </span>
           <span className="text-slate-350">|</span>
           <span className="font-mono text-slate-600 font-medium">{formattedDateTime}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-slate-550">
-          <Compass className="w-4 h-4 text-slate-400" id="icon-compass" />
-          <span>球场行军: </span>
-          <span className="font-mono text-slate-800 font-semibold bg-slate-100 border border-slate-200/60 px-2 py-0.5 rounded">
-            {match.venue}
-          </span>
+        <div className="flex items-center gap-3 text-slate-550 flex-wrap">
+          <button
+            onClick={() => onToggleKnockout && onToggleKnockout(match.id)}
+            className={`px-2 py-0.5 rounded font-black border-2 text-[10px] cursor-pointer transition-all active:translate-y-0.5 ${
+              match.isKnockout 
+                ? "bg-slate-900 text-yellow-400 border-slate-900 shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]" 
+                : "bg-white text-slate-700 border-slate-200 hover:border-slate-450 shadow-[1px_1px_0px_0px_rgba(226,232,240,1)]"
+            }`}
+            title="点击切换小组赛/淘汰赛阶段"
+          >
+            {match.isKnockout ? "⚔️ 切换为小组赛" : "🏆 切换为淘汰赛"}
+          </button>
+          <span className="text-slate-350">|</span>
+          <div className="flex items-center gap-1.5">
+            <Compass className="w-4 h-4 text-slate-400" id="icon-compass" />
+            <span>球场行军: </span>
+            <span className="font-mono text-slate-800 font-semibold bg-slate-100 border border-slate-200/60 px-2 py-0.5 rounded">
+              {match.venue}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -130,11 +146,13 @@ export default function MatchDisplay({
 
             <div>
               <span className="inline-block bg-yellow-400 text-slate-950 border-2 border-slate-900 font-black px-2.5 py-1 rounded-md text-xs shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
-                {prediction.homeWinProb > prediction.awayWinProb && prediction.homeWinProb > prediction.drawProb 
-                  ? "主胜" 
-                  : prediction.awayWinProb > prediction.homeWinProb && prediction.awayWinProb > prediction.drawProb 
-                    ? "客胜" 
-                    : "平局"} • {prediction.totalConfidence}% 置信度
+                {match.isKnockout 
+                  ? (prediction.homeAdvanceProb > prediction.awayAdvanceProb ? "主队晋级" : "客队晋级")
+                  : (prediction.homeWinProb > prediction.awayWinProb && prediction.homeWinProb > prediction.drawProb 
+                      ? "主胜" 
+                      : prediction.awayWinProb > prediction.homeWinProb && prediction.awayWinProb > prediction.drawProb 
+                        ? "客胜" 
+                        : "平局")} • {prediction.totalConfidence}% 置信度
               </span>
             </div>
 
@@ -192,17 +210,19 @@ export default function MatchDisplay({
         {/* Home win % */}
         <div className="col-span-12 sm:col-span-3 glass-panel p-4 rounded-xl flex flex-col justify-between shadow-sm">
           <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider flex items-center gap-1.5">
-            <TeamFlag teamId={home.id} className="w-5 h-3.5 shadow-sm rounded-sm" /> 主胜概率
+            <TeamFlag teamId={home.id} className="w-5 h-3.5 shadow-sm rounded-sm" /> {match.isKnockout ? "主队晋级率" : "主胜概率"}
           </span>
-          <span className="text-2xl font-extrabold text-slate-800 font-display mt-2">{(prediction.homeWinProb * 100).toFixed(1)}%</span>
+          <span className="text-2xl font-extrabold text-slate-800 font-display mt-2">
+            {((match.isKnockout ? prediction.homeAdvanceProb : prediction.homeWinProb) * 100).toFixed(1)}%
+          </span>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden border border-slate-200/40">
-            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${prediction.homeWinProb * 100}%` }}></div>
+            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${(match.isKnockout ? prediction.homeAdvanceProb : prediction.homeWinProb) * 100}%` }}></div>
           </div>
         </div>
 
         {/* Draw win % */}
         <div className="col-span-12 sm:col-span-3 glass-panel p-4 rounded-xl flex flex-col justify-between shadow-sm">
-          <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">🤝 平局概率</span>
+          <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">🤝 {match.isKnockout ? "90分钟平局率" : "平局概率"}</span>
           <span className="text-2xl font-extrabold text-slate-600 font-display mt-2">{(prediction.drawProb * 100).toFixed(1)}%</span>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden border border-slate-200/40">
             <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${prediction.drawProb * 100}%` }}></div>
@@ -212,11 +232,13 @@ export default function MatchDisplay({
         {/* Away win % */}
         <div className="col-span-12 sm:col-span-3 glass-panel p-4 rounded-xl flex flex-col justify-between shadow-sm">
           <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider flex items-center gap-1.5">
-            <TeamFlag teamId={away.id} className="w-5 h-3.5 shadow-sm rounded-sm" /> 客胜概率
+            <TeamFlag teamId={away.id} className="w-5 h-3.5 shadow-sm rounded-sm" /> {match.isKnockout ? "客队晋级率" : "客胜概率"}
           </span>
-          <span className="text-2xl font-extrabold text-slate-800 font-display mt-2">{(prediction.awayWinProb * 100).toFixed(1)}%</span>
+          <span className="text-2xl font-extrabold text-slate-800 font-display mt-2">
+            {((match.isKnockout ? prediction.awayAdvanceProb : prediction.awayWinProb) * 100).toFixed(1)}%
+          </span>
           <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden border border-slate-200/40">
-            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${prediction.awayWinProb * 100}%` }}></div>
+            <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${(match.isKnockout ? prediction.awayAdvanceProb : prediction.awayWinProb) * 100}%` }}></div>
           </div>
         </div>
 

@@ -54,6 +54,7 @@ export interface Match {
     home: number;
     away: number;
   };
+  isKnockout?: boolean;
 }
 
 export interface PredictionResult {
@@ -76,6 +77,8 @@ export interface PredictionResult {
     external: number;
   };
   totalConfidence: number; // e.g. 95%
+  homeAdvanceProb: number; // Probability of home team advancing (draw split proportionally)
+  awayAdvanceProb: number; // Probability of away team advancing
 }
 
 export interface ExpertReview {

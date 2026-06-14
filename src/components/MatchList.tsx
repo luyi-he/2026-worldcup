@@ -162,8 +162,8 @@ export default function MatchList({
                         {prediction.recommendedScores.primary}
                       </span>
                     )}
-                    <div className={`text-[9px] ${isSelected ? "text-slate-900 font-bold" : "text-slate-400 font-semibold"} font-sans mt-1`} title="主胜预期发生率">
-                      主胜 {Math.round(prediction.homeWinProb * 100)}%
+                    <div className={`text-[9px] ${isSelected ? "text-slate-900 font-bold" : "text-slate-400 font-semibold"} font-sans mt-1`} title={m.isKnockout ? "主队晋级期望率" : "主胜预期发生率"}>
+                      {m.isKnockout ? "晋级" : "主胜"} {Math.round((m.isKnockout ? prediction.homeAdvanceProb : prediction.homeWinProb) * 100)}%
                     </div>
                   </div>
                   <ChevronRight className={`w-4 h-4 transition-transform ${
