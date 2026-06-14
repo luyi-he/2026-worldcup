@@ -40,6 +40,9 @@ export default function App() {
   
   // Storing copy of TEAMS in state so user can make dynamic live sandbox changes!
   const [localTeams, setLocalTeams] = useState<Record<string, Team>>(TEAMS);
+  
+  // Stateful matches so they can be updated from CCTV real-time API
+  const [localMatches, setLocalMatches] = useState<Match[]>(PRESET_MATCHES);
 
   // Expert report fetch states
   const [expertReviews, setExpertReviews] = useState<Record<string, ExpertReview>>({});
@@ -52,6 +55,53 @@ export default function App() {
   // Right column height tracker for left match list scroll height alignment
   const rightColRef = React.useRef<HTMLDivElement>(null);
   const [rightColHeight, setRightColHeight] = useState<number>(0);
+
+  // Fetch CCTV World Cup 2026 data
+  const fetchCCTVData = async () => {
+    try {
+      const res = await fetch("https://cbs-u.sports.cctv.com/pc/game/season_game_list?leagueId=3400&season=2026&client=pc");
+      const data = await res.json();
+      if (data && data.success && data.results) {
+        const results = data.results;
+        
+        // Map Chinese team name to static team ID
+        const nameToId: Record<string, string> = {};
+        Object.entries(TEAMS).forEach(([id, team]) => {
+          nameToId[team.name] = id;
+        });
+        nameToId["刚果（金）"] = "COD";
+
+        setLocalMatches((prevMatches) => {
+          return prevMatches.map((match) => {
+            const cctvMatch = results.find((g: any) => {
+              const cctvHomeId = nameToId[g.homeName];
+              const cctvGuestId = nameToId[g.guestName];
+              return cctvHomeId === match.homeTeamId && cctvGuestId === match.awayTeamId;
+            });
+
+            if (cctvMatch) {
+              const homeScore = cctvMatch.homeScore;
+              const guestScore = cctvMatch.guestScore;
+              const status = cctvMatch.gameStatus; // "1" = unplayed, "2"/"3" = live/completed
+              
+              if ((status === "2" || status === "3") && homeScore !== null && guestScore !== null) {
+                return {
+                  ...match,
+                  actualScore: {
+                    home: Number(homeScore),
+                    away: Number(guestScore)
+                  }
+                };
+              }
+            }
+            return match;
+          });
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch CCTV World Cup data:", err);
+    }
+  };
 
   useEffect(() => {
     if (rightColRef.current) {
@@ -73,23 +123,25 @@ export default function App() {
     const hStr = String(nearestHour).padStart(2, "0");
     const dayStr = String(now.getDate()).padStart(2, "0");
     setLastRefreshed(`${month}月${dayStr}日 ${hStr}:00`);
+    
+    // Fetch live scores on mount
+    fetchCCTVData();
   }, []);
 
-  const handleManualRefresh = () => {
+  const handleManualRefresh = async () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      const now = new Date();
-      const month = now.getMonth() + 1;
-      const hStr = String(now.getHours()).padStart(2, "0");
-      const mStr = String(now.getMinutes()).padStart(2, "0");
-      const dayStr = String(now.getDate()).padStart(2, "0");
-      setLastRefreshed(`${month}月${dayStr}日 ${hStr}:${mStr}`);
-      setIsRefreshing(false);
-    }, 600);
+    await fetchCCTVData();
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const hStr = String(now.getHours()).padStart(2, "0");
+    const mStr = String(now.getMinutes()).padStart(2, "0");
+    const dayStr = String(now.getDate()).padStart(2, "0");
+    setLastRefreshed(`${month}月${dayStr}日 ${hStr}:${mStr}`);
+    setIsRefreshing(false);
   };
 
   // Active match structures
-  const activeMatch = PRESET_MATCHES.find(m => m.id === selectedMatchId) || PRESET_MATCHES[0];
+  const activeMatch = localMatches.find(m => m.id === selectedMatchId) || localMatches[0];
   const homeTeam = localTeams[activeMatch.homeTeamId];
   const awayTeam = localTeams[activeMatch.awayTeamId];
 
@@ -296,7 +348,7 @@ export default function App() {
           {/* Left Column (Match List Search Bar) - takes 4 cols on lg, full on mobile */}
           <div className="col-span-12 lg:col-span-4 pr-0 lg:pr-2 lg:h-full">
             <MatchList
-              matches={PRESET_MATCHES}
+              matches={localMatches}
               teams={localTeams}
               selectedMatchId={selectedMatchId}
               onSelectMatch={setSelectedMatchId}
@@ -343,7 +395,7 @@ export default function App() {
                     prediction={activePrediction}
                     onEditTeamValue={handleEditTeamValue}
                     teams={localTeams}
-                    allMatches={PRESET_MATCHES}
+                    allMatches={localMatches}
                   />
                 )}
 
