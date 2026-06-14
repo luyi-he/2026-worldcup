@@ -1365,8 +1365,8 @@ export function runMatchPrediction(
         : (homeLambda >= awayLambda ? "1-0" : "0-1"))
     : (stableScores.length > 0 ? stableScores[0].score : (homeLambda >= awayLambda ? "1-0" : "0-1"));
 
-  // Aggressive (进取): robust score with higher goal scoring (e.g., at least 3 goals combined or home team win by 2+)
-  const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 3) && (item.h !== item.a));
+  // Aggressive (进取): robust score with higher goal scoring (e.g., at least 4 goals combined, focusing on true high scores like 3-1, 1-3)
+  const aggressiveScores = scoreProbsList.filter(item => (item.h + item.a >= 4) && (item.h !== item.a));
   const aggressive = aggressiveScores.length > 0 ? aggressiveScores[0].score : "3-1";
 
   // Margins attribution calculation (relative contribution offset)
