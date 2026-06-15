@@ -223,14 +223,30 @@ export default function ExpertRead({
     setAgiLoading(true);
     setAgiError("");
 
-    const reportPrompt = `你是一位世界顶级的足球战术解说大师和量化分析专家。
-请为本场2026年世界杯小组赛撰写一份深度专业战术预测报告：
+    let matchStatusText = "尚未开赛";
+    let reportStateInstruction = "由于本场比赛尚未开始，请进行深度赛前战术解析、模拟推演与赛果研判。";
+
+    if (match.actualScore) {
+      if (match.isCompleted === false) {
+        matchStatusText = `正在直播进行中（当前实时比分 ${match.actualScore.home}:${match.actualScore.away}）`;
+        reportStateInstruction = `由于本场比赛目前正在火热进行中（即时比分 ${match.actualScore.home}:${match.actualScore.away}），请以现场直播解说的口吻，对当前正在发生的战术博弈、中途局势进行实时复盘与演变分析，并在最后给出下半场/终场走势的专业研判。`;
+      } else {
+        matchStatusText = `比赛已结束（完赛比分 ${match.actualScore.home}:${match.actualScore.away}）`;
+        reportStateInstruction = `由于本场比赛已经在现实中打完（完赛比分 ${match.actualScore.home}:${match.actualScore.away}），请勿用猜测或“尚未开赛”的口吻，而是撰写一份赛后战术复盘总结报告，重点剖析实际赛果与我们模型预测的偏差、两队临场战术胜负的关键因素。`;
+      }
+    }
+
+    const reportPrompt = `你是一位世界顶级的足球战术解说大师 and 量化分析专家。
+请为本场2026年世界杯小组赛撰写一份深度专业战术解读与分析报告：
 主队：${home.name} (身价: €${home.marketValue}m, FIFA排名: ${home.fifaRank}, ELO评分: ${home.elo}, 战术打法: ${home.tacticsName} - ${home.tacticsDescription})
 客队：${away.name} (身价: €${away.marketValue}m, FIFA排名: ${away.fifaRank}, ELO评分: ${away.elo}, 战术打法: ${away.tacticsName} - ${away.tacticsDescription})
 赛事信息：时间: ${match.dateTime}, 场地: ${match.venue}, 海拔: ${match.altitude}m, 天气: ${match.weather}。
 当前数学模型预测胜率：主队胜 ${(prediction.homeWinProb * 100).toFixed(0)}%, 平局 ${(prediction.drawProb * 100).toFixed(0)}%, 客队胜 ${(prediction.awayWinProb * 100).toFixed(0)}%。
 模型进球期望 (xG)：主队 ${prediction.homeExpectedGoals} vs 客队 ${prediction.awayExpectedGoals}。
 模型主推比分: ${prediction.recommendedScores.primary}, 稳健比分: ${prediction.recommendedScores.stable}, 进取比分: ${prediction.recommendedScores.aggressive}。
+本场实时状态：${matchStatusText}
+
+【特别分析背景】：${reportStateInstruction}
 
 请生成一个 JSON 对象，必须精确包含以下四个字段（只需纯 JSON 文本，确保可以被客户端安全解析，不要用 Markdown 的 \`\`\`json 标记包裹）：
 {
@@ -338,6 +354,19 @@ export default function ExpertRead({
     setChatLoading(true);
     setChatError("");
 
+    let chatMatchStatusText = "尚未开赛";
+    let chatMatchInstruction = "请结合上述战术打法、环境制约以及数据模型，进行赛前模拟预测与战术沙盘推演，回答用户的提问。";
+
+    if (match.actualScore) {
+      if (match.isCompleted === false) {
+        chatMatchStatusText = `正在直播进行中（当前实时比分 ${match.actualScore.home}:${match.actualScore.away}）`;
+        chatMatchInstruction = `【重要指令】：当前这场比赛正在进行中（即时比分 ${match.actualScore.home}:${match.actualScore.away}）。请作为正在现场解说本场比赛的大师，以**实时直播解说、现场战术观察和实时局势变化预测**的口吻进行分析。请注意这并不是赛后，也不是赛前，而是比赛中途！你可以结合之前的战术预测和当前的即时比分，分析双方目前的攻防走向。`;
+      } else {
+        chatMatchStatusText = `比赛已结束（完赛比分 ${match.actualScore.home}:${match.actualScore.away}）`;
+        chatMatchInstruction = `【重要指令】：由于这场比赛已经在现实中打完，请**不要使用预测或假设的口吻**。如果用户询问进球者、比赛细节或赛况，请你调用自身的网络搜索能力（或基于最新的比赛知识），如实回答现实中发生的真实战况。你可以分析我们的模型预测与真实赛果的偏差，做赛后复盘。`;
+      }
+    }
+
     const systemInstruction = `你是一位资深的足球战术解说大师和世界杯量化分析专家。
 用户正在与你讨论以下这场 2026 年世界杯小组赛：
 主队：${home.name} (身价: €${home.marketValue}m, FIFA排名: ${home.fifaRank}, ELO: ${home.elo}, 战术: ${home.tacticsName})
@@ -346,11 +375,9 @@ export default function ExpertRead({
 模型预测：胜率 [主胜 ${(prediction.homeWinProb * 100).toFixed(0)}% | 平局 ${(prediction.drawProb * 100).toFixed(0)}% | 客胜 ${(prediction.awayWinProb * 100).toFixed(0)}%]
 期望进球值 xG：[${prediction.homeExpectedGoals} : ${prediction.awayExpectedGoals}]
 推荐比分：核心主推 ${prediction.recommendedScores.primary}，稳健防守 ${prediction.recommendedScores.stable}。
-本场真实赛果：${match.actualScore ? `完赛比分 ${match.actualScore.home}:${match.actualScore.away} (注意：本场比赛已在现实中结束！)` : "尚未开赛"}
+本场实时状态：${chatMatchStatusText}
 
-${match.actualScore 
-  ? "【重要指令】：由于这场比赛已经在现实中打完，请**不要使用预测或假设的口吻**。如果用户询问进球者、比赛细节或赛况，请你调用自身的网络搜索能力（或基于最新的比赛知识），如实回答现实中发生的真实战况。你可以分析我们的模型预测与真实赛果的偏差，做赛后复盘。" 
-  : "请结合上述战术打法、环境制约以及数据模型，进行赛前模拟预测与战术沙盘推演，回答用户的提问。"}
+${chatMatchInstruction}
 
 请保持口吻专业、透彻且风趣，就像解说界的大师。字数尽量控制在 200 字以内，直击要害。`;
 
