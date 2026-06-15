@@ -4,6 +4,14 @@ import { Shield, Sparkles, RefreshCw, Trophy, Skull, Key, Send, Trash2, Bot, Use
 import { motion, AnimatePresence } from "motion/react";
 import TeamFlag from "./TeamFlag";
 
+const getProxiedUrl = (url: string): string => {
+  const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  if (isLocal && (url.startsWith("http://") || url.startsWith("https://")) && !url.includes(window.location.host)) {
+    return `/api-proxy?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+};
+
 interface ExpertReadProps {
   home: Team;
   away: Team;
@@ -145,7 +153,7 @@ export default function ExpertRead({
     try {
       if (apiProvider === "gemini") {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKeyInput.trim()}`;
-        const response = await fetch(url, {
+        const response = await fetch(getProxiedUrl(url), {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -172,7 +180,7 @@ export default function ExpertRead({
         const modelName = apiModel.trim() || "deepseek-chat";
         const url = `${baseUrl}/chat/completions`;
 
-        const response = await fetch(url, {
+        const response = await fetch(getProxiedUrl(url), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -238,7 +246,7 @@ export default function ExpertRead({
 
       if (savedProvider === "gemini") {
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`,
+          getProxiedUrl(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`),
           {
             method: "POST",
             headers: {
@@ -269,7 +277,7 @@ export default function ExpertRead({
         const modelName = savedModel || "deepseek-chat";
         const url = `${baseUrl}/chat/completions`;
 
-        const response = await fetch(url, {
+        const response = await fetch(getProxiedUrl(url), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -356,7 +364,7 @@ ${match.actualScore
         }));
 
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`,
+          getProxiedUrl(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedApiKey}`),
           {
             method: "POST",
             headers: {
@@ -391,7 +399,7 @@ ${match.actualScore
           }))
         ];
 
-        const response = await fetch(url, {
+        const response = await fetch(getProxiedUrl(url), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

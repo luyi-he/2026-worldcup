@@ -55,6 +55,7 @@ export interface Match {
     away: number;
   };
   isKnockout?: boolean;
+  isCompleted?: boolean;
 }
 
 export interface PredictionResult {

@@ -147,11 +147,11 @@ export default function MatchList({
                   <div className="text-right">
                     {m.actualScore ? (
                       <span className={`inline-block font-mono font-black text-xs px-2 py-1 rounded-md text-center border-2 border-slate-900 ${
-                        isSelected
-                          ? "bg-slate-900 text-yellow-400"
-                          : "bg-yellow-400 text-slate-900"
+                        m.isCompleted === false
+                          ? (isSelected ? "bg-slate-900 text-yellow-400 animate-pulse" : "bg-red-500 text-white animate-pulse")
+                          : (isSelected ? "bg-slate-900 text-yellow-400" : "bg-yellow-400 text-slate-900")
                       }`}>
-                        完 {m.actualScore.home}:{m.actualScore.away}
+                        {m.isCompleted === false ? "直" : "完"} {m.actualScore.home}:{m.actualScore.away}
                       </span>
                     ) : (
                       <span className={`inline-block font-mono font-black text-xs px-2.5 py-1 rounded-md text-center border-2 border-slate-900 ${

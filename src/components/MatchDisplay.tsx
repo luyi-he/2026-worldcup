@@ -382,7 +382,7 @@ export default function MatchDisplay({
 
       {/* 6. Post-Match Live Review and Accuracy backtesting */}
       {(() => {
-        const completedMatches = (allMatches || PRESET_MATCHES).filter(m => m.actualScore);
+        const completedMatches = (allMatches || PRESET_MATCHES).filter(m => m.actualScore && m.isCompleted !== false);
 
         const stats = completedMatches.map(m => {
           const hT = (teams || TEAMS)[m.homeTeamId];
@@ -506,6 +506,8 @@ export default function MatchDisplay({
             {/* Detailed Game Review List — fixed height, scrollable */}
             <div className="overflow-y-auto max-h-[680px] space-y-3 pr-1">
               {stats.map(({ match: m, home: h, away: a, prediction: pred, isDirectionCorrect, isExactHit, isAnyScoreHit, actualScoreStr }) => {
+                const isStableHit = pred.recommendedScores.stable === actualScoreStr;
+                const isAggressiveHit = pred.recommendedScores.aggressive === actualScoreStr;
                 const dateObj = new Date(m.dateTime.replace(" ", "T"));
                 const month = dateObj.getMonth() + 1;
                 const dateVal = dateObj.getDate();
@@ -581,7 +583,11 @@ export default function MatchDisplay({
                       <div className="flex-1 shrink-0">
                         <span className="text-[10px] text-slate-500 block font-bold">主推比分</span>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="font-mono font-bold text-slate-900 bg-white border border-slate-900 px-1.5 py-0.5 rounded leading-none shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">
+                          <span className={`font-mono font-bold px-1.5 py-0.5 rounded leading-none shadow-[1px_1px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap transition-all ${
+                            isExactHit 
+                              ? "bg-yellow-400 text-slate-900 border-2 border-slate-900 font-black" 
+                              : "bg-white text-slate-900 border border-slate-900"
+                          }`}>
                             {pred.recommendedScores.primary}
                           </span>
                           {isExactHit ? (
@@ -596,10 +602,18 @@ export default function MatchDisplay({
 
                       <div className="flex-1 shrink-0">
                         <span className="text-[10px] text-slate-500 block font-bold">策略支持集</span>
-                        <div className="flex items-center gap-1 mt-0.5 font-mono text-[9.5px] text-slate-500 whitespace-nowrap">
-                          <span className="bg-slate-50 border border-slate-200 px-1 rounded text-slate-700 font-semibold">稳:{pred.recommendedScores.stable}</span>
+                        <div className="flex items-center gap-1.5 mt-0.5 font-mono text-[9.5px] whitespace-nowrap">
+                          <span className={`px-1.5 py-0.5 rounded font-bold border transition-all ${
+                            isStableHit 
+                              ? "bg-yellow-400 text-slate-900 border-slate-900 font-black shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]" 
+                              : "bg-slate-50 border-slate-200 text-slate-700 font-semibold"
+                          }`}>稳:{pred.recommendedScores.stable}</span>
                           <span>•</span>
-                          <span className="bg-slate-50 border border-slate-200 px-1 rounded text-slate-700 font-semibold">博:{pred.recommendedScores.aggressive}</span>
+                          <span className={`px-1.5 py-0.5 rounded font-bold border transition-all ${
+                            isAggressiveHit 
+                              ? "bg-yellow-400 text-slate-900 border-slate-900 font-black shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]" 
+                              : "bg-slate-50 border-slate-200 text-slate-700 font-semibold"
+                          }`}>博:{pred.recommendedScores.aggressive}</span>
                         </div>
                       </div>
                     </div>

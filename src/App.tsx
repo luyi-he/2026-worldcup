@@ -82,15 +82,16 @@ export default function App() {
             if (cctvMatch) {
               const homeScore = cctvMatch.homeScore;
               const guestScore = cctvMatch.guestScore;
-              const status = cctvMatch.gameStatus; // "1" = unplayed, "2"/"3" = live/completed
+              const status = String(cctvMatch.gameStatus); // Convert to string to avoid type mismatch (number vs string)
               
-              if ((status === "2" || status === "3") && homeScore !== null && guestScore !== null) {
+              if ((status === "2" || status === "3") && homeScore != null && guestScore != null) {
                 return {
                   ...match,
                   actualScore: {
                     home: Number(homeScore),
                     away: Number(guestScore)
-                  }
+                  },
+                  isCompleted: status === "3"
                 };
               }
             }
