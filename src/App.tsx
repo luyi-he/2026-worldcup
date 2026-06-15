@@ -73,15 +73,25 @@ export default function App() {
 
         setLocalMatches((prevMatches) => {
           return prevMatches.map((match) => {
+            let isSwapped = false;
             const cctvMatch = results.find((g: any) => {
               const cctvHomeId = nameToId[g.homeName];
               const cctvGuestId = nameToId[g.guestName];
-              return cctvHomeId === match.homeTeamId && cctvGuestId === match.awayTeamId;
+              
+              if (cctvHomeId === match.homeTeamId && cctvGuestId === match.awayTeamId) {
+                isSwapped = false;
+                return true;
+              }
+              if (cctvHomeId === match.awayTeamId && cctvGuestId === match.homeTeamId) {
+                isSwapped = true;
+                return true;
+              }
+              return false;
             });
 
             if (cctvMatch) {
-              const homeScore = cctvMatch.homeScore;
-              const guestScore = cctvMatch.guestScore;
+              const homeScore = isSwapped ? cctvMatch.guestScore : cctvMatch.homeScore;
+              const guestScore = isSwapped ? cctvMatch.homeScore : cctvMatch.guestScore;
               const status = String(cctvMatch.gameStatus); // Convert to string to avoid type mismatch (number vs string)
               
               if ((status === "2" || status === "3") && homeScore != null && guestScore != null) {
